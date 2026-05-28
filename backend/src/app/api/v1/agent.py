@@ -61,7 +61,7 @@ from ...schemas.device import DeviceRead
 from ...schemas.agent_template_assignment import AssignmentRead
 from ...ai.module_factory import parse_provider_reference
 from ...config import load_config
-from ...services.openmemory import get_openmemory_service, OpenMemoryError
+
 from ...services.agent_service import agent_service
 from sqlalchemy import text
 
@@ -468,15 +468,7 @@ async def delete_agent(
         if not agent:
             raise NotFoundException(f"Agent {agent_id} not found")
 
-        # Delete all memories from OpenMemory
-        try:
-            openmemory_service = get_openmemory_service()
-            await openmemory_service.delete_user_memories(agent_id=agent_id)
-            logger.info(f"Deleted all memories for agent {agent_id} from OpenMemory")
-        except OpenMemoryError as e:
-            logger.warning(f"Failed to delete memories from OpenMemory: {str(e)}")
-        except Exception as e:
-            logger.warning(f"Unexpected error deleting memories: {str(e)}")
+
 
         # HARD DELETE device if bound (using raw SQL to bypass soft delete)
         if agent.device_id:

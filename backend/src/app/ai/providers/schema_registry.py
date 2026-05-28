@@ -1403,114 +1403,6 @@ MEMORY_MEM_LOCAL_SHORT_SCHEMA = ProviderTypeSchema(
     ],
 )
 
-MEMORY_OPENMEMORY_SCHEMA = ProviderTypeSchema(
-    label="OpenMemory",
-    description="OpenMemory - self-hosted hoặc local memory với brain-inspired sectors",
-    fields=[
-        # Mode selection
-        ProviderFieldSchema(
-            name="mode",
-            label="Mode",
-            type=FieldType.SELECT,
-            required=True,
-            default="remote",
-            options=[
-                SelectOption(value="remote", label="Remote (API Server)"),
-                SelectOption(value="local", label="Local (SQLite + Embeddings)"),
-            ],
-            description="Chọn local (offline) hoặc remote (API server)",
-        ),
-        # Remote mode fields
-        ProviderFieldSchema(
-            name="base_url",
-            label="[Remote mode] Base URL",
-            type=FieldType.STRING,
-            required=False,
-            placeholder="http://localhost:8080",
-            description="[Remote mode] URL của OpenMemory server",
-        ),
-        ProviderFieldSchema(
-            name="api_key",
-            label="[Remote mode] API Key",
-            type=FieldType.SECRET,
-            required=False,
-            description="[Remote mode] API key nếu server yêu cầu xác thực",
-        ),
-        # Local mode fields
-        ProviderFieldSchema(
-            name="local_path",
-            label="[Local mode] Database Path",
-            type=FieldType.STRING,
-            required=False,
-            default="./data/memory.sqlite",
-            placeholder="./data/memory.sqlite",
-            description="[Local mode] Đường dẫn file SQLite database",
-        ),
-        ProviderFieldSchema(
-            name="tier",
-            label="[Local mode] Tier",
-            type=FieldType.SELECT,
-            required=False,
-            default="fast",
-            options=[
-                SelectOption(value="fast", label="Fast (synthetic embeddings)"),
-                SelectOption(value="balanced", label="Balanced"),
-                SelectOption(value="quality", label="Quality (API embeddings)"),
-            ],
-            description="[Local mode] Tier quality/speed trade-off",
-        ),
-        # Embeddings config (for local mode)
-        ProviderFieldSchema(
-            name="embeddings_provider",
-            label="[Local mode] Embeddings Provider",
-            type=FieldType.SELECT,
-            required=False,
-            default="synthetic",
-            options=[
-                SelectOption(value="synthetic", label="Synthetic (No API, fast)"),
-                SelectOption(value="openai", label="OpenAI"),
-                SelectOption(value="gemini", label="Google Gemini"),
-            ],
-            description="[Local mode] Provider cho embeddings",
-        ),
-        ProviderFieldSchema(
-            name="embeddings_api_key",
-            label="[Local mode] Embeddings API Key",
-            type=FieldType.SECRET,
-            required=False,
-            description="[Local mode] API key cho OpenAI/Gemini embeddings",
-        ),
-        ProviderFieldSchema(
-            name="embeddings_model",
-            label="[Local mode] Embeddings Model",
-            type=FieldType.STRING,
-            required=False,
-            placeholder="text-embedding-3-small",
-            description="[Local mode] Model name (optional, ví dụ: text-embedding-3-small)",
-        ),
-        # Common fields
-        ProviderFieldSchema(
-            name="k",
-            label="[Common] Memory Results (k)",
-            type=FieldType.INTEGER,
-            required=False,
-            default=3,
-            min=1,
-            max=20,
-            description="Số lượng memory results trả về khi query",
-        ),
-        ProviderFieldSchema(
-            name="max_tokens",
-            label="[Common] Max Tokens",
-            type=FieldType.INTEGER,
-            required=False,
-            default=2000,
-            min=500,
-            max=8000,
-            description="Max tokens khi LLM tóm tắt hội thoại",
-        ),
-    ],
-)
 
 # =============================================================================
 # Intent Provider Schemas
@@ -1623,7 +1515,7 @@ PROVIDER_SCHEMAS: dict[str, dict[str, ProviderTypeSchema]] = {
     "Memory": {
         "nomem": MEMORY_NOMEM_SCHEMA,
         "mem_local_short": MEMORY_MEM_LOCAL_SHORT_SCHEMA,
-        "openmemory": MEMORY_OPENMEMORY_SCHEMA,
+
     },
     "Intent": {
         "nointent": INTENT_NOINTENT_SCHEMA,

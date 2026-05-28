@@ -19,7 +19,7 @@ from .config import router as config_router
 from .providers import router as providers_router
 from .tools import router as tools_router
 from .embeddings import router as embeddings_router
-from .knowledge_base import router as knowledge_base_router
+
 from .knowledge_base_chromadb import router as knowledge_base_chromadb_router
 from .knowledge_base_pgvector import router as knowledge_base_pgvector_router
 from .knowledge_unified import router as knowledge_unified_router
@@ -154,7 +154,7 @@ router.include_router(plugins_router)
 router.include_router(embeddings_router)
 
 # Knowledge Base
-router.include_router(knowledge_base_router)
+
 router.include_router(knowledge_base_chromadb_router)
 router.include_router(knowledge_base_pgvector_router)
 router.include_router(knowledge_unified_router)

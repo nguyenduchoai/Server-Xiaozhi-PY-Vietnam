@@ -161,7 +161,15 @@ docker compose up -d
 
 ## 📄 License
 
-MIT License - See LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details. This permissive license allows you to freely use, modify, and distribute the code for both personal and commercial purposes.
+
+## 🙌 Credits & Acknowledgements
+
+Xiaozhi CE is built upon the incredible work of the open-source community. We would like to express our deepest gratitude to the following original projects:
+
+- **[Xiaozhi-ESP32](https://github.com/78/xiaozhi-esp32)**: The original open-source ESP32 AI voice assistant project by [78](https://github.com/78), which pioneered the WebSocket/MQTT audio streaming protocol.
+- **[Xiaozhi-ESP32 Vietnam](https://github.com/Xiaozhi-AI-IoT-Vietnam/xiaozhi-esp32_vietnam)**: The localized and optimized ESP32 firmware for the Vietnamese community.
+- **Xiaozhi Server**: The full-featured Python FastAPI server architecture that served as the foundation for this Community Edition.
 
 ## 🤝 Contributing
 
