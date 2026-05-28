@@ -1,0 +1,53 @@
+# Version control
+.git
+.gitignore
+
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Virtual environments
+.venv
+venv
+env
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Tests & Docs (not needed in production)
+tests/
+docs/
+*.md
+LICENSE
+
+# Docker files (avoid recursive context)
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Temp files
+tmp/
+*.tmp
+*.log
+
+# Data directories (mounted via volumes)
+data/models/
+data/tts-models/
+
+# Static build artifacts
+static/uploads/

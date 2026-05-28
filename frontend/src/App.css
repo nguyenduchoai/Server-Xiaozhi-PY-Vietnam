@@ -1,0 +1,1276 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Container utility for centered content */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
+/* Playful Theme (Xiaozhi) - Minigame Palette */
+:root[data-brand-theme='playful'] {
+  /* #FF6B6B (Bittersweet / Salmon) */
+  --primary: oklch(0.64 0.17 25);
+  --primary-foreground: oklch(0.985 0 0);
+
+  /* #FFE66D (Maize / Yellow) */
+  --secondary: oklch(0.92 0.14 95);
+  --secondary-foreground: oklch(0.205 0 0);
+
+  /* #4ECDC4 (Medium Turquoise) */
+  --accent: oklch(0.81 0.12 180);
+  --accent-foreground: oklch(0.205 0 0);
+
+  --radius: 1.5rem;
+  /* Bento grid style */
+  --font-sans: "Quicksand", system-ui, sans-serif;
+}
+
+/* Playful Dark Mode */
+.dark:root[data-brand-theme='playful'] {
+  --primary: oklch(0.64 0.17 25);
+  --primary-foreground: oklch(0.985 0 0);
+}
+
+/* Tech Theme (Xiaozhi) - Cyan/Blue */
+:root[data-brand-theme='tech'] {
+  --primary: oklch(0.55 0.2 245);
+  /* Intense Blue */
+  --primary-foreground: oklch(0.985 0 0);
+  --radius: 0.3rem;
+  /* Technical/Sharp */
+}
+
+.dark:root[data-brand-theme='tech'] {
+  --primary: oklch(0.6 0.18 245);
+  /* Lighter Blue for dark mode */
+}
+
+/* ============================================================================
+   APPLE DESIGN SYSTEM - Clean, Minimal, Professional
+   Supports Light + Dark mode via CSS custom properties
+   ============================================================================ */
+
+/* Apple-Inspired Color Palette — Light Mode (default) */
+:root {
+  /* Primary Colors */
+  --apple-blue: #007AFF;
+  --apple-blue-light: #E8F4FF;
+  --apple-blue-hover: #0066D6;
+
+  /* Adaptive Surface Colors (light/dark aware) */
+  --apple-surface-primary: #FFFFFF;
+  --apple-surface-secondary: #FAFAFA;
+  --apple-surface-tertiary: #F5F5F7;
+  --apple-surface-elevated: #FFFFFF;
+
+  /* Neutral Grays */
+  --apple-gray-50: #FAFAFA;
+  --apple-gray-100: #F5F5F7;
+  --apple-gray-200: #E8E8ED;
+  --apple-gray-300: #D2D2D7;
+  --apple-gray-400: #86868B;
+  --apple-gray-500: #6E6E73;
+  --apple-gray-600: #48484A;
+  --apple-gray-900: #1D1D1F;
+
+  /* Adaptive Text Colors */
+  --apple-text-primary: #1D1D1F;
+  --apple-text-secondary: #48484A;
+  --apple-text-tertiary: #6E6E73;
+  --apple-text-quaternary: #86868B;
+
+  /* Adaptive Border */
+  --apple-border-primary: #E8E8ED;
+  --apple-border-secondary: #D2D2D7;
+
+  /* Semantic Colors */
+  --apple-success: #34C759;
+  --apple-warning: #FF9500;
+  --apple-error: #FF3B30;
+
+  /* Shadows */
+  --apple-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --apple-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --apple-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --apple-shadow-sidebar: 1px 0 0 rgba(0, 0, 0, 0.06);
+
+  /* Typography */
+  --apple-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Segoe UI', Roboto, sans-serif;
+
+  /* Spacing */
+  --apple-radius-sm: 6px;
+  --apple-radius-md: 10px;
+  --apple-radius-lg: 12px;
+  --apple-radius-xl: 16px;
+
+  /* Layout */
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 60px;
+  --header-height: 64px;
+}
+
+/* Dark Mode — Semi Design integration */
+body.semi-always-dark,
+[theme-mode="dark"],
+.dark {
+  --apple-blue: #0A84FF;
+  --apple-blue-light: #0A84FF1A;
+  --apple-blue-hover: #409CFF;
+
+  /* Dark Surfaces */
+  --apple-surface-primary: #1C1C1E;
+  --apple-surface-secondary: #2C2C2E;
+  --apple-surface-tertiary: #3A3A3C;
+  --apple-surface-elevated: #2C2C2E;
+
+  /* Dark Grays (inverted) */
+  --apple-gray-50: #1C1C1E;
+  --apple-gray-100: #2C2C2E;
+  --apple-gray-200: #3A3A3C;
+  --apple-gray-300: #48484A;
+  --apple-gray-400: #8E8E93;
+  --apple-gray-500: #AEAEB2;
+  --apple-gray-600: #D1D1D6;
+  --apple-gray-900: #F5F5F7;
+
+  /* Dark Text */
+  --apple-text-primary: #F5F5F7;
+  --apple-text-secondary: #D1D1D6;
+  --apple-text-tertiary: #AEAEB2;
+  --apple-text-quaternary: #8E8E93;
+
+  /* Dark Borders */
+  --apple-border-primary: #3A3A3C;
+  --apple-border-secondary: #48484A;
+
+  /* Dark Shadows */
+  --apple-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --apple-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --apple-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --apple-shadow-sidebar: 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================================================
+   SEMI UI OVERRIDES - Apple Style
+   ============================================================================ */
+
+/* Sidebar Container */
+.semi-layout-sider {
+  background: var(--apple-surface-secondary) !important;
+  border-right: 1px solid var(--apple-border-primary) !important;
+  box-shadow: none !important;
+  width: var(--sidebar-width) !important;
+  min-width: var(--sidebar-width) !important;
+  max-width: var(--sidebar-width) !important;
+  flex: 0 0 var(--sidebar-width) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.semi-layout-sider-collapsed {
+  width: var(--sidebar-collapsed-width) !important;
+  min-width: var(--sidebar-collapsed-width) !important;
+  max-width: var(--sidebar-collapsed-width) !important;
+  flex: 0 0 var(--sidebar-collapsed-width) !important;
+}
+
+/* Navigation Container */
+.semi-navigation {
+  background: transparent !important;
+  border: none !important;
+}
+
+.semi-navigation-header {
+  padding: 20px 16px !important;
+  border-bottom: 1px solid var(--apple-border-primary) !important;
+  margin-bottom: 8px !important;
+}
+
+.semi-navigation-header-logo {
+  border-radius: var(--apple-radius-md) !important;
+  box-shadow: var(--apple-shadow-sm) !important;
+}
+
+.semi-navigation-header-text {
+  font-family: var(--apple-font) !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  color: var(--apple-text-primary) !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Navigation Items */
+.semi-navigation-item {
+  margin: 2px 8px !important;
+  padding: 10px 12px !important;
+  border-radius: var(--apple-radius-md) !important;
+  font-family: var(--apple-font) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--apple-text-secondary) !important;
+  transition: all 0.15s ease !important;
+}
+
+.semi-navigation-item:hover {
+  background: var(--apple-surface-tertiary) !important;
+  color: var(--apple-text-primary) !important;
+}
+
+.semi-navigation-item-selected {
+  background: var(--apple-blue-light) !important;
+  color: var(--apple-blue) !important;
+}
+
+.semi-navigation-item-selected:hover {
+  background: var(--apple-blue-light) !important;
+  color: var(--apple-blue) !important;
+}
+
+.semi-navigation-item-selected .semi-navigation-item-icon {
+  color: var(--apple-blue) !important;
+}
+
+.semi-navigation-item-icon {
+  color: var(--apple-text-quaternary) !important;
+  margin-right: 12px !important;
+}
+
+.semi-navigation-item:hover .semi-navigation-item-icon {
+  color: var(--apple-text-secondary) !important;
+}
+
+/* Sub Navigation - Parent menu aligned with other menus */
+.semi-navigation-sub {
+  margin: 2px 8px !important;
+}
+
+.semi-navigation-sub-title {
+  padding: 10px 12px !important;
+  margin: 0 !important;
+  border-radius: var(--apple-radius-md) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--apple-text-secondary) !important;
+}
+
+.semi-navigation-sub-title:hover {
+  background: var(--apple-surface-tertiary) !important;
+}
+
+.semi-navigation-sub-open>.semi-navigation-sub-title {
+  background: var(--apple-surface-tertiary) !important;
+  color: var(--apple-text-primary) !important;
+}
+
+/* Submenu children - only 5px more indent than parent */
+.semi-navigation-sub-wrap {
+  background: transparent !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.semi-navigation-sub-wrap .semi-navigation-item {
+  padding-left: 17px !important;
+  margin: 2px 8px 2px 5px !important;
+  font-size: 13px !important;
+}
+
+/* Remove Semi UI's default indentation */
+.semi-navigation-sub .semi-navigation-item-indent,
+.semi-navigation-item-indent {
+  width: 0 !important;
+  min-width: 0 !important;
+  display: none !important;
+}
+
+/* Navigation Footer */
+.semi-navigation-footer {
+  padding: 12px !important;
+  border-top: 1px solid var(--apple-border-primary) !important;
+}
+
+.semi-navigation-footer-collapse-btn {
+  border-radius: var(--apple-radius-md) !important;
+  color: var(--apple-text-quaternary) !important;
+}
+
+.semi-navigation-footer-collapse-btn:hover {
+  background: var(--apple-surface-tertiary) !important;
+  color: var(--apple-text-secondary) !important;
+}
+
+/* Divider Items */
+.semi-navigation-item-disabled {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--apple-text-quaternary) !important;
+  padding: 16px 12px 8px 12px !important;
+  margin-top: 8px !important;
+  cursor: default !important;
+}
+
+/* ============================================================================
+   HEADER STYLES
+   ============================================================================ */
+
+.semi-layout-header {
+  background: var(--apple-surface-primary) !important;
+  border-bottom: 1px solid var(--apple-border-primary) !important;
+  height: var(--header-height) !important;
+  padding: 0 24px !important;
+  box-shadow: none !important;
+}
+
+/* Breadcrumb */
+.semi-breadcrumb {
+  font-family: var(--apple-font) !important;
+}
+
+.semi-breadcrumb-item {
+  color: var(--apple-text-quaternary) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.semi-breadcrumb-item:last-child {
+  color: var(--apple-text-primary) !important;
+}
+
+.semi-breadcrumb-item-link:hover {
+  color: var(--apple-blue) !important;
+}
+
+/* ============================================================================
+   CONTENT AREA
+   ============================================================================ */
+
+.semi-layout-content {
+  background: var(--apple-surface-tertiary) !important;
+  padding: 24px !important;
+}
+
+/* ============================================================================
+   CARD STYLES - Apple Clean
+   ============================================================================ */
+
+.semi-card {
+  background: var(--apple-surface-primary) !important;
+  border: 1px solid var(--apple-border-primary) !important;
+  border-radius: var(--apple-radius-lg) !important;
+  box-shadow: var(--apple-shadow-sm) !important;
+  transition: box-shadow 0.2s ease !important;
+}
+
+.semi-card:hover {
+  box-shadow: var(--apple-shadow-md) !important;
+}
+
+.semi-card-header {
+  border-bottom: 1px solid var(--apple-border-primary) !important;
+  padding: 16px 20px !important;
+}
+
+.semi-card-header-title {
+  font-family: var(--apple-font) !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: var(--apple-text-primary) !important;
+}
+
+.semi-card-body {
+  padding: 20px !important;
+}
+
+/* ============================================================================
+   BUTTON STYLES - Apple Clean
+   ============================================================================ */
+
+.semi-button {
+  font-family: var(--apple-font) !important;
+  font-weight: 500 !important;
+  border-radius: var(--apple-radius-md) !important;
+  transition: all 0.15s ease !important;
+}
+
+/* APPLE VISIONOS GLASS BUTTON - PRIMARY */
+.semi-button-primary {
+  background: rgba(0, 122, 255, 0.2) !important;
+  backdrop-filter: blur(16px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 
+    0 4px 12px rgba(0, 122, 255, 0.1), 
+    inset 0 1px 2px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 2px rgba(0, 122, 255, 0.2) !important;
+  color: var(--apple-blue) !important;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.dark .semi-button-primary {
+  background: rgba(10, 132, 255, 0.2) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.semi-button-primary::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+  opacity: 0.6;
+}
+
+.semi-button-primary:hover {
+  background: rgba(0, 122, 255, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  transform: translateY(-1px) scale(1.02);
+  color: var(--apple-blue-hover) !important;
+  box-shadow: 
+    0 8px 16px rgba(0, 122, 255, 0.2), 
+    inset 0 2px 3px rgba(255, 255, 255, 0.6),
+    inset 0 -1px 2px rgba(0, 122, 255, 0.1) !important;
+}
+
+.dark .semi-button-primary:hover {
+  background: rgba(10, 132, 255, 0.35) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+}
+
+.semi-button-primary:active,
+.semi-button-primary:focus {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Ensure button text is always visible */
+.semi-button-primary .semi-button-content {
+  color: inherit !important;
+  font-weight: 600 !important;
+  position: relative;
+  z-index: 2;
+}
+
+.semi-button-tertiary {
+  color: var(--apple-text-secondary) !important;
+}
+
+.semi-button-tertiary:hover {
+  background: var(--apple-surface-tertiary) !important;
+  color: var(--apple-text-primary) !important;
+}
+
+/* ============================================================================
+   TABLE STYLES - Apple Clean
+   ============================================================================ */
+
+.semi-table {
+  font-family: var(--apple-font) !important;
+}
+
+.semi-table-thead>.semi-table-row>.semi-table-row-head {
+  background: var(--apple-surface-secondary) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em !important;
+  color: var(--apple-text-tertiary) !important;
+  border-bottom: 1px solid var(--apple-border-primary) !important;
+}
+
+.semi-table-tbody>.semi-table-row>.semi-table-row-cell {
+  border-bottom: 1px solid var(--apple-surface-tertiary) !important;
+  font-size: 14px !important;
+  color: var(--apple-text-primary) !important;
+}
+
+.semi-table-tbody>.semi-table-row:hover>.semi-table-row-cell {
+  background: var(--apple-surface-secondary) !important;
+}
+
+/* ============================================================================
+   INPUT STYLES - Apple Clean
+   ============================================================================ */
+
+.semi-input-wrapper,
+.semi-select {
+  border-radius: var(--apple-radius-md) !important;
+  border-color: var(--apple-border-secondary) !important;
+  font-family: var(--apple-font) !important;
+}
+
+.semi-input-wrapper:hover,
+.semi-select:hover {
+  border-color: var(--apple-text-quaternary) !important;
+}
+
+.semi-input-wrapper-focus,
+.semi-select-focus {
+  border-color: var(--apple-blue) !important;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15) !important;
+}
+
+/* ============================================================================
+   MODAL STYLES - Apple Clean
+   ============================================================================ */
+
+.semi-modal-content {
+  border-radius: var(--apple-radius-xl) !important;
+  box-shadow: var(--apple-shadow-lg) !important;
+}
+
+.semi-modal-header {
+  border-bottom: 1px solid var(--apple-border-primary) !important;
+  padding: 20px 24px !important;
+}
+
+.semi-modal-title {
+  font-family: var(--apple-font) !important;
+  font-weight: 600 !important;
+  font-size: 18px !important;
+  color: var(--apple-text-primary) !important;
+}
+
+.semi-modal-body {
+  padding: 24px !important;
+}
+
+.semi-modal-footer {
+  border-top: 1px solid var(--apple-border-primary) !important;
+  padding: 16px 24px !important;
+}
+
+/* ============================================================================
+   TOAST / NOTIFICATION - Apple Clean
+   ============================================================================ */
+
+.semi-toast-wrapper {
+  border-radius: var(--apple-radius-lg) !important;
+  box-shadow: var(--apple-shadow-lg) !important;
+  font-family: var(--apple-font) !important;
+}
+
+/* ============================================================================
+   SCROLLBAR - Apple Clean
+   ============================================================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--apple-gray-300);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--apple-gray-400);
+}
+
+/* ============================================================================
+   GLOBAL TYPOGRAPHY
+   ============================================================================ */
+
+body {
+  font-family: var(--apple-font) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--apple-font) !important;
+  color: var(--apple-text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+.apple-card {
+  background: var(--apple-surface-primary);
+  border: 1px solid var(--apple-border-primary);
+  border-radius: var(--apple-radius-lg);
+  box-shadow: var(--apple-shadow-sm);
+  padding: 20px;
+}
+
+.apple-card-hover:hover {
+  box-shadow: var(--apple-shadow-md);
+}
+
+.apple-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--apple-text-quaternary);
+  margin-bottom: 12px;
+}
+
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ============================================================================
+   MOBILE RESPONSIVE OVERRIDES
+   ============================================================================ */
+
+@media (max-width: 1023px) {
+  /* Remove fixed sidebar margins on mobile */
+  .semi-layout-sider {
+    display: none !important;
+  }
+
+  /* Adjust content padding on mobile */
+  .semi-layout-content {
+    padding: 16px !important;
+  }
+
+  /* Adjust header for mobile */
+  .semi-layout-header {
+    padding: 0 12px !important;
+  }
+
+  /* Make cards more compact on mobile */
+  .semi-card-body {
+    padding: 16px !important;
+  }
+
+  /* Adjust table scroll on mobile */
+  .semi-table-wrapper {
+    overflow-x: auto;
+  }
+
+  /* Make modals full-width on small screens */
+  .semi-modal-content {
+    margin: 16px !important;
+    max-width: calc(100vw - 32px) !important;
+  }
+
+  /* Breadcrumb smaller on mobile */
+  .semi-breadcrumb-item {
+    font-size: 13px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Extra-small: even more compact */
+  .semi-layout-content {
+    padding: 12px !important;
+  }
+
+  .semi-card-header {
+    padding: 12px 16px !important;
+  }
+
+  .semi-card-body {
+    padding: 12px !important;
+  }
+
+  /* Full-width modals on phones */
+  .semi-modal-content {
+    margin: 8px !important;
+    max-width: calc(100vw - 16px) !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* ============================================================================
+   MOBILE SIDEBAR DRAWER (SideSheet)
+   ============================================================================ */
+
+.semi-sidesheet-inner {
+  background: var(--apple-surface-secondary) !important;
+}
+
+.semi-sidesheet .semi-navigation {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* ============================================================================
+   ONBOARDING WIZARD ANIMATIONS
+   ============================================================================ */
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-slideInUp {
+  animation: slideInUp 0.4s ease-out;
+}
+
+.animate-bounceIn {
+  animation: bounceIn 0.5s ease-out;
+}
+
+/* ============================================================================
+   DARK MODE TRANSITION
+   ============================================================================ */
+
+body,
+body * {
+  transition: background-color 0.2s ease, color 0.15s ease, border-color 0.2s ease;
+}
+
+/* ============================================================================
+   PREMIUM MICRO-ANIMATIONS
+   ============================================================================ */
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes subtlePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+@keyframes contentFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.animate-contentFadeIn {
+  animation: contentFadeIn 0.4s ease-out;
+}
+
+/* ============================================================================
+   ENHANCED SEMI TAG COMPONENT
+   ============================================================================ */
+
+.semi-tag {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.01em !important;
+  transition: all 0.15s ease !important;
+}
+
+.semi-tag-green {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #10B981 !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+.semi-tag-red {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #EF4444 !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+.semi-tag-blue {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #3B82F6 !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+.semi-tag-violet {
+  background: rgba(139, 92, 246, 0.1) !important;
+  color: #8B5CF6 !important;
+  border-color: rgba(139, 92, 246, 0.2) !important;
+}
+
+/* ============================================================================
+   ENHANCED SEMI TABS
+   ============================================================================ */
+
+.semi-tabs-bar {
+  border-bottom: 1px solid var(--apple-border-primary) !important;
+}
+
+.semi-tabs-tab {
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  color: var(--apple-text-tertiary) !important;
+  transition: all 0.15s ease !important;
+  padding: 10px 16px !important;
+}
+
+.semi-tabs-tab:hover {
+  color: var(--apple-text-primary) !important;
+}
+
+.semi-tabs-tab-active {
+  color: var(--apple-blue) !important;
+  font-weight: 600 !important;
+}
+
+.semi-tabs-ink-bar {
+  background: var(--apple-blue) !important;
+  height: 2.5px !important;
+  border-radius: 2px !important;
+}
+
+/* ============================================================================
+   ENHANCED TOOLTIP
+   ============================================================================ */
+
+.semi-tooltip-wrapper {
+  border-radius: 10px !important;
+  font-size: 13px !important;
+  padding: 8px 14px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ============================================================================
+   ENHANCED BANNER
+   ============================================================================ */
+
+.semi-banner {
+  border-radius: 14px !important;
+  border: none !important;
+}
+
+.semi-banner-warning {
+  background: rgba(245, 158, 11, 0.08) !important;
+  border: 1px solid rgba(245, 158, 11, 0.15) !important;
+}
+
+.semi-banner-danger {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border: 1px solid rgba(239, 68, 68, 0.15) !important;
+}
+
+.semi-banner-success {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border: 1px solid rgba(16, 185, 129, 0.15) !important;
+}
+
+.semi-banner-info {
+  background: rgba(59, 130, 246, 0.08) !important;
+  border: 1px solid rgba(59, 130, 246, 0.15) !important;
+}
+
+/* ============================================================================
+   ENHANCED FORM LABELS
+   ============================================================================ */
+
+.semi-form-field-label-text {
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  color: var(--apple-text-secondary) !important;
+}
+
+/* ============================================================================
+   ENHANCED SWITCH
+   ============================================================================ */
+
+.semi-switch-checked {
+  background: var(--apple-blue) !important;
+}
+
+/* ============================================================================
+   PREMIUM FOCUS RING
+   ============================================================================ */
+
+:focus-visible {
+  outline: 2px solid var(--apple-blue) !important;
+  outline-offset: 2px !important;
+  border-radius: 8px;
+}
+
+/* ============================================================================
+   ENHANCED EMPTY STATE
+   ============================================================================ */
+
+.semi-empty {
+  padding: 40px 20px !important;
+}
+
+.semi-empty-description {
+  color: var(--apple-text-quaternary) !important;
+  font-size: 14px !important;
+}
+
+/* ============================================================================
+   ENHANCED PROGRESS BAR
+   ============================================================================ */
+
+.semi-progress-track {
+  border-radius: 6px !important;
+  background: var(--apple-surface-tertiary) !important;
+}
+
+.semi-progress-line-bar {
+  border-radius: 6px !important;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* ============================================================================
+   CONTENT LAYOUT ANIMATIONS
+   ============================================================================ */
+
+.semi-layout-content > * {
+  animation: contentFadeIn 0.35s ease-out;
+}
+
+/* ============================================================================
+   GRADIENT UTILITY
+   ============================================================================ */
+
+@keyframes gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+/* ============================================================================
+   APPLE VISIONOS / LIQUID GLASS 3D EFFECT
+   ============================================================================ */
+
+.glass3d { 
+  --filter-glass3d: blur(32px) brightness(0.95) saturate(2.0); 
+  --color-glass3d: rgba(255, 255, 255, 0.05); 
+  --noise-glass3d: url("https://www.transparenttextures.com/patterns/egg-shell.png"); 
+
+  position: relative; 
+  z-index: 4; 
+  border-radius: 1.5rem;
+  box-shadow:  
+    0 0 0.75px rgba(0, 0, 0, 0.05), 
+    0.7px 0.8px 1.2px -0.4px rgba(0, 0, 0, 0.02), 
+    1.3px 1.5px 2.2px -0.8px rgba(0, 0, 0, 0.02), 
+    2.3px 2.6px 3.9px -1.2px rgba(0, 0, 0, 0.02), 
+    3.9px 4.4px 6.6px -1.7px rgba(0, 0, 0, 0.02), 
+    6.5px 7.2px 10.9px -2.1px rgba(0, 0, 0, 0.02), 
+    8px 9px 14px -2.5px rgba(0, 0, 0, 0.05); 
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.glass3d:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:  
+    0 0 1px rgba(0, 0, 0, 0.06), 
+    1.5px 2px 3px -0.2px rgba(0, 0, 0, 0.03), 
+    3px 4px 6px -0.6px rgba(0, 0, 0, 0.03), 
+    6px 8px 12px -1px rgba(0, 0, 0, 0.03), 
+    10px 14px 20px -1.5px rgba(0, 0, 0, 0.04), 
+    16px 20px 28px -2px rgba(0, 0, 0, 0.05), 
+    20px 26px 40px -2.5px rgba(0, 0, 0, 0.06); 
+}
+
+.glass3d::before { 
+  content: ""; 
+  position: absolute; 
+  inset: 0; 
+  pointer-events: none; 
+  border-radius: inherit; 
+  overflow: hidden; 
+  z-index: -1; 
+  
+  -webkit-backdrop-filter: var(--filter-glass3d); 
+  backdrop-filter: var(--filter-glass3d); 
+  background-color: var(--color-glass3d); 
+  background-image: var(--noise-glass3d); 
+  background-size: 100px; 
+  background-repeat: repeat; 
+}
+
+.glass3d::after { 
+  content: ""; 
+  position: absolute; 
+  inset: 0; 
+  pointer-events: none; 
+  border-radius: inherit; 
+  overflow: hidden; 
+  z-index: 5; 
+  
+  box-shadow: 
+    inset 2px 2px 1px -3px rgba(255, 255, 255, 0.8), 
+    inset 4px 4px 2px -6px rgba(255, 255, 255, 0.5), 
+    inset 1.5px 1.5px 1.5px -0.75px rgba(255, 255, 255, 0.3), 
+    inset 1.5px 1.5px 0.25px rgba(255, 255, 255, 0.1), 
+    inset 0 0 0.25px 0.5px rgba(255, 255, 255, 0.1); 
+}
+
+.glass3d > * { 
+  position: relative; 
+  z-index: 6; 
+}
+
+/* Semi UI Overrides for Glass3D */
+.semi-card.glass3d, .semi-button.glass3d {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.dark .glass3d {
+  --filter-glass3d: blur(32px) brightness(0.85) saturate(2.5); 
+  --color-glass3d: rgba(255, 255, 255, 0.03); 
+}

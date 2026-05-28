@@ -1,0 +1,20 @@
+{
+  "title": "Knowledge",
+  "knowledge_base": "Knowledge Base",
+  "create_kb": "Create Knowledge Base",
+  "upload_document": "Upload Document",
+  "documents": "Documents",
+  "search": "Search",
+  "entries": "Entries",
+  "sources": "Sources",
+  "notebooks": "Notebooks",
+  "linked_notebooks": "Linked Notebooks",
+  "no_documents": "No documents yet",
+  "processing": "Processing",
+  "indexed": "Indexed",
+  "error": "Error",
+  "file_size": "File Size",
+  "upload_date": "Upload Date",
+  "delete_document": "Delete Document",
+  "confirm_delete": "Are you sure you want to delete this document?"
+}

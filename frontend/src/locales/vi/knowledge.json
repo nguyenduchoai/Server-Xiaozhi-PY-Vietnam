@@ -1,0 +1,20 @@
+{
+  "title": "Tri thức",
+  "knowledge_base": "Kho tri thức",
+  "create_kb": "Tạo kho tri thức",
+  "upload_document": "Tải tài liệu",
+  "documents": "Tài liệu",
+  "search": "Tìm kiếm",
+  "entries": "Mục",
+  "sources": "Nguồn",
+  "notebooks": "Sổ tay",
+  "linked_notebooks": "Sổ tay liên kết",
+  "no_documents": "Chưa có tài liệu",
+  "processing": "Đang xử lý",
+  "indexed": "Đã lập chỉ mục",
+  "error": "Lỗi",
+  "file_size": "Kích thước",
+  "upload_date": "Ngày tải lên",
+  "delete_document": "Xóa tài liệu",
+  "confirm_delete": "Xác nhận xóa tài liệu này?"
+}

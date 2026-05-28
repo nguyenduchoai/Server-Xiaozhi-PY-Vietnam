@@ -1,0 +1,37 @@
+{
+  "page": {
+    "title": "Tin tức",
+    "description": "Đọc tin tức mới nhất từ nhiều nguồn"
+  },
+  "filter": {
+    "source": "Nguồn tin",
+    "topic": "Chủ đề",
+    "select_topic": "Chọn chủ đề"
+  },
+  "action": {
+    "refresh": "Làm mới",
+    "read": "Đọc chi tiết",
+    "summarize": "Tóm tắt"
+  },
+  "info": {
+    "viewing": "Đang xem",
+    "articles": "bài viết",
+    "no_articles": "Không tìm thấy tin tức",
+    "generating_summary": "Đang tạo tóm tắt..."
+  },
+  "loading": {
+    "fetching": "Đang tải tin tức..."
+  },
+  "error": {
+    "fetch_topics_failed": "Không thể tải danh sách chủ đề",
+    "fetch_news_failed": "Không thể tải tin tức",
+    "summarize_failed": "Không thể tóm tắt bài viết"
+  },
+  "warning": {
+    "select_topic": "Vui lòng chọn chủ đề"
+  },
+  "empty": {
+    "title": "Chưa có tin tức",
+    "description": "Chọn chủ đề để xem tin tức"
+  }
+}

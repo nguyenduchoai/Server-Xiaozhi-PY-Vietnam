@@ -1,0 +1,17 @@
+{
+  "title": "Notifications",
+  "notifications": "Notifications",
+  "mark_all_read": "Mark All Read",
+  "no_notifications": "No notifications",
+  "unread": "Unread",
+  "all": "All",
+  "test_notification": "Send Test Notification",
+  "send": "Send",
+  "device": "Device",
+  "message": "Message",
+  "sent_at": "Sent At",
+  "status": "Status",
+  "delivered": "Delivered",
+  "failed": "Failed",
+  "pending": "Pending"
+}

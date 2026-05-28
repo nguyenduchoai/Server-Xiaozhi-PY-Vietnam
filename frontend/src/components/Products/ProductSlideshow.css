@@ -1,0 +1,707 @@
+/**
+ * ProductSlideshow Styles
+ * Professional slideshow with smooth transitions and responsive design
+ */
+
+/* Base Container */
+.product-slideshow {
+    --slideshow-transition: 500ms;
+    --slideshow-radius: 16px;
+    --slideshow-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --slideshow-indicator-size: 10px;
+    --slideshow-thumbnail-gap: 8px;
+    
+    position: relative;
+    width: 100%;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: var(--slideshow-radius);
+    overflow: hidden;
+    box-shadow: var(--slideshow-shadow);
+}
+
+.product-slideshow.is-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.95);
+}
+
+/* Category Filter */
+.slideshow-category-filter {
+    padding: 12px 16px;
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.slideshow-category-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.slideshow-category-select {
+    appearance: none;
+    padding: 8px 36px 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 160px;
+}
+
+.slideshow-category-select:hover {
+    border-color: #94a3b8;
+}
+
+.slideshow-category-select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.slideshow-category-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #64748b;
+    width: 16px;
+    height: 16px;
+}
+
+/* Main Slideshow Area */
+.slideshow-main {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #1e293b;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.slideshow-main:active {
+    cursor: grab;
+}
+
+/* Slide Content */
+.slideshow-slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--slideshow-transition) cubic-bezier(0.4, 0, 0.2, 1),
+                opacity var(--slideshow-transition) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-enter-right {
+    animation: slideInRight var(--slideshow-transition) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-enter-left {
+    animation: slideInLeft var(--slideshow-transition) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Image Container */
+.slideshow-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slideshow-image-container.is-zoomed {
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+.slideshow-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slideshow-image.is-loaded {
+    opacity: 1;
+}
+
+.slideshow-image-container.is-zoomed .slideshow-image {
+    transform: scale(1.3);
+    cursor: zoom-out;
+}
+
+/* Loading Spinner */
+.slideshow-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.slideshow-spinner {
+    width: 40px;
+    height: 40px;
+    color: white;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* No Image Placeholder */
+.slideshow-no-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #64748b;
+    padding: 40px;
+}
+
+.slideshow-no-image span {
+    font-size: 14px;
+}
+
+/* Video */
+.slideshow-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: black;
+}
+
+/* Product Info Overlay */
+.slideshow-info-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 24px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.slideshow-main:hover .slideshow-info-overlay {
+    transform: translateY(0);
+}
+
+.slideshow-product-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.slideshow-product-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #4ade80;
+    margin-bottom: 4px;
+}
+
+.slideshow-product-description {
+    font-size: 14px;
+    color: #cbd5e1;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Navigation Buttons */
+.slideshow-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s;
+    z-index: 20;
+    color: #1e293b;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.slideshow-nav:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.slideshow-main:hover .slideshow-nav {
+    opacity: 1;
+}
+
+.slideshow-nav-prev {
+    left: 16px;
+}
+
+.slideshow-nav-next {
+    right: 16px;
+}
+
+.slideshow-nav:disabled {
+    opacity: 0 !important;
+    cursor: not-allowed;
+}
+
+/* Play/Pause Button */
+.slideshow-play-pause {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s;
+    z-index: 20;
+    color: #1e293b;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.slideshow-play-pause:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+.slideshow-main:hover .slideshow-play-pause {
+    opacity: 1;
+}
+
+/* Zoom Indicator */
+.slideshow-zoom-indicator {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.slideshow-image-container:hover .slideshow-zoom-indicator {
+    opacity: 1;
+}
+
+/* Indicators (Dots) */
+.slideshow-indicators {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 20;
+}
+
+.slideshow-indicator {
+    width: var(--slideshow-indicator-size);
+    height: var(--slideshow-indicator-size);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.slideshow-indicator:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+}
+
+.slideshow-indicator.is-active {
+    background: white;
+    transform: scale(1.3);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Thumbnails */
+.slideshow-thumbnails {
+    display: flex;
+    gap: var(--slideshow-thumbnail-gap);
+    padding: 12px 16px;
+    background: white;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.slideshow-thumbnails::-webkit-scrollbar {
+    height: 6px;
+}
+
+.slideshow-thumbnails::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.slideshow-thumbnails::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.slideshow-thumbnail {
+    flex-shrink: 0;
+    width: var(--slideshow-thumbnail-width);
+    height: 60px;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #f1f5f9;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.slideshow-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slideshow-thumbnail:hover {
+    border-color: #94a3b8;
+    transform: translateY(-2px);
+}
+
+.slideshow-thumbnail.is-active {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.slideshow-thumbnail-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+}
+
+.slideshow-thumbnail-video-indicator {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    color: white;
+}
+
+/* Fullscreen Button */
+.slideshow-fullscreen-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    opacity: 0;
+    transition: all 0.2s;
+    z-index: 20;
+}
+
+.slideshow-main:hover .slideshow-fullscreen-btn {
+    opacity: 1;
+}
+
+.slideshow-fullscreen-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
+/* Fullscreen Modal */
+.slideshow-fullscreen-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slideshow-fullscreen-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s;
+    z-index: 100;
+}
+
+.slideshow-fullscreen-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.slideshow-fullscreen-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    cursor: default;
+}
+
+.slideshow-fullscreen-image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Placeholder */
+.slideshow-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: var(--slideshow-radius);
+    border: 2px dashed #e2e8f0;
+}
+
+.slideshow-placeholder-content {
+    text-align: center;
+    color: #64748b;
+}
+
+.slideshow-placeholder-icon {
+    width: 48px;
+    height: 48px;
+    color: #cbd5e1;
+    margin-bottom: 12px;
+}
+
+.slideshow-placeholder-text {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Transitioning State */
+.product-slideshow.is-transitioning .slideshow-slide {
+    pointer-events: none;
+}
+
+.product-slideshow.is-transitioning .slideshow-nav,
+.product-slideshow.is-transitioning .slideshow-play-pause {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .slideshow-nav {
+        width: 36px;
+        height: 36px;
+        opacity: 1;
+    }
+    
+    .slideshow-nav-prev {
+        left: 8px;
+    }
+    
+    .slideshow-nav-next {
+        right: 8px;
+    }
+    
+    .slideshow-product-name {
+        font-size: 16px;
+    }
+    
+    .slideshow-product-price {
+        font-size: 14px;
+    }
+    
+    .slideshow-product-description {
+        font-size: 12px;
+    }
+    
+    .slideshow-indicators {
+        bottom: 12px;
+    }
+    
+    .slideshow-play-pause {
+        bottom: 12px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        opacity: 1;
+    }
+    
+    .slideshow-fullscreen-btn {
+        opacity: 1;
+        top: 8px;
+        right: 8px;
+    }
+    
+    .slideshow-info-overlay {
+        padding: 12px 16px;
+    }
+    
+    .slideshow-thumbnails {
+        padding: 8px 12px;
+    }
+    
+    :root {
+        --slideshow-indicator-size: 8px;
+        --slideshow-thumbnail-width: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .slideshow-category-filter {
+        padding: 8px 12px;
+    }
+    
+    .slideshow-category-select {
+        font-size: 12px;
+        padding: 6px 28px 6px 10px;
+        min-width: 140px;
+    }
+    
+    .slideshow-thumbnail {
+        width: 50px;
+        height: 40px;
+    }
+    
+    .slideshow-nav {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .slideshow-nav svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .slideshow-nav {
+        opacity: 1;
+    }
+    
+    .slideshow-play-pause {
+        opacity: 1;
+    }
+    
+    .slideshow-fullscreen-btn {
+        opacity: 1;
+    }
+    
+    .slideshow-zoom-indicator {
+        display: none;
+    }
+    
+    .slideshow-info-overlay {
+        transform: translateY(0);
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .slideshow-slide,
+    .slideshow-image-container,
+    .slideshow-image,
+    .slideshow-nav,
+    .slideshow-play-pause,
+    .slideshow-indicator,
+    .slideshow-thumbnail {
+        transition: none;
+    }
+    
+    .slide-enter-right,
+    .slide-enter-left {
+        animation: none;
+    }
+}

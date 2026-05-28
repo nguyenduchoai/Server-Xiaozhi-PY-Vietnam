@@ -1,0 +1,116 @@
+/**
+ * Product Card Styles
+ */
+
+.product-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Default variant */
+.product-card-default {
+    height: 100%;
+}
+
+.product-image-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.product-placeholder-default {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+}
+
+.out-of-stock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+/* Compact variant */
+.product-card-compact {
+    text-align: center;
+}
+
+.product-card-compact .ant-card-body {
+    padding: 8px;
+}
+
+/* Large variant */
+.product-card-large {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.product-card-large-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.product-image-large {
+    position: relative;
+    text-align: center;
+}
+
+.video-play-button {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+}
+
+/* Horizontal variant */
+.product-card-horizontal .product-horizontal-layout {
+    display: flex;
+    gap: 16px;
+}
+
+.product-horizontal-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .product-card-horizontal .product-horizontal-layout {
+        flex-direction: column;
+    }
+
+    .product-card-horizontal .product-horizontal-layout .ant-image {
+        width: 100% !important;
+        height: 200px !important;
+    }
+}
+
+/* Clickable card wrapper */
+.clickable-card {
+    cursor: pointer;
+    outline: none;
+}
+
+.clickable-card:focus-visible .product-card {
+    outline: 2px solid var(--semi-color-primary);
+    outline-offset: 2px;
+}

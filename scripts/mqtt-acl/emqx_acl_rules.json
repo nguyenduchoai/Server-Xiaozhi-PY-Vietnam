@@ -1,0 +1,18 @@
+[
+  {
+    "username": "xiaozhi_device",
+    "rules": [
+      { "action": "subscribe", "permission": "allow", "topic": "device/${clientid}/server" },
+      { "action": "subscribe", "permission": "allow", "topic": "devices/p2p/${clientid}" },
+      { "action": "publish",   "permission": "allow", "topic": "device-server" },
+      { "action": "publish",   "permission": "allow", "topic": "devices/status/${clientid}" },
+      { "action": "all",       "permission": "deny",  "topic": "#" }
+    ]
+  },
+  {
+    "username": "xiaozhi_backend",
+    "rules": [
+      { "action": "all", "permission": "allow", "topic": "#" }
+    ]
+  }
+]

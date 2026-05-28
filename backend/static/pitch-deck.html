@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xiaozhi AI IOT - Pitch Deck</title>
+    <meta name="description"
+        content="Nền tảng AI Voice Assistant toàn diện cho IoT thông minh - Xiaozhi AI IOT Platform Pitch Deck">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --secondary-light: #34d399;
+            --accent: #f59e0b;
+            --accent-pink: #ec4899;
+            --dark: #0f172a;
+            --dark-lighter: #1e293b;
+            --dark-card: rgba(30, 41, 59, 0.7);
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        /* Particle Background */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0.3;
+            }
+
+            25% {
+                transform: translateY(-100px) translateX(50px) rotate(90deg);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translateY(-200px) translateX(-30px) rotate(180deg);
+                opacity: 0.3;
+            }
+
+            75% {
+                transform: translateY(-100px) translateX(80px) rotate(270deg);
+                opacity: 0.6;
+            }
+        }
+
+        /* Slide Container */
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 60px 80px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide.slide-out {
+            animation: slideOut 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+        }
+
+        /* Slide 1: Cover */
+        .slide-cover {
+            background: radial-gradient(ellipse at top, #1a1a3e 0%, var(--dark) 50%, #0a0a1a 100%);
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-cover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
+            animation: rotateBg 20s linear infinite;
+        }
+
+        @keyframes rotateBg {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .logo-container {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 140px;
+            filter: drop-shadow(0 0 60px rgba(99, 102, 241, 0.6));
+            animation: logoFloat 3s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes logoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-15px) scale(1.05);
+            }
+        }
+
+        .logo-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        .logo-ring:nth-child(2) {
+            animation-delay: 0.5s;
+            width: 250px;
+            height: 250px;
+        }
+
+        .logo-ring:nth-child(3) {
+            animation-delay: 1s;
+            width: 300px;
+            height: 300px;
+        }
+
+        @keyframes ringPulse {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 0.6;
+            }
+        }
+
+        .slide-cover h1 {
+            font-size: 80px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff 0%, var(--primary-light) 50%, var(--accent-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 40px rgba(236, 72, 153, 0.5));
+            }
+        }
+
+        .slide-cover .subtitle {
+            font-size: 28px;
+            color: var(--gray);
+            max-width: 700px;
+            line-height: 1.4;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .slide-cover .tagline {
+            font-size: 18px;
+            color: var(--accent);
+            margin-top: 50px;
+            padding: 18px 40px;
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid var(--accent);
+            border-radius: 60px;
+            animation: fadeInUp 0.8s ease-out 0.5s both, taglinePulse 2s ease-in-out infinite 1s;
+        }
+
+        @keyframes taglinePulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 15px rgba(245, 158, 11, 0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Common Slide Styles */
+        .slide h2 {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .slide h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-1);
+            border-radius: 2px;
+        }
+
+        .slide h2 .emoji {
+            margin-right: 15px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            gap: 40px;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--dark-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow:
+                0 25px 50px rgba(99, 102, 241, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            width: 100%;
+        }
+
+        .feature-card {
+            padding: 35px;
+            animation: cardAppear 0.6s ease-out both;
+        }
+
+        .feature-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .feature-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .feature-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .feature-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .feature-card .icon {
+            font-size: 52px;
+            margin-bottom: 18px;
+            display: inline-block;
+            animation: iconWiggle 3s ease-in-out infinite;
+        }
+
+        @keyframes iconWiggle {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(-5deg);
+            }
+
+            75% {
+                transform: rotate(5deg);
+            }
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--light) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 40px 20px;
+            animation: statPop 0.5s ease-out both;
+        }
+
+        .stat-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .stat-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .stat-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .stat-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes statPop {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .stat-card .number {
+            font-size: 60px;
+            font-weight: 900;
+            background: var(--gradient-3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: var(--gray);
+            margin-top: 12px;
+            line-height: 1.4;
+        }
+
+        /* Comparison Table */
+        .comparison-wrapper {
+            width: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            background: var(--dark-card);
+            border: 1px solid var(--glass-border);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 22px 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comparison-table th {
+            background: rgba(99, 102, 241, 0.15);
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .comparison-table th:first-child,
+        .comparison-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table .highlight {
+            background: rgba(99, 102, 241, 0.08);
+        }
+
+        .comparison-table .highlight-cell {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .comparison-table tr {
+            transition: background 0.3s ease;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        /* Architecture */
+        .architecture {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .arch-layer {
+            padding: 30px 50px;
+            text-align: center;
+            animation: archSlide 0.6s ease-out both;
+            position: relative;
+        }
+
+        .arch-layer:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .arch-layer:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .arch-layer:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .arch-layer:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .arch-layer:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes archSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .arch-layer::after {
+            content: '↓';
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            color: var(--primary);
+            opacity: 0.5;
+        }
+
+        .arch-layer:last-child::after {
+            display: none;
+        }
+
+        .arch-layer h4 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary-light);
+        }
+
+        .arch-layer p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        /* Use Cases */
+        .use-cases {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+
+        .use-case {
+            text-align: center;
+            padding: 35px 20px;
+            animation: useCaseAppear 0.6s ease-out both;
+        }
+
+        .use-case:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .use-case:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .use-case:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .use-case:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .use-case:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes useCaseAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8) rotate(-5deg);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .use-case:hover {
+            border-color: var(--secondary);
+        }
+
+        .use-case .icon {
+            font-size: 52px;
+            margin-bottom: 18px;
+        }
+
+        .use-case h4 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .use-case p {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        /* CTA Slide */
+        .slide-cta {
+            background:
+                radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(236, 72, 153, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, var(--primary-dark) 0%, #2563eb 50%, #7c3aed 100%);
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-cta h2 {
+            font-size: 68px;
+            background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: ctaTitle 1s ease-out;
+        }
+
+        .slide-cta h2::after {
+            display: none;
+        }
+
+        @keyframes ctaTitle {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .slide-cta .subtitle {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 50px;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 25px;
+            animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+
+        .cta-btn {
+            padding: 22px 55px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cta-btn.primary {
+            background: #fff;
+            color: var(--primary-dark);
+            border: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .cta-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #fff;
+        }
+
+        .contact-info {
+            margin-top: 60px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            animation: fadeInUp 0.6s ease-out 0.6s both;
+        }
+
+        .contact-info a {
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .contact-info a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: width 0.3s ease;
+        }
+
+        .contact-info a:hover::after {
+            width: 100%;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            width: 100%;
+        }
+
+        .column h3 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        .column h3.problem {
+            color: #ef4444;
+        }
+
+        .column h3.solution {
+            color: var(--secondary);
+        }
+
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 18px;
+            animation: listSlide 0.5s ease-out both;
+        }
+
+        @keyframes listSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .list-item .check {
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .list-item .text {
+            font-size: 17px;
+            line-height: 1.5;
+            color: var(--gray);
+        }
+
+        /* Pros Grid */
+        .pros-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            width: 100%;
+        }
+
+        .pro-card {
+            padding: 35px;
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+            animation: proSlide 0.6s ease-out both;
+        }
+
+        .pro-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .pro-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .pro-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .pro-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes proSlide {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pro-card .star {
+            font-size: 44px;
+            flex-shrink: 0;
+        }
+
+        .pro-card h4 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent) 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pro-card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 40px;
+            right: 50px;
+            font-size: 15px;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--gradient-1);
+            transition: width 0.4s ease;
+            z-index: 100;
+        }
+
+        /* Keyboard hint */
+        .keyboard-hint {
+            position: fixed;
+            top: 30px;
+            right: 50px;
+            font-size: 13px;
+            color: var(--gray);
+            opacity: 0.6;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .kbd {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .slide {
+                padding: 50px 60px;
+            }
+
+            .slide-cover h1 {
+                font-size: 64px;
+            }
+
+            .slide h2 {
+                font-size: 48px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .slide {
+                padding: 40px;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .use-cases {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .pros-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px;
+            }
+
+            .slide-cover h1 {
+                font-size: 42px;
+            }
+
+            .slide h2 {
+                font-size: 36px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .use-cases {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .keyboard-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Particles -->
+    <div id="particles"></div>
+
+    <!-- Slide 1: Cover -->
+    <div class="slide slide-cover active" data-slide="1">
+        <div class="logo-container">
+            <div class="logo">🤖</div>
+            <div class="logo-ring"></div>
+            <div class="logo-ring"></div>
+            <div class="logo-ring"></div>
+        </div>
+        <h1>Xiaozhi AI IOT</h1>
+        <p class="subtitle">Nền tảng AI Voice Assistant toàn diện cho IoT thông minh</p>
+        <div class="tagline">Từ phần cứng ESP32 đến Cloud AI - Một giải pháp hoàn chỉnh</div>
+    </div>
+
+    <!-- Slide 2: Problem -->
+    <div class="slide" data-slide="2">
+        <h2><span class="emoji">🎯</span>Vấn Đề & Thị Trường</h2>
+        <div class="stats-grid">
+            <div class="stat-card glass-card">
+                <div class="number">70%</div>
+                <div class="label">Người dùng Việt muốn trợ lý ảo tiếng Việt tốt hơn</div>
+            </div>
+            <div class="stat-card glass-card">
+                <div class="number">$15B</div>
+                <div class="label">Thị trường Smart Home toàn cầu 2026</div>
+            </div>
+            <div class="stat-card glass-card">
+                <div class="number">3x</div>
+                <div class="label">Chi phí cao hơn khi dùng Google/Alexa</div>
+            </div>
+            <div class="stat-card glass-card">
+                <div class="number">0%</div>
+                <div class="label">Giải pháp self-hosted tiếng Việt hiện có</div>
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <h3 class="problem">❌ Vấn đề hiện tại</h3>
+                <div class="list-item" style="animation-delay: 0.1s">
+                    <span class="check">•</span>
+                    <span class="text">Trợ lý ảo hiểu tiếng Việt kém</span>
+                </div>
+                <div class="list-item" style="animation-delay: 0.2s">
+                    <span class="check">•</span>
+                    <span class="text">Chi phí subscription cao (Google, Amazon)</span>
+                </div>
+                <div class="list-item" style="animation-delay: 0.3s">
+                    <span class="check">•</span>
+                    <span class="text">Không thể tùy chỉnh hoặc self-host</span>
+                </div>
+                <div class="list-item" style="animation-delay: 0.4s">
+                    <span class="check">•</span>
+                    <span class="text">Privacy concerns - Data gửi về nước ngoài</span>
+                </div>
+            </div>
+            <div class="column">
+                <h3 class="solution">✅ Giải pháp Xiaozhi</h3>
+                <div class="list-item" style="animation-delay: 0.5s">
+                    <span class="check" style="color: var(--secondary)">✓</span>
+                    <span class="text">ASR Vietnamese chất lượng cao (Parakeet)</span>
+                </div>
+                <div class="list-item" style="animation-delay: 0.6s">
+                    <span class="check" style="color: var(--secondary)">✓</span>
+                    <span class="text">BYO Key - Chỉ trả cho những gì dùng</span>
+                </div>
+                <div class="list-item" style="animation-delay: 0.7s">
+                    <span class="check" style="color: var(--secondary)">✓</span>
+                    <span class="text">100% self-hosted, full customization</span>
+                </div>
+                <div class="list-item" style="animation-delay: 0.8s">
+                    <span class="check" style="color: var(--secondary)">✓</span>
+                    <span class="text">Data stays on your server</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Core Features -->
+    <div class="slide" data-slide="3">
+        <h2><span class="emoji">⚡</span>Tính Năng Chính</h2>
+        <div class="feature-grid">
+            <div class="feature-card glass-card">
+                <div class="icon">🎤</div>
+                <h3>Speech Recognition</h3>
+                <p>NVIDIA Parakeet - Vietnamese ASR tốt nhất với 2000+ hours training data, word-level timestamps</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">🧠</div>
+                <h3>Multi-LLM Support</h3>
+                <p>OpenAI, DeepSeek, Gemini, Qwen - Swap providers không cần code, streaming response</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">🔊</div>
+                <h3>Natural TTS</h3>
+                <p>Valtec, Viterbox - Giọng Việt tự nhiên, voice cloning, multiple voices</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">🏠</div>
+                <h3>Smart Home</h3>
+                <p>Home Assistant integration - 2000+ thiết bị hỗ trợ, scenes, automations</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">🎵</div>
+                <h3>Music & Entertainment</h3>
+                <p>Zing MP3, NhacCuaTui, YouTube - Auto fallback, lyrics support</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">📚</div>
+                <h3>Knowledge Base</h3>
+                <p>RAGFlow + BKAI Embedding - Semantic search tiếng Việt, document AI</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: More Features -->
+    <div class="slide" data-slide="4">
+        <h2><span class="emoji">🛠️</span>Thêm Nhiều Tính Năng</h2>
+        <div class="feature-grid">
+            <div class="feature-card glass-card">
+                <div class="icon">📅</div>
+                <h3>Smart Reminders</h3>
+                <p>"Nhắc tôi họp lúc 3 giờ" - Natural language scheduling với MQTT push notifications</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">🌤️</div>
+                <h3>Weather & News</h3>
+                <p>Thời tiết real-time, tin tức VnExpress 15+ categories, tra cứu phạt nguội</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">👤</div>
+                <h3>Multi-Agent</h3>
+                <p>Nhiều personas - Trợ lý, Bác sĩ, Teacher với prompts và settings riêng</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">📱</div>
+                <h3>OTA Updates</h3>
+                <p>Cập nhật firmware không dây với 78+ board presets, safe rollback</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">🎨</div>
+                <h3>Theme Customization</h3>
+                <p>Tùy chỉnh màu sắc, font, LED effects, clock background từ dashboard</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">🔒</div>
+                <h3>Enterprise Security</h3>
+                <p>JWT Auth, Rate Limiting, Device Authentication, Encrypted WebSocket</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Architecture -->
+    <div class="slide" data-slide="5">
+        <h2><span class="emoji">🏗️</span>Kiến Trúc Hệ Thống</h2>
+        <div class="architecture">
+            <div class="arch-layer glass-card">
+                <h4>📱 DEVICES</h4>
+                <p>ESP32 • ESP32-S3 • Custom Hardware • 78+ Board Presets</p>
+            </div>
+            <div class="arch-layer glass-card">
+                <h4>🌐 FRONTEND</h4>
+                <p>React 18 • TypeScript • Semi Design UI • Responsive Dashboard • Dark Mode</p>
+            </div>
+            <div class="arch-layer glass-card">
+                <h4>⚡ BACKEND</h4>
+                <p>FastAPI • Python 3.11+ • Async • WebSocket • RESTful API • Background Tasks</p>
+            </div>
+            <div class="arch-layer glass-card">
+                <h4>🤖 AI PROVIDERS</h4>
+                <p>ASR (Parakeet) • LLM (Multi) • TTS (Multi) • VAD • Intent • Memory • Knowledge Base</p>
+            </div>
+            <div class="arch-layer glass-card">
+                <h4>🗄️ INFRASTRUCTURE</h4>
+                <p>PostgreSQL • Redis • MQTT • RAGFlow • ChromaDB • Docker • Nginx</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Advantages -->
+    <div class="slide" data-slide="6">
+        <h2><span class="emoji">💪</span>Ưu Điểm Vượt Trội</h2>
+        <div class="pros-grid">
+            <div class="pro-card glass-card">
+                <div class="star">🇻🇳</div>
+                <div>
+                    <h4>100% Việt Hóa</h4>
+                    <p>ASR Parakeet trained 2000+ hours tiếng Việt, TTS giọng Việt tự nhiên (Valtec, Viterbox), BKAI
+                        PhoBERT embedding cho semantic search</p>
+                </div>
+            </div>
+            <div class="pro-card glass-card">
+                <div class="star">💰</div>
+                <div>
+                    <h4>Chi Phí Tối Ưu</h4>
+                    <p>Edge TTS MIỄN PHÍ, Local ASR MIỄN PHÍ, OpenRouter MIỄN PHÍ, DeepSeek chỉ $0.14/1M tokens - BYO
+                        Key model</p>
+                </div>
+            </div>
+            <div class="pro-card glass-card">
+                <div class="star">🔧</div>
+                <div>
+                    <h4>Tùy Chỉnh Linh Hoạt</h4>
+                    <p>Swap LLM/TTS/ASR providers không cần code, custom agents & prompts, API extensible, webhook
+                        integrations</p>
+                </div>
+            </div>
+            <div class="pro-card glass-card">
+                <div class="star">🔒</div>
+                <div>
+                    <h4>Self-Hosted & Privacy</h4>
+                    <p>Chạy trên server riêng, data không chia sẻ bên thứ 3, full control, GDPR compliant, open source
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Comparison -->
+    <div class="slide" data-slide="7">
+        <h2><span class="emoji">📊</span>So Sánh Với Đối Thủ</h2>
+        <div class="comparison-wrapper">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Tính năng</th>
+                        <th class="highlight">Xiaozhi AI</th>
+                        <th>Google Home</th>
+                        <th>Amazon Alexa</th>
+                        <th>Apple Siri</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tiếng Việt</td>
+                        <td class="highlight highlight-cell">⭐⭐⭐⭐⭐</td>
+                        <td>⭐⭐⭐</td>
+                        <td>⭐⭐</td>
+                        <td>⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td>Chi phí hàng tháng</td>
+                        <td class="highlight highlight-cell">$0 - $10</td>
+                        <td>$10 - $50</td>
+                        <td>$10 - $50</td>
+                        <td>Ecosystem lock-in</td>
+                    </tr>
+                    <tr>
+                        <td>Self-hosted</td>
+                        <td class="highlight highlight-cell">✅ Có</td>
+                        <td>❌ Không</td>
+                        <td>❌ Không</td>
+                        <td>❌ Không</td>
+                    </tr>
+                    <tr>
+                        <td>Open Source</td>
+                        <td class="highlight highlight-cell">✅ Có</td>
+                        <td>❌ Không</td>
+                        <td>❌ Không</td>
+                        <td>❌ Không</td>
+                    </tr>
+                    <tr>
+                        <td>ESP32 Native</td>
+                        <td class="highlight highlight-cell">✅ Full Support</td>
+                        <td>❌ Không</td>
+                        <td>❌ Không</td>
+                        <td>❌ Không</td>
+                    </tr>
+                    <tr>
+                        <td>Privacy</td>
+                        <td class="highlight highlight-cell">⭐⭐⭐⭐⭐</td>
+                        <td>⭐⭐</td>
+                        <td>⭐⭐</td>
+                        <td>⭐⭐⭐</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 8: Use Cases -->
+    <div class="slide" data-slide="8">
+        <h2><span class="emoji">🎯</span>Ứng Dụng Thực Tế</h2>
+        <div class="use-cases">
+            <div class="use-case glass-card">
+                <div class="icon">🏠</div>
+                <h4>Nhà Thông Minh</h4>
+                <p>Điều khiển đèn, điều hòa, camera, scenes bằng giọng nói tự nhiên</p>
+            </div>
+            <div class="use-case glass-card">
+                <div class="icon">👤</div>
+                <h4>Trợ Lý Cá Nhân</h4>
+                <p>Nhắc nhở, thời tiết, tin tức, phát nhạc, quản lý lịch trình</p>
+            </div>
+            <div class="use-case glass-card">
+                <div class="icon">📚</div>
+                <h4>Giáo Dục</h4>
+                <p>Dạy tiếng Anh, đọc truyện cho trẻ, quiz từ vựng, learning companion</p>
+            </div>
+            <div class="use-case glass-card">
+                <div class="icon">🏢</div>
+                <h4>Doanh Nghiệp</h4>
+                <p>FAQ bot, reception assistant, đọc thông báo, meeting reminders</p>
+            </div>
+            <div class="use-case glass-card">
+                <div class="icon">❤️</div>
+                <h4>Sức Khỏe</h4>
+                <p>Nhắc uống thuốc, tập thể dục, companion cho người cao tuổi</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Tech Stack -->
+    <div class="slide" data-slide="9">
+        <h2><span class="emoji">⚙️</span>Tech Stack</h2>
+        <div class="two-column">
+            <div class="column">
+                <h3 style="color: var(--primary-light)">🔧 Backend & Infrastructure</h3>
+                <div class="list-item">
+                    <span class="check" style="color: var(--primary)">→</span>
+                    <span class="text"><strong>Python 3.11+</strong> - FastAPI, async, WebSocket</span>
+                </div>
+                <div class="list-item">
+                    <span class="check" style="color: var(--primary)">→</span>
+                    <span class="text"><strong>PostgreSQL 15</strong> - Primary database</span>
+                </div>
+                <div class="list-item">
+                    <span class="check" style="color: var(--primary)">→</span>
+                    <span class="text"><strong>Redis 7</strong> - Caching, sessions, pub/sub</span>
+                </div>
+                <div class="list-item">
+                    <span class="check" style="color: var(--primary)">→</span>
+                    <span class="text"><strong>MQTT (Mosquitto)</strong> - IoT messaging</span>
+                </div>
+                <div class="list-item">
+                    <span class="check" style="color: var(--primary)">→</span>
+                    <span class="text"><strong>Docker</strong> - Container orchestration</span>
+                </div>
+            </div>
+            <div class="column">
+                <h3 style="color: var(--accent-pink)">🎨 Frontend & AI</h3>
+                <div class="list-item">
+                    <span class="check" style="color: var(--accent-pink)">→</span>
+                    <span class="text"><strong>React 18</strong> + TypeScript + Semi Design</span>
+                </div>
+                <div class="list-item">
+                    <span class="check" style="color: var(--accent-pink)">→</span>
+                    <span class="text"><strong>NVIDIA Parakeet</strong> - Vietnamese ASR</span>
+                </div>
+                <div class="list-item">
+                    <span class="check" style="color: var(--accent-pink)">→</span>
+                    <span class="text"><strong>Multi-LLM</strong> - OpenAI, DeepSeek, Gemini, Qwen</span>
+                </div>
+                <div class="list-item">
+                    <span class="check" style="color: var(--accent-pink)">→</span>
+                    <span class="text"><strong>RAGFlow</strong> - Document processing & RAG</span>
+                </div>
+                <div class="list-item">
+                    <span class="check" style="color: var(--accent-pink)">→</span>
+                    <span class="text"><strong>BKAI</strong> - Vietnamese embeddings (PhoBERT)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: CTA -->
+    <div class="slide slide-cta" data-slide="10">
+        <h2>Bắt Đầu Ngay Hôm Nay! 🚀</h2>
+        <p class="subtitle">Biến thiết bị ESP32 của bạn thành trợ lý AI thông minh</p>
+        <div class="cta-buttons">
+            <a href="https://xiaozhi-ai-iot.vn" class="cta-btn primary">Xem Demo</a>
+            <a href="https://github.com/Xiaozhi-IOT-AI" class="cta-btn secondary">GitHub</a>
+        </div>
+        <div class="contact-info">
+            <p>📧 contact@xiaozhi-ai-iot.vn</p>
+            <p style="margin-top: 10px">🌐 <a href="https://xiaozhi-ai-iot.vn">xiaozhi-ai-iot.vn</a></p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <button class="nav-btn" onclick="prevSlide()" aria-label="Previous slide">←</button>
+        <button class="nav-btn" onclick="nextSlide()" aria-label="Next slide">→</button>
+    </div>
+
+    <div class="slide-counter">
+        <span id="currentSlide">1</span> / <span id="totalSlides">10</span>
+    </div>
+
+    <div class="keyboard-hint">
+        <span class="kbd">←</span> <span class="kbd">→</span> or <span class="kbd">Space</span> to navigate
+    </div>
+
+    <script>
+        // Create particles
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                particle.style.width = (2 + Math.random() * 4) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = ['#6366f1', '#10b981', '#ec4899', '#f59e0b'][Math.floor(Math.random() * 4)];
+                container.appendChild(particle);
+            }
+        })();
+
+        let currentSlide = 1;
+        const totalSlides = 10;
+
+        function updateProgressBar() {
+            const progress = (currentSlide / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const currentActive = document.querySelector('.slide.active');
+
+            if (n > totalSlides) currentSlide = 1;
+            if (n < 1) currentSlide = totalSlides;
+
+            if (currentActive) {
+                currentActive.classList.add('slide-out');
+                setTimeout(() => {
+                    currentActive.classList.remove('active', 'slide-out');
+                    document.querySelector(`[data-slide="${currentSlide}"]`).classList.add('active');
+                }, 300);
+            } else {
+                document.querySelector(`[data-slide="${currentSlide}"]`).classList.add('active');
+            }
+
+            document.getElementById('currentSlide').textContent = currentSlide;
+            updateProgressBar();
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'Home') {
+                currentSlide = 1;
+                showSlide(currentSlide);
+            } else if (e.key === 'End') {
+                currentSlide = totalSlides;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Touch swipe support
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const diffX = touchStartX - touchEndX;
+            const diffY = touchStartY - touchEndY;
+
+            // Only swipe if horizontal movement is greater than vertical
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 60) {
+                if (diffX > 0) nextSlide();
+                else prevSlide();
+            }
+        }, { passive: true });
+
+        // Mouse wheel navigation
+        let wheelTimeout;
+        document.addEventListener('wheel', (e) => {
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                if (e.deltaY > 30) nextSlide();
+                else if (e.deltaY < -30) prevSlide();
+            }, 50);
+        }, { passive: true });
+
+        // Initialize
+        updateProgressBar();
+    </script>
+</body>
+
+</html>

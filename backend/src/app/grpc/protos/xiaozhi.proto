@@ -1,0 +1,168 @@
+"""
+gRPC Protocol Definitions
+
+Protocol Buffer definitions for internal gRPC communication.
+"""
+
+syntax = "proto3";
+
+package xiaozhi;
+
+option python_generic_services = true;
+
+service AgentService {
+    rpc GetAgent(GetAgentRequest) returns (AgentResponse);
+    rpc ListAgents(ListAgentsRequest) returns (ListAgentsResponse);
+    rpc CreateAgent(CreateAgentRequest) returns (AgentResponse);
+    rpc UpdateAgent(UpdateAgentRequest) returns (AgentResponse);
+    rpc DeleteAgent(DeleteAgentRequest) returns (DeleteResponse);
+}
+
+service DeviceService {
+    rpc GetDevice(GetDeviceRequest) returns (DeviceResponse);
+    rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
+    rpc RegisterDevice(RegisterDeviceRequest) returns (RegisterDeviceResponse);
+    rpc UpdateDeviceStatus(UpdateDeviceStatusRequest) returns (StatusResponse);
+}
+
+service HealthService {
+    rpc Check(HealthCheckRequest) returns (HealthCheckResponse);
+    rpc Watch(HealthCheckRequest) returns (stream HealthCheckResponse);
+}
+
+message GetAgentRequest {
+    string agent_id = 1;
+}
+
+message ListAgentsRequest {
+    int32 skip = 1;
+    int32 limit = 2;
+    string user_id = 3;
+    bool is_active = 4;
+}
+
+message CreateAgentRequest {
+    string name = 1;
+    string prompt = 2;
+    string tts_type = 3;
+    string asr_type = 4;
+    string llm_type = 5;
+    string vad_type = 6;
+    string user_id = 7;
+}
+
+message UpdateAgentRequest {
+    string agent_id = 1;
+    string name = 2;
+    string prompt = 3;
+    bool is_active = 4;
+}
+
+message DeleteAgentRequest {
+    string agent_id = 1;
+}
+
+message AgentResponse {
+    bool success = 1;
+    Agent agent = 2;
+    string error = 3;
+}
+
+message ListAgentsResponse {
+    bool success = 1;
+    repeated Agent agents = 2;
+    int32 total = 3;
+    string error = 4;
+}
+
+message Agent {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string prompt = 4;
+    string voice_id = 5;
+    string tts_type = 6;
+    string asr_type = 7;
+    string llm_type = 8;
+    string vad_type = 9;
+    bool is_active = 10;
+    string user_id = 11;
+    string created_at = 12;
+    string updated_at = 13;
+}
+
+message DeleteResponse {
+    bool success = 1;
+    string error = 2;
+}
+
+message GetDeviceRequest {
+    string device_id = 1;
+}
+
+message ListDevicesRequest {
+    int32 skip = 1;
+    int32 limit = 2;
+    string agent_id = 3;
+}
+
+message RegisterDeviceRequest {
+    string mac_address = 1;
+    string board = 2;
+    string firmware_version = 3;
+    string user_id = 4;
+}
+
+message UpdateDeviceStatusRequest {
+    string device_id = 1;
+    string status = 2;
+}
+
+message DeviceResponse {
+    bool success = 1;
+    Device device = 2;
+    string error = 3;
+}
+
+message ListDevicesResponse {
+    bool success = 1;
+    repeated Device devices = 2;
+    int32 total = 3;
+    string error = 4;
+}
+
+message RegisterDeviceResponse {
+    bool success = 1;
+    string device_id = 2;
+    string activation_token = 3;
+    string error = 4;
+}
+
+message StatusResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message Device {
+    string id = 1;
+    string name = 2;
+    string mac_address = 3;
+    string board = 4;
+    string firmware_version = 5;
+    string status = 6;
+    string last_seen = 7;
+    string agent_id = 8;
+    string user_id = 9;
+    string created_at = 10;
+}
+
+message HealthCheckRequest {
+    string service = 1;
+}
+
+message HealthCheckResponse {
+    string status = 1;
+    string service = 2;
+    string version = 3;
+    map<string, string> checks = 4;
+}

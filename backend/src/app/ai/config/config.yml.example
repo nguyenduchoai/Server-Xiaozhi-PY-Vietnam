@@ -1,0 +1,178 @@
+# ============================================================================
+# SERVER CONFIGURATION EXAMPLE — CẤU HÌNH MẪU
+# ============================================================================
+# Sao chép file này thành config.yml và điền thông tin thật:
+#   cp config.yml.example config.yml
+#
+# ⚠️ KHÔNG BAO GIỜ commit config.yml lên git!
+# ============================================================================
+
+server:
+  auth:
+    allowed_devices: []
+    enabled: true
+    expire_seconds: 2592000
+  auth_key: "YOUR_AUTH_SECRET_KEY_HERE"  # Tạo random: openssl rand -hex 16
+  ip: 0.0.0.0
+  port: 8000
+  tz: Asia/Ho_Chi_Minh
+  # Production: wss://your-domain.com/api/v1/ws
+  # Local dev: ws://192.168.1.x:8000/api/v1/ws
+  websocket: ""  # Để trống = auto-detect IP
+
+mcp_endpoint: ws://xiaozhi-mcp:8004/
+
+# ============================================================================
+# MQTT CONFIGURATION
+# ============================================================================
+mqtt:
+  url: "mqtt://xiaozhi-mqtt:1883"            # Internal Docker
+  device_url: "mqtt://your-domain.com:1883"   # Public cho device
+  username: "xiaozhi_backend"
+  password: "YOUR_MQTT_PASSWORD"              # Đổi password!
+  keepalive: 60
+  reconnect_min_delay: 1
+  reconnect_max_delay: 30
+  device_username: "xiaozhi_device"
+  device_password: "YOUR_DEVICE_MQTT_PASSWORD" # Đổi password!
+
+# ============================================================================
+# UDP AUDIO SERVER
+# ============================================================================
+udp_audio:
+  port: 8765
+  public_ip: "YOUR_PUBLIC_IP"  # IP public của VPS
+
+# ============================================================================
+# PROMPT
+# ============================================================================
+read_config_from_api: true
+close_connection_no_voice_time: 300
+
+prompt: |
+  Bạn là trợ lý AI thông minh, thân thiện. Hãy trả lời ngắn gọn, dễ hiểu.
+
+end_prompt:
+  enable: false
+
+# ============================================================================
+# LLM - LARGE LANGUAGE MODELS
+# ============================================================================
+LLM:
+  # OpenAI GPT — Đăng ký tại: https://platform.openai.com/api-keys
+  OpenAI_GPT4:
+    type: openai
+    api_key: "YOUR_OPENAI_API_KEY"
+    base_url: "https://api.openai.com/v1"
+    model_name: "gpt-4o-mini"
+    temperature: 0.7
+    max_tokens: 2048
+
+# ============================================================================
+# TTS - TEXT TO SPEECH
+# ============================================================================
+TTS:
+  EdgeTTS_MienPhi:
+    type: edge
+    voice: "vi-VN-HoaiMyNeural"
+    rate: "+0%"
+    volume: "+0%"
+
+  ValtecTTS_Local:
+    type: valtec
+    base_url: "http://valtec-tts:8101"
+    speaker: "female"
+    speed: 1.0
+    timeout: 30
+
+# ============================================================================
+# ASR - SPEECH RECOGNITION
+# ============================================================================
+ASR:
+  VietNamASRLocal:
+    type: sherpa_onnx_local
+    repo_id: "csukuangfj/sherpa-onnx-zipformer-vi-2025-04-20"
+    encoder_filename: "encoder-epoch-12-avg-8.onnx"
+    decoder_filename: "decoder-epoch-12-avg-8.onnx"
+    joiner_filename: "joiner-epoch-12-avg-8.onnx"
+    tokens_filename: "tokens.txt"
+    use_int8: false
+    num_threads: 8
+    decoding_method: "greedy_search"
+
+# ============================================================================
+# VAD & INTENT
+# ============================================================================
+VAD:
+  SileroVAD:
+    type: silero
+    threshold: 0.65
+    threshold_low: 0.4
+    min_silence_duration_ms: 1500
+    min_speech_duration_ms: 800
+
+Intent:
+  nointent:
+    type: nointent
+
+  intent_2stage:
+    type: intent_2stage
+    llm: OpenAI_GPT4
+    cache_ttl: 600
+
+# ============================================================================
+# MEMORY
+# ============================================================================
+Memory:
+  NoMemory:
+    type: nomem
+
+  LocalMemory:
+    type: mem_local_short
+
+  OpenMemory_Remote:
+    type: openmemory
+    mode: remote
+    base_url: "http://openmemory:8080"
+    k: 3
+    max_tokens: 2000
+
+# ============================================================================
+# LOG
+# ============================================================================
+log:
+  log_format: "<green>{time:YYMMDD HH:mm:ss}</green>[{version}_{extra[selected_module]}][<light-blue>{extra[tag]}</light-blue>]-<level>{level}</level>-<light-green>{message}</light-green>"
+  log_format_file: "{time:YYYY-MM-DD HH:mm:ss} - {version}_{extra[selected_module]} - {name} - {level} - {extra[tag]} - {message}"
+  log_level: DEBUG
+  log_dir: log
+  log_file: "app.log"
+  data_dir: data
+  selected_module: "00000000000000"
+
+# ============================================================================
+# SELECTED MODULES
+# ============================================================================
+selected_module:
+  TTS: ValtecTTS_Local
+  ASR: VietNamASRLocal
+  LLM: OpenAI_GPT4
+  VAD: SileroVAD
+  Intent: intent_2stage
+  Memory: NoMemory
+
+# ============================================================================
+# PLUGINS
+# ============================================================================
+plugins:
+  get_weather:
+    api_host: "YOUR_QWEATHER_HOST"
+    api_key: "YOUR_QWEATHER_API_KEY"
+    default_location: "Hà Nội"
+
+  create_reminder:
+    enabled: true
+
+  news:
+    default_source: "vnexpress"
+    max_articles: 10
+    timeout: 15

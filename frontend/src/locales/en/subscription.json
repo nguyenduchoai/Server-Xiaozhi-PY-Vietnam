@@ -1,0 +1,20 @@
+{
+  "title": "Subscription",
+  "plans": "Plans",
+  "current_plan": "Current Plan",
+  "upgrade": "Upgrade",
+  "downgrade": "Downgrade",
+  "cancel": "Cancel Subscription",
+  "renew": "Renew",
+  "billing": "Billing",
+  "payment_history": "Payment History",
+  "free": "Free",
+  "premium": "Premium",
+  "enterprise": "Enterprise",
+  "per_month": "/month",
+  "per_year": "/year",
+  "features_included": "Features Included",
+  "select_plan": "Select Plan",
+  "payment_success": "Payment Successful",
+  "payment_failed": "Payment Failed"
+}

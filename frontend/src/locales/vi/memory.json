@@ -1,0 +1,81 @@
+{
+  "page_title": "Quản lý Bộ nhớ",
+  "page_description": "Quản lý bộ nhớ, cảm xúc và trigger chủ động cho AI",
+  
+  "select_device": "Chọn Thiết bị:",
+  "select_device_placeholder": "Chọn một thiết bị",
+  
+  "tab_memories": "Bộ nhớ",
+  "tab_emotions": "Cảm xúc",
+  "tab_triggers": "Triggers",
+  
+  "memories": "Bộ nhớ",
+  "emotions": "Cảm xúc",
+  "triggers": "Triggers",
+  
+  "proactive_triggers": "Triggers Chủ động",
+  "coming_soon": "Sắp ra mắt",
+  "goto_proactive_page": "Mở trang Triggers",
+  "trigger_desc": "Cấu hình khi nào AI của bạn nên bắt đầu cuộc trò chuyện.",
+  "trigger_setup_guide": "Triggers chủ động cho phép AI của bạn bắt đầu cuộc trò chuyện dựa trên thời gian hoặc sự kiện.",
+  
+  "no_memories": "Chưa có bộ nhớ nào. Bắt đầu cuộc trò chuyện để xây dựng bộ nhớ.",
+  "conversation_memories": "Bộ nhớ Cuộc trò chuyện",
+  "memory_desc": "Xem và quản lý những gì AI của bạn nhớ về người dùng.",
+  "emotional_intelligence": "Trí tuệ Cảm xúc",
+  "emotion_desc": "Theo dõi phản ứng cảm xúc và phân tích tâm trạng.",
+  "no_emotion_data": "Chưa có dữ liệu cảm xúc",
+  "intensity": "Độ mạnh",
+  
+  "select_agent_to_view": "Chọn một thiết bị để xem bộ nhớ",
+  "select_device_to_view_emotions": "Chọn một thiết bị để xem cảm xúc",
+  
+  "add_memory": "Thêm Bộ nhớ",
+  "search_memories": "Tìm kiếm bộ nhớ...",
+  "refresh": "Làm mới",
+  "delete": "Xóa",
+  "cancel": "Hủy",
+  "save": "Lưu",
+  
+  "memory_key": "Khóa",
+  "memory_value": "Giá trị",
+  "memory_type": "Loại",
+  "category": "Danh mục",
+  "timestamp": "Thời gian",
+  "actions": "Hành động",
+  
+  "type_fact": "Sự thật",
+  "type_preference": "Sở thích",
+  "type_habit": "Thói quen",
+  "type_context": "Ngữ cảnh",
+  "type_relationship": "Mối quan hệ",
+  
+  "category_personal": "Cá nhân",
+  "category_professional": "Chuyên nghiệp",
+  "category_social": "Xã hội",
+  "category_health": "Sức khỏe",
+  
+  "emotion_summary": "Tóm tắt Cảm xúc",
+  "emotion_logs": "Nhật ký Cảm xúc",
+  "total_logs_24h": "Tổng Nhật ký (24h)",
+  "dominant_emotion": "Cảm xúc Chủ đạo",
+  "avg_intensity": "Độ mạnh TB",
+  "mood_trend": "Xu hướng Tâm trạng",
+  "average_sentiment": "Tâm trạng Trung bình",
+  "emotion": "Cảm xúc",
+  "sentiment_score": "Điểm Tâm trạng",
+  "confidence": "Độ tin cậy",
+  "trigger": "Trigger",
+  
+  "add_memory_title": "Thêm Bộ nhớ Mới",
+  "memory_key_placeholder": "Ví dụ: favorite_color",
+  "memory_value_placeholder": "Ví dụ: blue",
+  
+  "success_memory_added": "Đã thêm bộ nhớ thành công",
+  "success_memory_deleted": "Đã xóa bộ nhớ thành công",
+  "error_fetch_devices": "Không thể tải danh sách thiết bị",
+  "error_fetch_memories": "Không thể tải bộ nhớ",
+  "error_fetch_emotions": "Không thể tải cảm xúc",
+  "error_add_memory": "Không thể thêm bộ nhớ",
+  "error_delete_memory": "Không thể xóa bộ nhớ"
+}

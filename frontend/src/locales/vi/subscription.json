@@ -1,0 +1,20 @@
+{
+  "title": "Đăng ký",
+  "plans": "Gói dịch vụ",
+  "current_plan": "Gói hiện tại",
+  "upgrade": "Nâng cấp",
+  "downgrade": "Hạ cấp",
+  "cancel": "Hủy đăng ký",
+  "renew": "Gia hạn",
+  "billing": "Thanh toán",
+  "payment_history": "Lịch sử thanh toán",
+  "free": "Miễn phí",
+  "premium": "Premium",
+  "enterprise": "Doanh nghiệp",
+  "per_month": "/tháng",
+  "per_year": "/năm",
+  "features_included": "Tính năng bao gồm",
+  "select_plan": "Chọn gói",
+  "payment_success": "Thanh toán thành công",
+  "payment_failed": "Thanh toán thất bại"
+}

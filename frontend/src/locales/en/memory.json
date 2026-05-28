@@ -1,0 +1,81 @@
+{
+  "page_title": "Memory Management",
+  "page_description": "Manage memories, emotions, and proactive triggers for your AI",
+  
+  "select_device": "Select Device:",
+  "select_device_placeholder": "Select a device",
+  
+  "tab_memories": "Memories",
+  "tab_emotions": "Emotions",
+  "tab_triggers": "Triggers",
+  
+  "memories": "Memories",
+  "emotions": "Emotions",
+  "triggers": "Triggers",
+  
+  "proactive_triggers": "Proactive Triggers",
+  "coming_soon": "Coming Soon",
+  "goto_proactive_page": "Open Triggers Page",
+  "trigger_desc": "Configure when your AI should initiate conversations.",
+  "trigger_setup_guide": "Proactive triggers allow your AI to start conversations based on time or events.",
+  
+  "no_memories": "No memories stored yet. Start a conversation to build memory.",
+  "conversation_memories": "Conversation Memories",
+  "memory_desc": "View and manage what your AI agents remember about users.",
+  "emotional_intelligence": "Emotional Intelligence",
+  "emotion_desc": "Track emotional responses and sentiment analysis.",
+  "no_emotion_data": "No emotion logs available",
+  "intensity": "Intensity",
+  
+  "select_agent_to_view": "Select a device to view memories",
+  "select_device_to_view_emotions": "Select a device to view emotions",
+  
+  "add_memory": "Add Memory",
+  "search_memories": "Search memories...",
+  "refresh": "Refresh",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "save": "Save",
+  
+  "memory_key": "Key",
+  "memory_value": "Value",
+  "memory_type": "Type",
+  "category": "Category",
+  "timestamp": "Timestamp",
+  "actions": "Actions",
+  
+  "type_fact": "Fact",
+  "type_preference": "Preference",
+  "type_habit": "Habit",
+  "type_context": "Context",
+  "type_relationship": "Relationship",
+  
+  "category_personal": "Personal",
+  "category_professional": "Professional",
+  "category_social": "Social",
+  "category_health": "Health",
+  
+  "emotion_summary": "Emotion Summary",
+  "emotion_logs": "Emotion Logs",
+  "total_logs_24h": "Total Logs (24h)",
+  "dominant_emotion": "Dominant Emotion",
+  "avg_intensity": "Avg Intensity",
+  "mood_trend": "Mood Trend",
+  "average_sentiment": "Average Sentiment",
+  "emotion": "Emotion",
+  "sentiment_score": "Sentiment Score",
+  "confidence": "Confidence",
+  "trigger": "Trigger",
+  
+  "add_memory_title": "Add New Memory",
+  "memory_key_placeholder": "e.g., favorite_color",
+  "memory_value_placeholder": "e.g., blue",
+  
+  "success_memory_added": "Memory added successfully",
+  "success_memory_deleted": "Memory deleted successfully",
+  "error_fetch_devices": "Failed to fetch devices",
+  "error_fetch_memories": "Failed to fetch memories",
+  "error_fetch_emotions": "Failed to fetch emotions",
+  "error_add_memory": "Failed to add memory",
+  "error_delete_memory": "Failed to delete memory"
+}

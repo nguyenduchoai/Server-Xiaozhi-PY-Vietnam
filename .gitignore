@@ -1,0 +1,195 @@
+
+# ============================================================================
+# XiaoZhi AI IoT Vietnam — .gitignore
+# Security-hardened: Chỉ public code lên git, không lộ secrets/config/data
+# ============================================================================
+
+# ======================== SECURITY CRITICAL ========================
+# Secrets & Credentials — NEVER commit these
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.cert
+*.crt
+secrets/
+.secrets/
+
+# AI Config with real API keys — USE .config.yml.example instead
+backend/src/app/ai/config/config.yml
+data/backend/config/.config.yml
+data/backend/config/.config.yml.local
+
+# Local deployment scripts with VPS credentials
+deploy-local.sh
+deploy-*.local.sh
+.deploy/
+*.credentials
+
+# ======================== DATA & DATABASE ========================
+data/
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+*.sql.gz
+backup/
+backups/
+*.bak
+
+# ======================== LOGS ========================
+*.log
+*.log.*
+logs/
+debug.log
+syslog
+
+# ======================== PYTHON ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+*.cover
+*.py,cover
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.hypothesis/
+.pytest_cache/
+.tox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pydevproject
+.Python
+pip-wheel-metadata/
+develop-eggs/
+dist/
+build/
+eggs/
+sdist/
+var/
+wheels/
+*.whl
+share/python-wheels/
+lib64/
+parts/
+.installed.cfg
+MANIFEST
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Poetry & Pipenv
+poetry.lock
+Pipfile.lock
+
+# ======================== NODE.JS & FRONTEND ========================
+node_modules/
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/out/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+services/zalo-bridge/node_modules/
+
+# ======================== BUILD OUTPUT ========================
+build/
+backend/build/
+backend/dist/
+backend/*.egg-info/
+
+# Rust build artifacts (784MB+)
+services/audio_gateway_rust/target/
+
+# Go build artifacts
+services/go-gateway/go-gateway
+services/go-gateway/tmp/
+
+# ======================== IDE & EDITOR ========================
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+*.iml
+*.ipr
+*.iws
+.project
+.settings/
+
+# ======================== OS ========================
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+.Spotlight-V100
+.Trashes
+.LSOverride
+._*
+.AppleDouble
+*~
+.#*
+~*
+
+# ======================== DOCKER ========================
+.docker/
+docker-compose.override.yml
+
+# ======================== CACHE ========================
+*.cache
+.cache/
+.local/
+*.tmp
+tmp/
+temp/
+old/
+
+# ======================== ASSETS & UPLOADS ========================
+# User-generated content — excluded from repo
+uploads/
+*.prof
+
+# ======================== MISCELLANEOUS ========================
+*.orig
+*.pid
+*.pid.lock
+*.err
+*.seed
+mp3-proxy/
+phatnguoi-api/
+downloads/
+/lib/
+test-results/
+docs/_build/
+site/
+out/
+local_settings.py
+*.local
+
+# ======================== KEEP EMPTY DIRS ========================
+# Ensure important directories are retained
+!.gitkeep
+!*/.gitkeep
+vps_credentials.txt
+
+# ======================== ESP32 Build / Debug Artifacts ========================
+# Local debug logs and build archives — should not be committed
+xiaozhi-esp32_vietnam/monitor_output*.txt
+xiaozhi-esp32_vietnam/fix.txt
+xiaozhi-esp32_vietnam.zip
+*.zip

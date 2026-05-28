@@ -1,0 +1,17 @@
+{
+  "title": "Thông báo",
+  "notifications": "Thông báo",
+  "mark_all_read": "Đánh dấu đã đọc tất cả",
+  "no_notifications": "Không có thông báo",
+  "unread": "Chưa đọc",
+  "all": "Tất cả",
+  "test_notification": "Gửi thông báo thử",
+  "send": "Gửi",
+  "device": "Thiết bị",
+  "message": "Nội dung",
+  "sent_at": "Thời gian gửi",
+  "status": "Trạng thái",
+  "delivered": "Đã gửi",
+  "failed": "Thất bại",
+  "pending": "Đang chờ"
+}

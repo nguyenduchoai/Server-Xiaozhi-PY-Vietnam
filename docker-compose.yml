@@ -1,0 +1,155 @@
+# =============================================================================
+# Xiaozhi CE (Community Edition) - Docker Compose
+# Simple 5-service setup: Frontend, Backend, PostgreSQL, Redis, EMQX
+# =============================================================================
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_PATH=/api/v1
+        - VITE_OTA_URL=/api/v1/ota
+    container_name: xiaozhi-ce-frontend
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html:ro
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "-s", "http://localhost:3000" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - xiaozhi-net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: xiaozhi-ce-backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --timeout-keep-alive 120 --ws-max-size 16777216
+    ports:
+      - "8000:8000"
+      - "8765:8765/udp"
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      emqx:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health', timeout=30)" ]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 120s
+    volumes:
+      - ./backend/src/app:/app/src/app
+      - ./data/backend/config:/app/src/app/data
+      - ./data/backend/log:/app/src/data/backend/log
+      - ./data/backend/assets:/app/data/assets
+      - ./data/backend/avatars:/app/data/avatars
+      - ./data/backend/uploads:/app/data/uploads
+      - ./data/backend/reminder_jobs:/app/data/reminder_jobs
+      - ./.env:/app/src/.env:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+    env_file:
+      - ./.env
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 4G
+    networks:
+      - xiaozhi-net
+
+  emqx:
+    image: emqx/emqx:5.3.0
+    container_name: xiaozhi-ce-mqtt
+    hostname: xiaozhi-mqtt
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "8083:8083"
+      - "8084:8084"
+      - "127.0.0.1:18083:18083"
+    environment:
+      - EMQX_ALLOW_ANONYMOUS=${EMQX_ALLOW_ANONYMOUS:-false}
+      - EMQX_DASHBOARD__DEFAULT_USERNAME=admin
+      - EMQX_DASHBOARD__DEFAULT_PASSWORD=${MQTT_DASHBOARD_PASSWORD}
+      - EMQX_NODE__NAME=emqx@127.0.0.1
+      - EMQX_LISTENERS__TCP__DEFAULT__BIND=0.0.0.0:1883
+      - EMQX_LISTENERS__WS__DEFAULT__BIND=0.0.0.0:8083
+      - EMQX_LISTENERS__WSS__DEFAULT__BIND=0.0.0.0:8084
+    volumes:
+      - ./data/emqx/data:/opt/emqx/data
+      - ./data/emqx/log:/opt/emqx/log
+    networks:
+      - xiaozhi-net
+    healthcheck:
+      test: [ "CMD", "/opt/emqx/bin/emqx", "ctl", "status" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  db:
+    image: pgvector/pgvector:pg13
+    container_name: xiaozhi-ce-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      - POSTGRES_USER=${POSTGRES_USER:-xiaozhi_db}
+      - POSTGRES_DB=${POSTGRES_DB:-xiaozhi_db}
+      - TZ=Asia/Ho_Chi_Minh
+      - PGTZ=Asia/Ho_Chi_Minh
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-postgres}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - xiaozhi-net
+
+  redis:
+    image: redis:alpine
+    container_name: xiaozhi-ce-redis
+    restart: unless-stopped
+    command: sh -c 'redis-server --requirepass "$REDIS_PASSWORD" --maxmemory 256mb --maxmemory-policy allkeys-lru'
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+      - REDIS_PASSWORD=${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli -a \"$${REDIS_PASSWORD}\" ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - xiaozhi-net
+
+networks:
+  xiaozhi-net:
+    driver: bridge

@@ -1,0 +1,37 @@
+{
+  "page": {
+    "title": "News",
+    "description": "Read latest news from multiple sources"
+  },
+  "filter": {
+    "source": "Source",
+    "topic": "Topic",
+    "select_topic": "Select topic"
+  },
+  "action": {
+    "refresh": "Refresh",
+    "read": "Read",
+    "summarize": "Summarize"
+  },
+  "info": {
+    "viewing": "Viewing",
+    "articles": "articles",
+    "no_articles": "No articles found",
+    "generating_summary": "Generating summary..."
+  },
+  "loading": {
+    "fetching": "Loading news..."
+  },
+  "error": {
+    "fetch_topics_failed": "Failed to load topics",
+    "fetch_news_failed": "Failed to load news",
+    "summarize_failed": "Failed to summarize article"
+  },
+  "warning": {
+    "select_topic": "Please select a topic"
+  },
+  "empty": {
+    "title": "No news yet",
+    "description": "Select a topic to view news"
+  }
+}
