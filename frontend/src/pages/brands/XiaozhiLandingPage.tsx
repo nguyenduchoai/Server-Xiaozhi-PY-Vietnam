@@ -288,11 +288,11 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
              {/* =========================================================== */}
              {/* SPONSOR SECTION */}
              {/* =========================================================== */}
-             <section className="py-10 bg-slate-50 border-y border-slate-200">
+             <section className="py-10 bg-[#0A192F] border-y border-slate-800">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Được Cung Cấp Hệ Thống Đám Mây Bởi</p>
-                    <div className="flex justify-center items-center opacity-80 hover:opacity-100 transition-opacity">
-                        <img src="https://eztech.vn/wp-content/uploads/2024/09/logo-eztech.png" alt="EzTech" className="h-12 transition-all duration-500" />
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Được Cung Cấp Hệ Thống Đám Mây Bởi</p>
+                    <div className="flex justify-center items-center opacity-90 hover:opacity-100 transition-opacity">
+                        <img src="https://eztech.vn/wp-content/uploads/2024/09/logo-eztech.png" alt="EzTech" className="h-12 transition-all duration-500 filter drop-shadow-[0_2px_8px_rgba(255,255,255,0.1)]" />
                     </div>
                 </div>
             </section>
