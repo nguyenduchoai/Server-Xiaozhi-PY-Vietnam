@@ -87,12 +87,9 @@ export function AdminUsersPage() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [usersRes, plansRes] = await Promise.all([
-        adminApi.getUsers({ page_size: 100 }),
-        subscriptionApi.getPlans()
-      ]);
+      const usersRes = await adminApi.getUsers({ page_size: 100 });
       setUsers(usersRes.data || []);
-      setPlans(plansRes);
+      setPlans([]);
     } catch (error: any) {
       toast.error(error.response?.data?.detail || "Không thể tải dữ liệu");
     } finally {
@@ -367,12 +364,6 @@ export function AdminUsersPage() {
                 theme="borderless"
                 onClick={() => handlePasswordClick(record)}
                 title="Đổi mật khẩu"
-              />
-              <Button
-                icon={<IconUserAdd />}
-                theme="borderless"
-                onClick={() => handleAssignClick(record)}
-                title="Gán gói"
               />
               <Button
                 icon={<IconDelete />}
