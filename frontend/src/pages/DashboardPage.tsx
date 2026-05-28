@@ -19,8 +19,6 @@ import { useEffect, useState, useCallback } from "react";
 import { analyticsApi, type DashboardStats, type DeviceStatus } from "@/services/analyticsService";
 import { DeviceStatusList } from "@/components/dashboard/DeviceStatusList";
 import { LatencyMonitorPanel } from "@/components/dashboard/LatencyMonitorPanel";
-import type { OTAStats } from "@/services/otaDashboardService";
-import { otaDashboardService } from "@/services/otaDashboardService";
 import { ArrowUpRight, Cpu, Zap, Wifi, Radio } from "lucide-react";
 
 const { Title, Text } = Typography;
@@ -211,66 +209,6 @@ function QuickAction({ icon, title, description, gradient, onClick, delay = 0 }:
   );
 }
 
-// ============ OTA Sub-components ============
-
-function ActivityChart({ data }: { data: Record<string, number> }) {
-  const entries = Object.entries(data);
-  const maxVal = Math.max(...entries.map(([, v]) => v), 1);
-
-  return (
-    <div style={{ display: "flex", alignItems: "flex-end", gap: 6, height: 140, padding: "8px 4px 0" }}>
-      {entries.map(([date, count]) => {
-        const height = Math.max((count / maxVal) * 110, 6);
-        const label = date.slice(5);
-        return (
-          <Tooltip key={date} content={`${date}: ${count} thiết bị`}>
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
-              <Text size="small" type="tertiary" style={{ fontSize: '11px' }}>{count}</Text>
-              <div
-                style={{
-                  width: "100%",
-                  maxWidth: 42,
-                  height: `${height}px`,
-                  borderRadius: "10px 10px 6px 6px",
-                  background: "linear-gradient(180deg, #6366F1 0%, #818CF8 50%, #A5B4FC 100%)",
-                  transition: "height 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-                  boxShadow: count > 0 ? '0 4px 12px rgba(99, 102, 241, 0.25)' : 'none',
-                }}
-              />
-              <Text size="small" type="tertiary" style={{ fontSize: '11px' }}>{label}</Text>
-            </div>
-          </Tooltip>
-        );
-      })}
-    </div>
-  );
-}
-
-function BoardDistribution({ data }: { data: Record<string, number> }) {
-  const total = Object.values(data).reduce((a, b) => a + b, 0) || 1;
-  const colors = ["#6366F1", "#EC4899", "#F59E0B", "#10B981", "#3B82F6", "#8B5CF6"];
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      {Object.entries(data).map(([board, count], i) => (
-        <div key={board}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-            <Text size="small" style={{ fontWeight: 500 }}>{board}</Text>
-            <Text size="small" type="tertiary">
-              {count} ({Math.round((count / total) * 100)}%)
-            </Text>
-          </div>
-          <Progress
-            percent={Math.round((count / total) * 100)}
-            showInfo={false}
-            stroke={colors[i % colors.length]}
-            size="small"
-          />
-        </div>
-      ))}
-    </div>
-  );
-}
 
 // ============ Main Dashboard ============
 
@@ -282,23 +220,9 @@ export function DashboardPage() {
   const [usage, setUsage] = useState<any>(null);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [devices, setDevices] = useState<DeviceStatus[]>([]);
-  const [otaStats, setOtaStats] = useState<OTAStats | null>(null);
 
   // UI states
   const [loading, setLoading] = useState(true);
-  const [otaLoading, setOtaLoading] = useState(true);
-
-  const fetchOtaStats = useCallback(async () => {
-    setOtaLoading(true);
-    try {
-      const data = await otaDashboardService.getStats();
-      setOtaStats(data);
-    } catch (err) {
-      console.error("OTA stats fetch error:", err);
-    } finally {
-      setOtaLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -320,8 +244,7 @@ export function DashboardPage() {
     };
 
     fetchData();
-    fetchOtaStats();
-  }, [fetchOtaStats]);
+  }, []);
 
   const isAdmin = user?.is_superuser;
 
@@ -450,76 +373,6 @@ export function DashboardPage() {
         <LatencyMonitorPanel />
       </div>
 
-      {/* OTA Stats Cards */}
-      {otaStats && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4" style={{ animation: 'cardSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 300ms both' }}>
-          {[
-            { icon: <IconDesktop />, title: "Tổng thiết bị", value: otaStats.total_devices, subtitle: `${otaStats.enabled_devices} kích hoạt`, color: "#6366F1", bg: "rgba(99, 102, 241, 0.15)" },
-            { icon: <IconActivity />, title: "Hoạt động hôm nay", value: otaStats.active_today, subtitle: `${otaStats.active_this_week} tuần này`, color: "#10B981", bg: "rgba(16, 185, 129, 0.15)" },
-            { icon: <IconServer />, title: "Firmware", value: otaStats.total_firmware, subtitle: "versions", color: "#F59E0B", bg: "rgba(245, 158, 11, 0.15)" },
-            { icon: <IconShield />, title: "License", value: `${otaStats.valid_licenses}/${otaStats.total_devices}`, subtitle: `${otaStats.expired_licenses} hết hạn`, color: otaStats.expired_licenses > 0 ? "#EF4444" : "#10B981", bg: otaStats.expired_licenses > 0 ? "rgba(239, 68, 68, 0.15)" : "rgba(16, 185, 129, 0.15)" },
-          ].map((s, idx) => (
-            <div
-              key={idx}
-              style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: `1px solid rgba(255, 255, 255, 0.2)`,
-                borderRadius: '2rem',
-                padding: "24px",
-                position: 'relative',
-                overflow: 'hidden',
-                backdropFilter: 'blur(30px)',
-                WebkitBackdropFilter: 'blur(30px)',
-                boxShadow: '0 12px 24px rgba(0,0,0,0.04), inset 0 1px 1px rgba(255,255,255,0.4)',
-                transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = `rgba(255, 255, 255, 0.5)`;
-                e.currentTarget.style.transform = 'translateY(-6px) scale(1.02)';
-                e.currentTarget.style.boxShadow = `0 20px 40px ${s.color}20, inset 0 2px 2px rgba(255,255,255,0.7)`;
-                
-                const bgGlow = e.currentTarget.querySelector('.ota-glow');
-                if (bgGlow) {
-                    (bgGlow as HTMLElement).style.opacity = '0.3';
-                    (bgGlow as HTMLElement).style.filter = 'blur(30px)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = `rgba(255, 255, 255, 0.2)`;
-                e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.04), inset 0 1px 1px rgba(255,255,255,0.4)';
-                
-                const bgGlow = e.currentTarget.querySelector('.ota-glow');
-                if (bgGlow) {
-                    (bgGlow as HTMLElement).style.opacity = '0.1';
-                    (bgGlow as HTMLElement).style.filter = 'blur(50px)';
-                }
-              }}
-            >
-              <div className="ota-glow" style={{ position: 'absolute', bottom: '-20%', right: '-20%', width: '100%', height: '100%', background: s.color, filter: 'blur(50px)', opacity: 0.1, zIndex: -1, transition: 'all 0.5s ease', borderRadius: '50%' }} />
-
-              <div style={{ position: 'absolute', top: 0, left: '20%', right: '20%', height: '1px', background: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%)' }} />
-
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                <div style={{
-                  width: 44, height: 44, borderRadius: '50%',
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  backdropFilter: 'blur(10px)',
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  color: 'var(--apple-text-primary)', fontSize: 20,
-                  boxShadow: `inset 0 2px 4px rgba(255,255,255,0.6), inset 0 -2px 4px rgba(0,0,0,0.1), 0 8px 16px ${s.color}40`,
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                }}>
-                  {s.icon}
-                </div>
-                <Text size="small" style={{ fontWeight: 600, color: 'var(--apple-text-primary)' }}>{s.title}</Text>
-              </div>
-              <Title heading={2} style={{ margin: 0, color: 'var(--apple-text-primary)', fontSize: '30px', fontWeight: 800 }}>{s.value}</Title>
-              {s.subtitle && <Text size="small" type="tertiary" style={{ fontWeight: 500, marginTop: '4px', display: 'block' }}>{s.subtitle}</Text>}
-            </div>
-          ))}
-        </div>
-      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-7 gap-6">
         {/* Device Status List */}
@@ -572,143 +425,6 @@ export function DashboardPage() {
         </div>
       </div>
 
-      {/* IoT & Firmware Section */}
-      <div style={{
-        borderTop: '1px solid var(--apple-border-primary)',
-        paddingTop: 28,
-        animation: 'cardSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 500ms both',
-      }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{
-                width: '32px', height: '32px', borderRadius: '10px',
-                background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#fff',
-              }}>
-                <Radio size={16} />
-              </div>
-              <Title heading={4} style={{ margin: 0 }}>IoT & Firmware</Title>
-            </div>
-            <Text type="tertiary" style={{ marginTop: 4, display: 'block' }}>Tổng quan firmware, license và tính năng thiết bị</Text>
-          </div>
-          <Button
-            icon={<IconRefresh />}
-            onClick={fetchOtaStats}
-            loading={otaLoading}
-            size="small"
-            style={{ borderRadius: '10px' }}
-          >
-            Làm mới
-          </Button>
-        </div>
-
-        {otaLoading && !otaStats ? (
-          <Skeleton placeholder={<Skeleton.Paragraph rows={4} />} loading={true} active />
-        ) : otaStats ? (
-          <>
-            {/* Charts */}
-            <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 16, marginTop: 8 }}>
-              <Card
-                title={
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <IconActivity style={{ color: '#6366F1' }} />
-                    <span>Hoạt động 7 ngày</span>
-                  </div>
-                }
-                headerStyle={{ padding: "14px 20px", borderBottom: '1px solid var(--apple-border-primary)' }}
-                bodyStyle={{ padding: "20px" }}
-                style={{ borderRadius: '16px' }}
-              >
-                <ActivityChart data={otaStats.activity_by_day} />
-              </Card>
-              <Card
-                title={
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <IconDesktop style={{ color: '#EC4899' }} />
-                    <span>Phân bố Board</span>
-                  </div>
-                }
-                headerStyle={{ padding: "14px 20px", borderBottom: '1px solid var(--apple-border-primary)' }}
-                bodyStyle={{ padding: "20px" }}
-                style={{ borderRadius: '16px' }}
-              >
-                {Object.keys(otaStats.board_type_count).length > 0 ? (
-                  <BoardDistribution data={otaStats.board_type_count} />
-                ) : (
-                  <Empty description="Chưa có dữ liệu" />
-                )}
-              </Card>
-            </div>
-
-            {/* License Summary */}
-            <Card
-              title={
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <IconShield style={{ color: '#10B981' }} />
-                  <span>License</span>
-                </div>
-              }
-              style={{ marginTop: 16, borderRadius: '16px' }}
-              headerStyle={{ padding: "14px 20px", borderBottom: '1px solid var(--apple-border-primary)' }}
-              bodyStyle={{ padding: "20px" }}
-            >
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {[
-                  { value: otaStats.valid_licenses, label: "Có hiệu lực", color: "#10B981", bg: "rgba(16, 185, 129, 0.08)" },
-                  { value: otaStats.expired_licenses, label: "Hết hạn", color: "#EF4444", bg: "rgba(239, 68, 68, 0.08)" },
-                  { value: otaStats.unlimited_licenses, label: "Không giới hạn", color: "#6366F1", bg: "rgba(99, 102, 241, 0.08)" },
-                  { value: otaStats.trial_licenses, label: "Dùng thử", color: "#F59E0B", bg: "rgba(245, 158, 11, 0.08)" },
-                ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      textAlign: "center",
-                      padding: '24px 16px',
-                      borderRadius: '1.5rem',
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      border: `1px solid rgba(255, 255, 255, 0.15)`,
-                      position: 'relative',
-                      overflow: 'hidden',
-                      backdropFilter: 'blur(20px)',
-                      WebkitBackdropFilter: 'blur(20px)',
-                      boxShadow: '0 8px 16px rgba(0,0,0,0.03), inset 0 1px 1px rgba(255,255,255,0.3)',
-                      transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
-                      e.currentTarget.style.borderColor = `rgba(255, 255, 255, 0.3)`;
-                      e.currentTarget.style.boxShadow = `0 12px 24px ${item.color}20, inset 0 2px 2px rgba(255,255,255,0.5)`;
-                      
-                      const bgGlow = e.currentTarget.querySelector('.license-glow');
-                      if (bgGlow) {
-                          (bgGlow as HTMLElement).style.opacity = '0.2';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                      e.currentTarget.style.borderColor = `rgba(255, 255, 255, 0.15)`;
-                      e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.03), inset 0 1px 1px rgba(255,255,255,0.3)';
-                      
-                      const bgGlow = e.currentTarget.querySelector('.license-glow');
-                      if (bgGlow) {
-                          (bgGlow as HTMLElement).style.opacity = '0.05';
-                      }
-                    }}
-                  >
-                    <div className="license-glow" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80px', height: '80px', background: item.color, filter: 'blur(40px)', opacity: 0.05, zIndex: -1, transition: 'all 0.4s ease', borderRadius: '50%' }} />
-                    <Title heading={2} style={{ color: item.color, margin: 0, letterSpacing: '-0.03em', fontSize: '32px', fontWeight: 800 }}>{item.value}</Title>
-                    <Text size="small" type="tertiary" style={{ fontWeight: 600, display: 'block', marginTop: '6px', color: 'var(--apple-text-secondary)' }}>{item.label}</Text>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </>
-        ) : (
-          <Empty description="Không thể tải dữ liệu IoT" />
-        )}
-      </div>
 
       {/* Scoped Animations */}
       <style>{`

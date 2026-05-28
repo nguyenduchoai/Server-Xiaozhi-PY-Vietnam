@@ -48,8 +48,6 @@ const menuGroups: MenuItem[] = [
         icon: <Smartphone size={18} />,
         items: [
             { label: 'Devices', path: '/devices' },
-            { label: 'OTA Dashboard', path: '/ota-dashboard' },
-            { label: 'Firmware', path: '/firmware' },
             { label: 'Asset Templates', path: '/asset-templates' },
             { label: 'Display Customizer', path: '/display-customizer' },
             { label: 'Themes', path: '/themes' },

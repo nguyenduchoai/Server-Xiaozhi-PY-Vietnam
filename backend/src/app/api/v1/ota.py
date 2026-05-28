@@ -568,19 +568,8 @@ async def ota_post(
             except ValueError:
                 board_type = BoardType.ALL
             
-            # Check for device custom firmware variant first
-            custom_variant = getattr(device_exists, 'custom_firmware', None) if device_exists else None
+            # Firmware check disabled to prevent incorrect firmware mismatch and damage.
             latest_firmware = None
-            
-            if custom_variant:
-                # Try custom variant first
-                latest_firmware = await crud_firmware.get_latest(db, board_type, variant=custom_variant)
-                if latest_firmware:
-                    logger.debug(f"Using custom firmware variant '{custom_variant}' for {device_id}")
-            
-            if not latest_firmware:
-                # Fallback to common firmware
-                latest_firmware = await crud_firmware.get_latest(db, board_type)
             
             if latest_firmware and latest_firmware.version != current_version:
                 # New firmware available — include integrity material for

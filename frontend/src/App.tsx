@@ -52,7 +52,6 @@ import ThemeGalleryPage from "@/pages/ThemeGalleryPage";
 import KnowledgeBasePage from "@/pages/KnowledgeBasePage";
 import KnowledgeBaseDetailPage from "@/pages/KnowledgeBaseDetailPage";
 import RegisterPage from "@/pages/RegisterPage";
-import OTADashboardPage from "@/pages/OTADashboardPage";
 
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminRoute } from "@/components/AdminRoute";
@@ -152,8 +151,6 @@ function App() {
         <Route path="/devices/:deviceId/customize" element={<DeviceCustomizePage />} />
         <Route path="/display-customizer" element={<DisplayCustomizerPage />} />
         <Route path="/tools" element={<ToolsPage />} />
-        <Route path="/firmware" element={<FirmwareManagementPage />} />
-        <Route path="/ota-dashboard" element={<OTADashboardPage />} />
 
         <Route path="/asset-templates" element={<AssetTemplatesPage />} />
         <Route path="/providers" element={<ProvidersPage />} />
