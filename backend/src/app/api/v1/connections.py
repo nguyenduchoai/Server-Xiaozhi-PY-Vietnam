@@ -72,10 +72,10 @@ class ConnectionResponse(BaseModel):
 
 # ============ Helper ============
 
-def _sanitize_config(config: dict, conn_type: str) -> dict:
+def _sanitize_config(config: dict, conn_type: str, user_id: str = None) -> dict:
     """Decrypt then mask sensitive fields for response."""
     # First decrypt (in case stored encrypted)
-    decrypted = decrypt_config(config)
+    decrypted = decrypt_config(config, user_id)
     safe = dict(decrypted)
     sensitive_keys = ["bot_token", "oa_access_token", "password", "api_key"]
     for key in sensitive_keys:
@@ -92,7 +92,7 @@ def _conn_to_response(conn) -> dict:
         "user_id": conn.user_id,
         "type": conn.type,
         "name": conn.name,
-        "config": _sanitize_config(conn.config or {}, conn.type),
+        "config": _sanitize_config(conn.config or {}, conn.type, conn.user_id),
         "enabled": conn.enabled,
         "status": conn.status,
         "status_info": conn.status_info,
@@ -130,7 +130,7 @@ async def create_connection(
         raise HTTPException(400, f"Invalid type. Must be one of: {', '.join(VALID_TYPES)}")
 
     # Encrypt sensitive fields before storage
-    encrypted_config = encrypt_config(body.config)
+    encrypted_config = encrypt_config(body.config, current_user["id"])
     
     conn = await conn_crud.create_connection(
         db,
@@ -173,10 +173,10 @@ async def update_connection(
     # Merge config (don't replace entirely — allow partial updates)
     if "config" in update_data and conn.config:
         # Decrypt existing config for merge
-        existing = decrypt_config(dict(conn.config))
+        existing = decrypt_config(dict(conn.config), current_user["id"])
         existing.update(update_data["config"])
         # Re-encrypt merged config
-        update_data["config"] = encrypt_config(existing)
+        update_data["config"] = encrypt_config(existing, current_user["id"])
     
     conn = await conn_crud.update_connection(db, conn, **update_data)
     return _conn_to_response(conn)
@@ -271,7 +271,7 @@ async def send_test_message(
 async def _send_test_channel(conn, recipient: str, message: str) -> dict:
     """Send a test message through a specific channel."""
     try:
-        config = decrypt_config(conn.config or {})
+        config = decrypt_config(conn.config or {}, conn.user_id)
         if conn.type == "telegram":
             return await _send_test_telegram(config, recipient, message)
         elif conn.type == "zalo_oa":
@@ -352,7 +352,7 @@ async def _send_test_smtp(config: dict, to_email: str, message: str) -> dict:
 async def _test_channel(conn) -> dict:
     """Test a specific channel connection. Decrypts config before use."""
     try:
-        config = decrypt_config(conn.config or {})
+        config = decrypt_config(conn.config or {}, conn.user_id)
         if conn.type == "telegram":
             return await _test_telegram(config)
         elif conn.type == "zalo_oa":

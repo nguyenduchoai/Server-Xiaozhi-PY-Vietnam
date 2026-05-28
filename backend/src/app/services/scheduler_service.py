@@ -12,7 +12,6 @@ from apscheduler.triggers.cron import CronTrigger
 from ..core.logger import get_logger
 from ..core.worker.functions import cleanup_expired_deleted_users
 from .device_offline_monitor import run_device_offline_check
-from .subscription_maintenance import run_subscription_maintenance
 
 logger = get_logger(__name__)
 
@@ -46,16 +45,6 @@ class SchedulerService:
                 max_instances=1,  # Prevent concurrent runs
             )
 
-            # Schedule subscription maintenance daily at 00:00 (midnight)
-            self.scheduler.add_job(
-                self._run_subscription_maintenance,
-                trigger=CronTrigger(hour=0, minute=0),
-                id="subscription_maintenance",
-                name="Subscription Maintenance (Expiry & Usage Reset)",
-                replace_existing=True,
-                max_instances=1,
-            )
-
             # Device offline alert daily at 09:00 — sent in the morning
             # (in user-local time roughly) so people see it during their
             # day. Runs separately from subscription maintenance to keep
@@ -72,7 +61,6 @@ class SchedulerService:
             self.scheduler.start()
             self._is_running = True
             logger.info("Cleanup scheduler đã khởi động (chạy lúc 3:00 AM hàng ngày)")
-            logger.info("Subscription maintenance scheduler đã khởi động (chạy lúc 00:00 hàng ngày)")
             logger.info("Device offline alert scheduler đã khởi động (chạy lúc 09:00 hàng ngày)")
 
         except Exception as e:
@@ -94,16 +82,6 @@ class SchedulerService:
 
         except Exception as e:
             logger.error(f"Cleanup job thất bại: {str(e)}")
-
-    async def _run_subscription_maintenance(self) -> None:
-        """Run subscription maintenance job (expiry check + usage reset)."""
-        try:
-            logger.info("Bắt đầu subscription maintenance")
-            await run_subscription_maintenance()
-            logger.info("Subscription maintenance hoàn thành")
-
-        except Exception as e:
-            logger.error(f"Subscription maintenance thất bại: {str(e)}")
 
     async def _run_device_offline_check(self) -> None:
         """Wrapper for the device-offline alert cron."""

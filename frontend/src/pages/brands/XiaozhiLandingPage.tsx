@@ -173,7 +173,7 @@ const testimonialsData = [
 const faqData = [
     { question: "Tính năng Clone Giọng (Voice Cloning) hoạt động như thế nào?", answer: "Bạn chỉ cần cung cấp một đoạn âm thanh mẫu dài từ 5-10 giây có lời nói rõ ràng. Động cơ Valtec TTS AI sẽ phân tích và tạo mô hình giọng nói. Thiết bị IoT sau đó có thể phát ra mọi câu trả lời bằng chính giọng gốc đó." },
     { question: "OTA Firmware Firmware hỗ trợ các thiết bị nào?", answer: "Hiện tại nền tảng tập trung mạnh vào dòng chip ESP32 (đặc biệt là ESP32-S3), hỗ trợ update từ xa không cần cáp, kèm theo giao diện theo dõi tiến trình và tính năng hạ cấp (rollback)." },
-    { question: "Tôi có được tự cung cấp API Key AI (BYOK) không?", answer: "Hoàn toàn được. Nền tảng được thiết kế mở. Bạn ở gói Starter/Pro có thể điền thông tin API Key của OpenAI, Google Gemini, Anthropic... của chính mình để tích hợp kết nối." },
+    { question: "Tôi có được tự cung cấp API Key AI (BYOK) không và nó có an toàn không?", answer: "Hoàn toàn được. Nền tảng được thiết kế mở (Bring Your Own Key). API Key của OpenAI, Google Gemini, Anthropic... của bạn sẽ được mã hóa an toàn bằng thuật toán AES-256 HKDF độc lập cho từng người dùng (Zero-Knowledge Architecture), giúp bạn hoàn toàn an tâm khi tích hợp kết nối." },
     { question: "MCP Tools là gì?", answer: "MCP (Model Context Protocol) là một chuẩn do Anthropic giới thiệu. Nền tảng của chúng tôi kết nối thiết bị IoT của bạn tới hàng loạt công cụ ngoài như: Lấy tin thời tiết, Tra cứu lịch Google, Điều khiển đèn thông minh..." },
 ];
 
@@ -203,6 +203,7 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
                         <a href="#features" className="text-sm font-semibold text-slate-600 hover:text-violet-600 transition-colors">Tính năng</a>
                         <a href="#voice" className="text-sm font-semibold text-slate-600 hover:text-violet-600 transition-colors">Voice AI</a>
                         <a href="#usecases" className="text-sm font-semibold text-slate-600 hover:text-violet-600 transition-colors">Giải pháp</a>
+                        <a href="#deploy" className="text-sm font-semibold text-slate-600 hover:text-violet-600 transition-colors">Triển khai</a>
                         <a href="#faq" className="text-sm font-semibold text-slate-600 hover:text-violet-600 transition-colors">Hỏi đáp</a>
                         <span className="w-px h-5 bg-slate-200"></span>
                         <a href="/asset-generator" className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-violet-600 transition-colors">
@@ -536,6 +537,72 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* =========================================================== */}
+            {/* DEPLOYMENT GUIDE */}
+            {/* =========================================================== */}
+            <section id="deploy" className="py-24 bg-white border-t border-slate-200/50">
+                <div className="container mx-auto px-4 max-w-4xl">
+                    <div className="text-center mb-16">
+                        <Badge className="bg-violet-100 text-violet-700 border-none px-3 py-1 mb-4 text-sm font-semibold">Tự Lưu Trữ (Self-Hosted)</Badge>
+                        <h2 className="text-4xl font-extrabold text-slate-900 mb-4">Hướng Dẫn Cài Đặt Server</h2>
+                        <p className="text-slate-500">Mã nguồn mở miễn phí. Chỉ với 3 bước đơn giản để sở hữu hệ thống của riêng bạn.</p>
+                    </div>
+
+                    <div className="bg-slate-900 rounded-[2rem] p-8 md:p-12 text-slate-300 shadow-xl overflow-hidden relative">
+                        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+                            <Database className="w-64 h-64 text-white" />
+                        </div>
+                        
+                        <div className="space-y-12 relative z-10">
+                            {/* Step 1 */}
+                            <div>
+                                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-violet-600 text-sm">1</span> 
+                                    Tải Mã Nguồn & Cấu Hình
+                                </h3>
+                                <div className="bg-black/50 p-4 rounded-xl font-mono text-sm border border-slate-700/50 mb-4 overflow-x-auto">
+                                    <div className="text-slate-400"># Clone repository từ GitHub</div>
+                                    <div className="text-emerald-400">git clone https://github.com/nguyenduchoai/Server-Xiaozhi-PY-Vietnam.git</div>
+                                    <div className="text-emerald-400">cd Server-Xiaozhi-PY-Vietnam</div>
+                                    <br/>
+                                    <div className="text-slate-400"># Thiết lập các biến môi trường cấu hình</div>
+                                    <div className="text-emerald-400">cp .env.example .env</div>
+                                    <div className="text-emerald-400">nano .env</div>
+                                </div>
+                                <p className="text-sm">Hãy điền các thông tin bảo mật, email admin, và API key trong file `.env`.</p>
+                            </div>
+
+                            {/* Step 2 */}
+                            <div>
+                                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-violet-600 text-sm">2</span> 
+                                    Khởi Chạy Dịch Vụ
+                                </h3>
+                                <div className="bg-black/50 p-4 rounded-xl font-mono text-sm border border-slate-700/50 mb-4">
+                                    <div className="text-slate-400"># Yêu cầu cài đặt sẵn Docker và Docker Compose</div>
+                                    <div className="text-emerald-400">docker compose up -d</div>
+                                </div>
+                                <p className="text-sm">Hệ thống sẽ tự động pull và khởi chạy toàn bộ 5 module (Frontend, Backend, Postgres, Redis, EMQX).</p>
+                            </div>
+
+                            {/* Step 3 */}
+                            <div>
+                                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-violet-600 text-sm">3</span> 
+                                    Reverse Proxy & Tận Hưởng
+                                </h3>
+                                <p className="text-sm mb-4">Cấu hình Nginx hoặc Apache để trỏ domain của bạn tới hệ thống (ví dụ: port <code className="bg-slate-800 text-violet-300 px-1.5 py-0.5 rounded">3000</code> cho giao diện người dùng và <code className="bg-slate-800 text-violet-300 px-1.5 py-0.5 rounded">8000</code> cho backend API).</p>
+                                <div className="flex flex-col sm:flex-row gap-4 mt-6">
+                                    <a href="/login" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded-full transition-all">
+                                        <MonitorSmartphone className="w-4 h-4" /> Bảng Điều Khiển
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

@@ -24,6 +24,7 @@ from ...core.exceptions.http_exceptions import NotFoundException
 from ...core.logger import get_logger
 from ...crud.crud_provider import crud_provider
 from ...core.utils.cache import CacheKey, get_cache_manager, BaseCacheManager
+from ...utils.config_encryption import encrypt_config, decrypt_config
 from ...schemas.provider import (
     ProviderCategory,
     ProviderSourceFilter,
@@ -1027,7 +1028,8 @@ async def test_provider_by_reference(
 
             category = provider.category
             provider_type = provider.type
-            provider_config = {**provider.config, "type": provider.type}
+            decrypted_cfg = decrypt_config(provider.config or {}, user_id)
+            provider_config = {**decrypted_cfg, "type": provider.type}
             source_label = "user"
         except Exception as e:
             return ProviderTestByReferenceResponse(
@@ -1183,7 +1185,7 @@ async def list_providers(
                 "name": p.name,
                 "category": p.category,
                 "type": p.type,
-                "config": mask_secrets(p.config, p.category, p.type),
+                "config": mask_secrets(decrypt_config(p.config or {}, user_id), p.category, p.type),
                 "is_active": p.is_active,
                 "reference": f"db:{p.id}",
                 "source": "user",
@@ -1227,7 +1229,7 @@ async def list_providers(
                     "name": p.name,
                     "category": p.category,
                     "type": p.type,
-                    "config": mask_secrets(p.config, p.category, p.type),
+                    "config": mask_secrets(decrypt_config(p.config or {}, user_id), p.category, p.type),
                     "is_active": p.is_active,
                     "reference": f"db:{p.id}",
                     "source": "user",
@@ -1245,7 +1247,7 @@ async def list_providers(
                 "name": p.name,
                 "category": p.category,
                 "type": p.type,
-                "config": mask_secrets(p.config, p.category, p.type),
+                "config": mask_secrets(decrypt_config(p.config or {}, user_id), p.category, p.type),
                 "is_active": p.is_active,
                 "reference": f"db:{p.id}",
                 "source": "user",
@@ -1294,7 +1296,7 @@ async def create_provider(
         name=provider.name,
         category=provider.category,
         type=provider.type,
-        config=normalized,
+        config=encrypt_config(normalized, user_id),
         is_active=provider.is_active,
     )
 
@@ -1321,7 +1323,7 @@ async def create_provider(
 
     # Mask secrets in response
     created_dict["config"] = mask_secrets(
-        created_dict["config"],
+        decrypt_config(created_dict["config"] or {}, user_id),
         created_dict["category"],
         created_dict["type"],
     )
@@ -1396,7 +1398,7 @@ async def get_provider(
             provider.model_dump() if hasattr(provider, "model_dump") else dict(provider)
         )
         result["config"] = mask_secrets(
-            result["config"], result["category"], result["type"]
+            decrypt_config(result["config"] or {}, user_id), result["category"], result["type"]
         )
         result["reference"] = f"db:{result['id']}"
         result["source"] = "user"
@@ -1466,7 +1468,7 @@ async def update_provider(
         if not is_valid:
             raise HTTPException(status_code=400, detail={"errors": errors})
 
-        update_data.config = normalized
+        update_data.config = encrypt_config(normalized, user_id)
 
     # Build update dict excluding None values
     update_dict: dict[str, Any] = {"updated_at": datetime.now(timezone.utc)}
@@ -1496,7 +1498,7 @@ async def update_provider(
     updated = await verify_provider_ownership(db, provider_id, user_id, is_superuser)
     result = updated.model_dump() if hasattr(updated, "model_dump") else dict(updated)
     result["config"] = mask_secrets(
-        result["config"], result["category"], result["type"]
+        decrypt_config(result["config"] or {}, user_id), result["category"], result["type"]
     )
 
     return result

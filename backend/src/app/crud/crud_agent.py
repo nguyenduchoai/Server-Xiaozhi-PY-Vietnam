@@ -624,6 +624,7 @@ class CRUDAgent(
         """
         from ..crud.crud_provider import crud_provider
         from ..ai.module_factory import parse_provider_reference
+        from ..utils.config_encryption import decrypt_config
 
         provider_categories = ["ASR", "LLM", "VLLM", "TTS", "Memory", "Intent"]
         providers = {}
@@ -687,11 +688,13 @@ class CRUDAgent(
                 source, value = parsed
                 if source == "db" and value in provider_map:
                     provider = provider_map[value]
+                    user_id = template_dict.get("user_id")
+                    
                     providers[category] = {
                         "id": str(provider.id),
                         "name": provider.name,
                         "type": provider.type,
-                        "config": provider.config,
+                        "config": decrypt_config(provider.config, user_id),
                     }
                     logger.debug(
                         f"[{category}] ✅ Provider loaded from DB: {provider.name}"
