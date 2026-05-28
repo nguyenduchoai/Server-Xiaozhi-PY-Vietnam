@@ -332,7 +332,7 @@ export const LoginPage = () => {
                     onMouseEnter={(e) => (e.currentTarget.style.color = '#818CF8')}
                     onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(129, 140, 248, 0.8)')}
                   >
-                    Liên hệ quản trị viên
+                    Đăng ký ngay
                   </span>
                 </Text>
               </div>
