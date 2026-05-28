@@ -439,80 +439,11 @@ register_tool_schema(
 # Music Tools (Additional)
 register_tool_schema(
     ToolSchema(
-        name="search_music",
-        display_name="Tìm kiếm nhạc (NCT)",
-        description="Tìm kiếm bài hát từ NhacCuaTui API",
-        category=ToolCategory.MUSIC,
-        requires_config=False,
-        function_schema={
-            "type": "object",
-            "properties": {
-                "query": {
-                    "type": "string",
-                    "description": "Từ khóa tìm kiếm (tên bài hát hoặc nghệ sĩ)",
-                },
-                "limit": {
-                    "type": "integer",
-                    "description": "Số lượng kết quả tối đa",
-                    "default": 5,
-                },
-            },
-            "required": ["query"],
-        },
-    )
-)
-
-register_tool_schema(
-    ToolSchema(
-        name="stream_music_url",
-        display_name="Phát nhạc từ URL",
-        description="Phát nhạc trực tuyến từ URL stream trực tiếp",
-        category=ToolCategory.MUSIC,
-        requires_config=False,
-        function_schema={
-            "type": "object",
-            "properties": {
-                "url": {
-                    "type": "string",
-                    "description": "URL stream của bài hát",
-                },
-                "song_name": {
-                    "type": "string",
-                    "description": "Tên bài hát hiển thị",
-                },
-            },
-            "required": ["url"],
-        },
-    )
-)
-
-register_tool_schema(
-    ToolSchema(
         name="stop_music",
         display_name="Dừng nhạc",
         description="Dừng phát nhạc hoặc video đang chạy",
         category=ToolCategory.MUSIC,
         requires_config=False,
-    )
-)
-
-register_tool_schema(
-    ToolSchema(
-        name="play_search_result",
-        display_name="Phát kết quả tìm kiếm",
-        description="Phát bài hát từ kết quả tìm kiếm nhạc (NhacCuaTui)",
-        category=ToolCategory.MUSIC,
-        requires_config=False,
-        function_schema={
-            "type": "object",
-            "properties": {
-                "index": {
-                    "type": "integer",
-                    "description": "Số thứ tự bài hát trong kết quả tìm kiếm (1-10)",
-                },
-            },
-            "required": ["index"],
-        },
     )
 )
 
@@ -767,49 +698,4 @@ register_tool_schema(
     )
 )
 
-# ZingMP3 Search Tool (Vietnamese music)
-register_tool_schema(
-    ToolSchema(
-        name="search_zingmp3",
-        display_name="Tìm nhạc Zing MP3",
-        description="Tìm kiếm bài hát Việt Nam từ Zing MP3. Hỗ trợ tìm theo tên bài hát và/hoặc ca sĩ.",
-        category=ToolCategory.MUSIC,
-        requires_config=False,
-        function_schema={
-            "type": "object",
-            "properties": {
-                "song": {
-                    "type": "string",
-                    "description": "Tên bài hát cần tìm",
-                },
-                "artist": {
-                    "type": "string",
-                    "description": "Tên ca sĩ (tùy chọn, giúp tìm chính xác hơn)",
-                    "default": "",
-                },
-            },
-            "required": ["song"],
-        },
-    )
-)
-
-# ZingMP3 Play Tool
-register_tool_schema(
-    ToolSchema(
-        name="play_zingmp3",
-        display_name="Phát nhạc Zing MP3",
-        description="Phát bài hát từ Zing MP3 theo song_id đã tìm được từ search_zingmp3.",
-        category=ToolCategory.MUSIC,
-        requires_config=False,
-        function_schema={
-            "type": "object",
-            "properties": {
-                "song_id": {
-                    "type": "string",
-                    "description": "ID của bài hát từ kết quả tìm kiếm search_zingmp3",
-                },
-            },
-            "required": ["song_id"],
-        },
-    )
-)
+# ZingMP3 Search and Play tools removed for copyright safety

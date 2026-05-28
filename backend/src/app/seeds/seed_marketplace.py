@@ -19,14 +19,14 @@ from app.core.db.database import local_session as async_session
 SKILLS_DATA = [
     # ===================== SKILLS (from original marketplace) =====================
     {
-        "name": "Phát nhạc ZingMP3",
-        "slug": "phat-nhac-zingmp3",
-        "description": "Phát nhạc online từ ZingMP3 qua lệnh giọng nói. Hỗ trợ tìm kiếm bài hát, playlist, nghệ sĩ và phát trực tiếp trên thiết bị IoT.",
-        "short_description": "Nghe nhạc online",
+        "name": "Phát nhạc YouTube",
+        "slug": "phat-nhac-youtube",
+        "description": "Phát nhạc online từ YouTube qua lệnh giọng nói. Hỗ trợ tìm kiếm bài hát, video, nghệ sĩ và phát trực tiếp trên thiết bị IoT.",
+        "short_description": "Nghe nhạc YouTube",
         "skill_type": "plugin",
         "category": "entertainment",
         "tags": ["music", "streaming"],
-        "config": {"source": "zingmp3"},
+        "config": {"source": "youtube"},
         "is_public": True,
         "is_featured": True,
         "is_premium": False,
@@ -34,7 +34,7 @@ SKILLS_DATA = [
         "rating": 4.6,
         "rating_count": 48,
         "install_count": 312,
-        "icon_url": "https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.10.28/static/media/icon_zing_mp3_60.f6b51045.svg",
+        "icon_url": None,
         "banner_url": None,
     },
     {

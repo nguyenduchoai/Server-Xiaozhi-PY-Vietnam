@@ -99,16 +99,10 @@ class ToolManager:
                 self.logger.debug(f"Tool name normalized (no underscore): {tool_name} -> {registered_name}")
                 return registered_name
         
-        # 4. Common alias mapping
         aliases = {
-            "playsearchresult": "play_search_result",
-            "searchmusic": "search_music",
             "stopmusic": "stop_music",
             "searchyoutube": "search_youtube",
             "playyoutube": "play_youtube",
-            "searchzingmp3": "search_zingmp3",
-            "playzingmp3": "play_zingmp3",
-            "streammusicurl": "stream_music_url",
         }
         if lower_name in aliases:
             alias_target = aliases[lower_name]
@@ -147,42 +141,15 @@ class ToolManager:
                 f"Kết quả thực thi công cụ: {format_action_response(result)}"
             )
             
-            # Fallback: Nếu self_music_play_song fail, tự động tìm nhạc online VÀ PHÁT LUÔN
+            # Fallback: Nếu self_music_play_song fail, tự động tìm nhạc trên YouTube và phát
             if tool_name == "self_music_play_song" and result:
                 # Kiểm tra nếu result chứa thông báo lỗi
                 result_str = str(result.result or result.response or "")
                 if "fail" in result_str.lower() or "error" in result_str.lower() or "không" in result_str.lower():
-                    self.logger.debug(f"[Fallback] self_music_play_song failed, trying online sources...")
+                    self.logger.debug(f"[Fallback] self_music_play_song failed, trying YouTube...")
                     song_name = arguments.get("song_name", "")
                     query = song_name if song_name and song_name != "random" else "nhạc hot"
                     
-                    # === TÌM NHACCUATUI TRƯỚC ===
-                    from app.ai.plugins_func.functions.music.search_music import _search_nhaccuatui_sync
-                    songs = _search_nhaccuatui_sync(query, limit=3)
-                    
-                    # Nếu không tìm thấy, thử lại với query đơn giản hơn
-                    if not songs or not isinstance(songs, list) or len(songs) == 0:
-                        simple_query = query.replace("MTP", "").replace("MT", "").strip()
-                        if simple_query != query:
-                            self.logger.debug(f"[Fallback] Retrying NhacCuaTui with: {simple_query}")
-                            songs = _search_nhaccuatui_sync(simple_query, limit=3)
-                    
-                    # Nếu NhacCuaTui có kết quả, phát luôn
-                    if songs and isinstance(songs, list) and len(songs) > 0:
-                        first_song = songs[0]
-                        stream_url = first_song.get("stream_url")
-                        song_title = first_song.get("name", "")
-                        
-                        if stream_url:
-                            self.logger.debug(f"[Fallback] NhacCuaTui found: {song_title}, auto-playing...")
-                            play_result = await self.execute_tool("stream_music_url", {
-                                "url": stream_url,
-                                "song_name": song_title
-                            })
-                            return play_result
-                    
-                    # === NẾU NHACCUATUI KHÔNG CÓ, TÌM YOUTUBE ===
-                    self.logger.debug(f"[Fallback] NhacCuaTui not found, trying YouTube...")
                     try:
                         from pytubefix import Search
                         yt_search = Search(query)
@@ -200,24 +167,9 @@ class ToolManager:
                             })
                             return play_result
                         else:
-                            self.logger.debug("[Fallback] YouTube also not found")
+                            self.logger.debug("[Fallback] YouTube not found")
                     except Exception as yt_err:
                         self.logger.debug(f"[Fallback] YouTube search error: {yt_err}")
-                    
-                    # === FALLBACK CUỐI: TÌM "NHẠC TRẺ" ===
-                    self.logger.debug(f"[Fallback] Last resort: searching 'nhạc trẻ'...")
-                    songs = _search_nhaccuatui_sync("nhạc trẻ", limit=3)
-                    if songs and isinstance(songs, list) and len(songs) > 0:
-                        first_song = songs[0]
-                        stream_url = first_song.get("stream_url")
-                        song_title = first_song.get("name", "")
-                        if stream_url:
-                            self.logger.debug(f"[Fallback] Playing default: {song_title}")
-                            play_result = await self.execute_tool("stream_music_url", {
-                                "url": stream_url,
-                                "song_name": song_title
-                            })
-                            return play_result
             
             return result
 

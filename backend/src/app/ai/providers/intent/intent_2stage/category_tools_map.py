@@ -50,13 +50,12 @@ INTENT_CATEGORIES: Dict[str, Dict] = {
     "music": {
         "description": "Nghe nhạc, tìm bài hát, điều khiển nhạc",
         "keywords": ["nhạc", "bài hát", "phát", "nghe", "mở nhạc", "tìm nhạc", "bật nhạc",
-                     "hát", "ca sĩ", "album", "playlist", "youtube", "mp3", "zingmp3",
+                     "hát", "ca sĩ", "album", "playlist", "youtube",
                      "bài số", "bài tiếp", "bài trước", "dừng nhạc", "tắt nhạc", "radio"],
         "skip_stage2": False,
         "tools": [
-            "search_music", "stream_music_url", "stop_music",
-            "search_youtube", "play_youtube", "play_search_result",
-            "search_zingmp3", "play_zingmp3", "play_music",
+            "stop_music",
+            "search_youtube", "play_youtube", "play_music",
             "self_music_play_song", "self_music_stop", "self_music_next",
             "self_music_previous", "self_radio_play", "self_radio_stop"
         ]

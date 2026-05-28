@@ -33,7 +33,7 @@ play_music_function_desc = {
     "type": "function",
     "function": {
         "name": "play_music",
-        "description": "Phát nhạc từ thư mục LOCAL (trong bộ nhớ của Agent). CHỈ dùng khi người dùng nhắc đến file nhạc cục bộ. Đối với yêu cầu nghe nhạc thông thường, hãy dùng search_music hoặc search_youtube.",
+        "description": "Phát nhạc từ thư mục LOCAL (trong bộ nhớ của Agent). CHỈ dùng khi người dùng nhắc đến file nhạc cục bộ. Đối với yêu cầu nghe nhạc thông thường, hãy dùng search_youtube.",
         "parameters": {
             "type": "object",
             "properties": {
