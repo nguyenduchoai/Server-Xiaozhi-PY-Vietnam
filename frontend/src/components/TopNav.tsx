@@ -201,20 +201,25 @@ export function TopNav({ isAdmin = false }: TopNavProps) {
                                                 onMouseEnter={cancelClose}
                                                 onMouseLeave={scheduleClose}
                                             >
-                                                {group.items.map((item, itemIdx) => (
-                                                    <button
-                                                        key={itemIdx}
-                                                        onClick={() => handleItemClick(item.path)}
-                                                        className={cn(
-                                                            "w-full text-left px-4 py-2.5 text-sm transition-colors",
-                                                            isActive(item.path)
-                                                                ? "bg-primary/10 text-primary font-medium"
-                                                                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                                                        )}
-                                                    >
-                                                        {item.label}
-                                                    </button>
-                                                ))}
+                                                {group.items.map((item, itemIdx) => {
+                                                    if ((item as any).type === 'divider') {
+                                                        return <div key={itemIdx} className="h-px bg-border my-1 w-full" />;
+                                                    }
+                                                    return (
+                                                        <button
+                                                            key={itemIdx}
+                                                            onClick={() => handleItemClick(item.path!)}
+                                                            className={cn(
+                                                                "w-full text-left px-4 py-2.5 text-sm transition-colors",
+                                                                isActive(item.path!)
+                                                                    ? "bg-primary/10 text-primary font-medium"
+                                                                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                                                            )}
+                                                        >
+                                                            {item.label}
+                                                        </button>
+                                                    );
+                                                })}
                                             </div>
                                         )}
                                     </>
@@ -279,20 +284,25 @@ export function TopNav({ isAdmin = false }: TopNavProps) {
                                                         onMouseEnter={cancelClose}
                                                         onMouseLeave={scheduleClose}
                                                     >
-                                                        {group.items.map((item, itemIdx) => (
-                                                            <button
-                                                                key={itemIdx}
-                                                                onClick={() => handleItemClick(item.path)}
-                                                                className={cn(
-                                                                    "w-full text-left px-4 py-2.5 text-sm transition-colors",
-                                                                    isActive(item.path)
-                                                                        ? "bg-destructive/10 text-destructive font-medium"
-                                                                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                                                                )}
-                                                            >
-                                                                {item.label}
-                                                            </button>
-                                                        ))}
+                                                       {group.items.map((item, itemIdx) => {
+                                                            if ((item as any).type === 'divider') {
+                                                                return <div key={itemIdx} className="h-px bg-border my-1 w-full" />;
+                                                            }
+                                                            return (
+                                                                <button
+                                                                    key={itemIdx}
+                                                                    onClick={() => handleItemClick(item.path!)}
+                                                                    className={cn(
+                                                                        "w-full text-left px-4 py-2.5 text-sm transition-colors",
+                                                                        isActive(item.path!)
+                                                                            ? "bg-destructive/10 text-destructive font-medium"
+                                                                            : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                                                                    )}
+                                                                >
+                                                                    {item.label}
+                                                                </button>
+                                                            );
+                                                        })}
                                                     </div>
                                                 )}
                                             </>
@@ -360,20 +370,25 @@ export function TopNav({ isAdmin = false }: TopNavProps) {
                                             </button>
                                             {isDropdownOpen && group.items && (
                                                 <div className="ml-4 mt-1 space-y-0.5">
-                                                    {group.items.map((item, itemIdx) => (
-                                                        <button
-                                                            key={itemIdx}
-                                                            onClick={() => handleItemClick(item.path)}
-                                                            className={cn(
-                                                                "w-full text-left px-3 py-2 rounded-md text-sm transition-colors",
-                                                                isActive(item.path)
-                                                                    ? "bg-primary/10 text-primary font-medium"
-                                                                    : "text-muted-foreground hover:bg-accent"
-                                                            )}
-                                                        >
-                                                            {item.label}
-                                                        </button>
-                                                    ))}
+                                                   {group.items.map((item, itemIdx) => {
+                                                        if ((item as any).type === 'divider') {
+                                                            return <div key={itemIdx} className="h-px bg-border my-1 w-full" />;
+                                                        }
+                                                        return (
+                                                            <button
+                                                                key={itemIdx}
+                                                                onClick={() => handleItemClick(item.path!)}
+                                                                className={cn(
+                                                                    "w-full text-left px-3 py-2 rounded-md text-sm transition-colors",
+                                                                    isActive(item.path!)
+                                                                        ? "bg-primary/10 text-primary font-medium"
+                                                                        : "text-muted-foreground hover:bg-accent"
+                                                                )}
+                                                            >
+                                                                {item.label}
+                                                            </button>
+                                                        );
+                                                    })}
                                                 </div>
                                             )}
                                         </>
@@ -427,20 +442,25 @@ export function TopNav({ isAdmin = false }: TopNavProps) {
                                                     </button>
                                                     {isDropdownOpen && group.items && (
                                                         <div className="ml-4 mt-1 space-y-0.5">
-                                                            {group.items.map((item, itemIdx) => (
-                                                                <button
-                                                                    key={itemIdx}
-                                                                    onClick={() => handleItemClick(item.path)}
-                                                                    className={cn(
-                                                                        "w-full text-left px-3 py-2 rounded-md text-sm transition-colors",
-                                                                        isActive(item.path)
-                                                                            ? "bg-destructive/10 text-destructive font-medium"
-                                                                            : "text-muted-foreground hover:bg-accent"
-                                                                    )}
-                                                                >
-                                                                    {item.label}
-                                                                </button>
-                                                            ))}
+                                                           {group.items.map((item, itemIdx) => {
+                                                                if ((item as any).type === 'divider') {
+                                                                    return <div key={itemIdx} className="h-px bg-border my-1 w-full" />;
+                                                                }
+                                                                return (
+                                                                    <button
+                                                                        key={itemIdx}
+                                                                        onClick={() => handleItemClick(item.path!)}
+                                                                        className={cn(
+                                                                            "w-full text-left px-3 py-2 rounded-md text-sm transition-colors",
+                                                                            isActive(item.path!)
+                                                                                ? "bg-destructive/10 text-destructive font-medium"
+                                                                                : "text-muted-foreground hover:bg-accent"
+                                                                        )}
+                                                                    >
+                                                                        {item.label}
+                                                                    </button>
+                                                                );
+                                                            })}
                                                         </div>
                                                     )}
                                                 </>
