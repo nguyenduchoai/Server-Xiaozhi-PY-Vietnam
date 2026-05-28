@@ -349,31 +349,6 @@ const AgentDetailTabsComponent = ({
                 </div>
             </TabPane>
 
-            {/* Tab: Tính Năng (Feature Modules) */}
-            <TabPane
-                tab={
-                    <span className="flex items-center gap-2">
-                        <Puzzle size={16} />
-                        {t("tab_features", "Tính Năng")}
-                    </span>
-                }
-                itemKey="features"
-            >
-                <FeatureModulesPanel agentId={agentId} agent={agent} onRefresh={onRefresh} />
-            </TabPane>
-
-            {/* Tab: Banners */}
-            <TabPane
-                tab={
-                    <span className="flex items-center gap-2">
-                        <Monitor size={16} />
-                        Kiosk Banners
-                    </span>
-                }
-                itemKey="banners"
-            >
-                <AgentBannerPanel agentId={agentId} agent={agent} onRefresh={onRefresh} />
-            </TabPane>
 
             {/* Tab: History */}
             <TabPane
@@ -388,21 +363,6 @@ const AgentDetailTabsComponent = ({
                 <AgentHistorySection agentId={agentId} />
             </TabPane>
 
-            {/* Tab 7: Notification Channels */}
-            <TabPane
-                tab={
-                    <span className="flex items-center gap-2">
-                        <BellLucide size={16} />
-                        {t("tab_notification_channels", "Kênh Thông Báo")}
-                    </span>
-                }
-                itemKey="notification-channels"
-            >
-                <NotificationChannelsPanel
-                    agentId={agentId}
-                    agentName={agent?.agent_name}
-                />
-            </TabPane>
 
             {/* Tab 8: Webhook API */}
             <TabPane
