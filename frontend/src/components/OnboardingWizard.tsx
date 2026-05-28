@@ -21,9 +21,11 @@ import {
     CheckCircle2,
     Rocket,
     Zap,
+    Key,
 } from "lucide-react";
 import { useAgentList } from "@/hooks/useAgent";
 import { useDeviceList } from "@/hooks/useDevice";
+import { useProviderList } from "@/queries/provider-queries";
 
 const { Title, Text } = Typography;
 
@@ -51,7 +53,8 @@ export function OnboardingWizard() {
     const navigate = useNavigate();
     const { } = useTranslation();
 
-    // Data queries — check if user has created agents/devices
+    // Data queries — check if user has created agents/devices/providers
+    const { data: providerData, isLoading: providersLoading } = useProviderList({ page: 1, page_size: 1 });
     const { data: agentData, isLoading: agentsLoading } = useAgentList();
     const { data: deviceData, isLoading: devicesLoading } = useDeviceList({ page: 1, page_size: 1 });
 
@@ -61,16 +64,28 @@ export function OnboardingWizard() {
     const [currentStep, setCurrentStep] = useState(0);
     const [isMinimized, setIsMinimized] = useState(false);
 
+    const hasProviders = (providerData?.data?.length ?? 0) > 0;
     const hasAgents = (agentData?.data?.length ?? 0) > 0;
     const hasDevices = (deviceData?.data?.length ?? 0) > 0;
 
     // Define steps
     const steps: OnboardingStep[] = useMemo(() => [
         {
+            id: "configure-provider",
+            title: "Cấu hình Nhà cung cấp (AI Provider)",
+            subtitle: "Bước 1/4",
+            description: "Để sử dụng AI, trước tiên bạn cần cấu hình nhà cung cấp (ví dụ: Google AI Studio cho Gemini, OpenAI). Điều này giúp Agent có thể tư duy và trò chuyện.",
+            icon: <Key size={28} />,
+            actionLabel: "Cấu hình ngay",
+            actionRoute: "/providers",
+            checkComplete: () => hasProviders,
+            gradient: "linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)",
+        },
+        {
             id: "create-agent",
             title: "Tạo AI Agent đầu tiên",
-            subtitle: "Bước 1/3",
-            description: "AI Agent là \"bộ não\" điều khiển thiết bị của bạn. Mỗi Agent có thể được cấu hình giọng nói, tính cách và kỹ năng riêng.",
+            subtitle: "Bước 2/4",
+            description: "AI Agent là \"bộ não\" điều khiển thiết bị của bạn. Mỗi Agent có thể được cấu hình giọng nói, tính cách và kỹ năng riêng dựa trên nhà cung cấp AI đã chọn.",
             icon: <Bot size={28} />,
             actionLabel: "Tạo Agent ngay",
             actionRoute: "/agents",
@@ -80,8 +95,8 @@ export function OnboardingWizard() {
         {
             id: "add-device",
             title: "Kết nối Thiết bị",
-            subtitle: "Bước 2/3",
-            description: "Kết nối thiết bị ESP32 phần cứng để Agent có thể giao tiếp với bạn qua giọng nói. Bạn cần mã kích hoạt từ thiết bị.",
+            subtitle: "Bước 3/4",
+            description: "Kết nối thiết bị phần cứng để giao tiếp với AI Agent của bạn qua giọng nói. Bạn cần mã kích hoạt từ thiết bị.",
             icon: <Smartphone size={28} />,
             actionLabel: "Thêm Thiết bị",
             actionRoute: "/devices",
@@ -91,21 +106,28 @@ export function OnboardingWizard() {
         {
             id: "complete",
             title: "Hoàn tất! 🎉",
-            subtitle: "Bước 3/3",
+            subtitle: "Bước 4/4",
             description: "Tuyệt vời! Bạn đã sẵn sàng sử dụng Xiaozhi AI. Hãy khám phá Dashboard để quản lý mọi thứ.",
             icon: <Sparkles size={28} />,
             actionLabel: "Đi tới Dashboard",
             actionRoute: "/dashboard",
-            checkComplete: () => hasAgents && hasDevices,
+            checkComplete: () => hasProviders && hasAgents && hasDevices,
             gradient: "linear-gradient(135deg, #10b981 0%, #34d399 100%)",
         },
-    ], [hasAgents, hasDevices]);
+    ], [hasProviders, hasAgents, hasDevices]);
 
     // Auto-advance step based on completion
     useEffect(() => {
-        if (hasAgents && currentStep === 0) setCurrentStep(1);
-        if (hasDevices && currentStep === 1) setCurrentStep(2);
-    }, [hasAgents, hasDevices, currentStep]);
+        if (!hasProviders) {
+            setCurrentStep(0);
+        } else if (!hasAgents) {
+            setCurrentStep(1);
+        } else if (!hasDevices) {
+            setCurrentStep(2);
+        } else {
+            setCurrentStep(3);
+        }
+    }, [hasProviders, hasAgents, hasDevices]);
 
     // Calculate progress
     const completedCount = steps.filter(s => s.checkComplete()).length;
@@ -118,8 +140,8 @@ export function OnboardingWizard() {
     };
 
     // Don't show if dismissed, data loading, or already completed everything
-    if (dismissed || agentsLoading || devicesLoading) return null;
-    if (hasAgents && hasDevices) return null;
+    if (dismissed || providersLoading || agentsLoading || devicesLoading) return null;
+    if (hasProviders && hasAgents && hasDevices) return null;
 
     const activeStep = steps[currentStep];
 

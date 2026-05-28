@@ -183,7 +183,7 @@ def generate_password_signature(content: str, secret_key: str) -> str:
         return ""
 
 
-def get_websocket_url(settings: Settings, local_ip: str) -> str:
+def get_websocket_url(settings: Settings, local_ip: str, request: Request = None) -> str:
     """Lấy địa chỉ websocket
 
     OTA response sẽ trả URL này cho firmware để kết nối WebSocket.
@@ -198,6 +198,7 @@ def get_websocket_url(settings: Settings, local_ip: str) -> str:
     Args:
         settings: Settings object với server config
         local_ip: Địa chỉ IP cục bộ
+        request: FastAPI Request object để lấy domain động
 
     Returns:
         str: Địa chỉ websocket
@@ -208,14 +209,54 @@ def get_websocket_url(settings: Settings, local_ip: str) -> str:
 
     if websocket_config and "của bạn" not in websocket_config:
         return websocket_config
-    else:
-        port = settings.server.port
-        return f"ws://{local_ip}:{port}/"
+    
+    # Try to use request headers to construct the WebSocket URL dynamically
+    if request:
+        host = request.headers.get("x-forwarded-host") or request.headers.get("host")
+        if host:
+            # Check if host is not a private/internal IP or localhost
+            is_internal = False
+            host_clean = host.split(":")[0]
+            if (host_clean == "localhost" or 
+                host_clean == "backend" or 
+                host_clean.startswith("127.") or 
+                host_clean.startswith("172.") or 
+                host_clean.startswith("192.168.") or 
+                host_clean.startswith("10.")):
+                is_internal = True
+            
+            if not is_internal:
+                proto = request.headers.get("x-forwarded-proto") or request.url.scheme
+                ws_proto = "wss" if proto == "https" else "ws"
+                return f"{ws_proto}://{host}/ws/"
+
+    # Fallback 1: check SERVER_URL in environment
+    server_url = os.environ.get("SERVER_URL", "")
+    if server_url and "localhost" not in server_url and "127.0.0.1" not in server_url:
+        if server_url.startswith("https://"):
+            domain = server_url.replace("https://", "").rstrip("/")
+            return f"wss://{domain}/ws/"
+        elif server_url.startswith("http://"):
+            domain = server_url.replace("http://", "").rstrip("/")
+            return f"ws://{domain}/ws/"
+
+    # Fallback 2: If we still have request, even if internal IP, it's better than local_ip fallback
+    if request:
+        host = request.headers.get("x-forwarded-host") or request.headers.get("host")
+        if host:
+            proto = request.headers.get("x-forwarded-proto") or request.url.scheme
+            ws_proto = "wss" if proto == "https" else "ws"
+            return f"{ws_proto}://{host}/ws/"
+
+    port = settings.server.port
+    return f"ws://{local_ip}:{port}/"
+
 
 
 @router.get("", response_model=dict, include_in_schema=True, dependencies=[Depends(rate_limit_ota)])
 @router.get("/", response_model=dict, include_in_schema=False, dependencies=[Depends(rate_limit_ota)])
 async def ota_get(
+    request: Request,
     settings: Settings = Depends(get_settings),
 ):
     """
@@ -223,7 +264,7 @@ async def ota_get(
     """
     try:
         local_ip = get_local_ip()
-        websocket_url = get_websocket_url(settings, local_ip)
+        websocket_url = get_websocket_url(settings, local_ip, request)
 
         message = f"OTA hoạt động bình thường, địa chỉ websocket gửi cho thiết bị là: {websocket_url}"
         return {"message": message, "websocket_url": websocket_url}
@@ -237,6 +278,7 @@ async def ota_get(
 @router.post("", response_model=dict, dependencies=[Depends(rate_limit_ota)])
 @router.post("/", response_model=dict, include_in_schema=False, dependencies=[Depends(rate_limit_ota)])
 async def ota_post(
+    request: Request,
     device_data: OTADeviceData,
     device_id: str = Header(..., alias="device-id"),
     client_id: str = Header(None, alias="client-id"),  # Optional — old firmware may not send this
@@ -507,7 +549,7 @@ async def ota_post(
                 token = ""
 
         return_json["websocket"] = {
-            "url": get_websocket_url(settings, local_ip),
+            "url": get_websocket_url(settings, local_ip, request),
             "token": token,
         }
         logger.debug(
