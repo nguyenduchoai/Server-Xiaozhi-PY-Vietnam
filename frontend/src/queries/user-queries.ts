@@ -108,7 +108,10 @@ export const useMe = (enabled = true) => {
       return user;
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: 1,
+    retry: (failureCount, error: any) => {
+      if (error?.response?.status === 401 || error?.response?.status === 403) return false;
+      return failureCount < 1;
+    },
     enabled,
   });
 };

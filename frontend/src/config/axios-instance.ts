@@ -141,8 +141,7 @@ export const setupAxiosInterceptors = (
           callbackRefs.setAccessToken(null);
           removeAccessToken();
           callbackRefs.setAuthError("Session expired. Please login again.");
-          // Redirect to login page
-          window.location.href = "/login";
+          // Redirect is handled by ProtectedRoute component when isAuthenticated becomes false
           return Promise.reject(refreshError);
         } finally {
           isRefreshing = false;
