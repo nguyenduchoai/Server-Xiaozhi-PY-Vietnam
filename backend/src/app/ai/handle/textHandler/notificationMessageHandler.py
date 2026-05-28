@@ -4,7 +4,7 @@ import json
 import uuid
 from typing import TYPE_CHECKING, Any, Dict, Optional
 
-from app.ai.handle.intentHandler import speak_txt
+
 from app.ai.handle.textMessageHandler import TextMessageHandler
 from app.ai.handle.textMessageType import TextMessageType
 from app.core.logger import setup_logging
@@ -102,6 +102,7 @@ class NotificationProcessor:
             conn.tts.tts_audio_first_sentence = False
         
         # Use imported speak_txt function
+        from app.ai.handle.intentHandler import speak_txt
         speak_txt(conn, content)
 
     @staticmethod

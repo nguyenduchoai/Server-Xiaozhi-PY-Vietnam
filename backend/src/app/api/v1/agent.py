@@ -39,7 +39,7 @@ from ...crud.crud_agent_template_assignment import crud_assignment
 from ...crud.crud_device import crud_device
 from ...crud.crud_provider import crud_provider
 from ...services.quota_service import QuotaService
-from ...services.agent_feature_assignments import validate_agent_feature_assignments
+# Premium feature validation removed in CE
 from ...schemas.agent import (
     AgentCreate,
     AgentCreateInternal,
@@ -304,17 +304,7 @@ async def create_agent(
         if not can_create:
             raise HTTPException(status_code=403, detail=message)
 
-        create_data = await validate_agent_feature_assignments(
-            db,
-            user_id=user_id,
-            update_data=agent.model_dump(),
-        )
-        if create_data.get("course_ids"):
-            create_data["enable_education"] = True
-        if create_data.get("sales_program_ids"):
-            create_data["enable_sales"] = True
-        if create_data.get("meeting_room_ids"):
-            create_data["enable_meeting"] = True
+        create_data = agent.model_dump()
 
         agent_create_internal = AgentCreateInternal(
             **create_data,
@@ -408,17 +398,7 @@ async def update_agent(
 
         await verify_agent_ownership(db, agent_id, current_user["id"])
 
-        update_dict = await validate_agent_feature_assignments(
-            db,
-            user_id=current_user["id"],
-            update_data=agent_update.model_dump(exclude_unset=True),
-        )
-        if update_dict.get("course_ids"):
-            update_dict["enable_education"] = True
-        if update_dict.get("sales_program_ids"):
-            update_dict["enable_sales"] = True
-        if update_dict.get("meeting_room_ids"):
-            update_dict["enable_meeting"] = True
+        update_dict = agent_update.model_dump(exclude_unset=True)
 
         update_data = AgentUpdateInternal(
             **update_dict,

@@ -608,6 +608,84 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
             </section>
 
             {/* =========================================================== */}
+            {/* CÀI ĐẶT SERVER */}
+            {/* =========================================================== */}
+            <section id="installation" className="py-24 bg-white border-t border-slate-200/50">
+                <div className="container mx-auto px-4 max-w-4xl">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl font-extrabold text-slate-900 mb-4">Hướng Dẫn Cài Đặt Server</h2>
+                        <p className="text-slate-500">Tự triển khai máy chủ Xiaozhi CE của riêng bạn chỉ với vài thao tác cơ bản.</p>
+                    </div>
+
+                    <div className="bg-slate-900 rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden relative">
+                        <div className="absolute top-0 right-0 p-8 opacity-10">
+                            <Database className="w-48 h-48 text-white" />
+                        </div>
+                        
+                        <div className="relative z-10 space-y-8">
+                            {/* Step 1 */}
+                            <div>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white font-bold">1</div>
+                                    <h3 className="text-xl font-bold text-white">Yêu Cầu Hệ Thống</h3>
+                                </div>
+                                <ul className="list-disc list-inside text-slate-300 ml-11 space-y-2">
+                                    <li>Máy chủ Linux (Ubuntu/Debian) có kết nối Internet.</li>
+                                    <li>Cài đặt sẵn Docker và Docker Compose.</li>
+                                    <li>Có ít nhất một API Key của các nhà cung cấp AI (OpenAI, Gemini, DeepSeek).</li>
+                                </ul>
+                            </div>
+
+                            {/* Step 2 */}
+                            <div>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white font-bold">2</div>
+                                    <h3 className="text-xl font-bold text-white">Clone Mã Nguồn</h3>
+                                </div>
+                                <div className="ml-11 bg-slate-950 rounded-xl p-4 font-mono text-sm text-green-400 overflow-x-auto border border-slate-800">
+                                    git clone https://github.com/nguyenduchoai/Server-Xiaozhi-PY-Vietnam.git<br/>
+                                    cd Server-Xiaozhi-PY-Vietnam
+                                </div>
+                            </div>
+
+                            {/* Step 3 */}
+                            <div>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white font-bold">3</div>
+                                    <h3 className="text-xl font-bold text-white">Cấu Hình Môi Trường</h3>
+                                </div>
+                                <p className="text-slate-300 ml-11 mb-2">Tạo file cấu hình từ file mẫu và điền các thông tin bảo mật của bạn (Mật khẩu Admin, API Keys):</p>
+                                <div className="ml-11 bg-slate-950 rounded-xl p-4 font-mono text-sm text-green-400 overflow-x-auto border border-slate-800">
+                                    cp .env.example .env<br/>
+                                    nano .env
+                                </div>
+                            </div>
+
+                            {/* Step 4 */}
+                            <div>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white font-bold">4</div>
+                                    <h3 className="text-xl font-bold text-white">Khởi Chạy Dịch Vụ</h3>
+                                </div>
+                                <p className="text-slate-300 ml-11 mb-2">Khởi động tất cả các container nền tảng bằng Docker Compose:</p>
+                                <div className="ml-11 bg-slate-950 rounded-xl p-4 font-mono text-sm text-green-400 overflow-x-auto border border-slate-800">
+                                    docker compose up -d
+                                </div>
+                            </div>
+                            
+                            {/* Note */}
+                            <div className="ml-11 mt-6 bg-violet-900/40 border border-violet-500/30 rounded-xl p-6">
+                                <h4 className="text-violet-300 font-bold flex items-center gap-2 mb-2"><Sparkles className="w-5 h-5"/> Kết Nối Thiết Bị</h4>
+                                <p className="text-slate-300 text-sm">
+                                    Nếu bạn dùng firmware chuẩn Xiaozhi, chỉ cần đổi địa chỉ <strong className="text-white">OTA URL</strong> về máy chủ này, thiết bị sẽ tự động tải bản cập nhật và kết nối tới MQTT của bạn. Tất cả dữ liệu và API Key được mã hóa một chiều hoàn toàn an toàn (BYOK - Zero Knowledge).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* =========================================================== */}
             {/* FAQ */}
             {/* =========================================================== */}
             <section id="faq" className="py-24 bg-slate-50 border-t border-slate-200/50">
