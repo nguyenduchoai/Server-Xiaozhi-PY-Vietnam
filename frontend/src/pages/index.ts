@@ -27,7 +27,6 @@ export { AssetTemplatesPage } from "./AssetTemplatesPage";
 export { MemoryPage } from "./MemoryPage";
 export { MarketplacePage } from "./MarketplacePage";
 export { DisplayCustomizerPage } from "./DisplayCustomizerPage";
-export { default as VoiceLibraryPage } from "./VoiceLibraryPage";
 export { AssetGeneratorPage } from "./AssetGeneratorPage";
 export { EmojiPackPage } from "./EmojiPackPage";
 export { EmojiPackEditorPage } from "./EmojiPackEditorPage";

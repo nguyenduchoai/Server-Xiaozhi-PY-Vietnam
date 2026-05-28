@@ -61,7 +61,6 @@ const menuGroups: MenuItem[] = [
         items: [
             { label: 'Memory', path: '/memory' },
             { label: 'Kho Tri Thức', path: '/knowledge' },
-            { label: 'Voices', path: '/voices' },
         ]
     },
     { 
@@ -83,10 +82,10 @@ const adminGroups: MenuItem[] = [
             { label: 'Users', path: '/admin/users' },
             { label: 'Thiết bị Hệ thống', path: '/admin/devices' },
             { label: 'Hardware Types', path: '/admin/hardware-types' },
-            { label: 'Plans', path: '/admin/plans' },
             { label: 'MCP Endpoint', path: '/admin/mcp-endpoint' },
             { label: 'Sức khỏe Hệ thống', path: '/admin/system-health' },
-            { label: 'Cài đặt Hệ thống', path: '/admin/system-settings' },
+            { label: '', path: '', type: 'divider' as any },
+            { label: 'Cài đặt Hệ thống', path: '/admin/system-settings', danger: true },
         ]
     }
 ];

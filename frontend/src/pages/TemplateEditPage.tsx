@@ -158,7 +158,6 @@ export const TemplateEditPage = () => {
         }
         // Fallback detection
         const refName = selectedTTS.replace("config:", "").replace("db:", "").toLowerCase();
-        if (refName.includes("valtec")) return "valtec";
         if (refName.includes("edge")) return "edge";
         return null;
     }, [selectedTTS, modules?.TTS]);

@@ -135,7 +135,14 @@ export function AdminUsersPage() {
       setShowCreateDialog(false);
       loadData();
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || "Không thể tạo người dùng");
+            const detail = error.response?.data?.detail;
+      let errMsg = "Không thể tạo người dùng";
+      if (typeof detail === 'string') {
+        errMsg = detail;
+      } else if (Array.isArray(detail) && detail.length > 0) {
+        errMsg = detail[0].msg;
+      }
+      toast.error(errMsg);
     } finally {
       setProcessing(false);
     }
@@ -228,7 +235,14 @@ export function AdminUsersPage() {
       setPasswordSuccess(result.message || "Đã đặt lại mật khẩu thành công!");
       // Don't close dialog immediately - show success message
     } catch (error: any) {
-      setPasswordError(error.response?.data?.detail || "Không thể đặt lại mật khẩu");
+            const detail = error.response?.data?.detail;
+      let errMsg = "Không thể đặt lại mật khẩu";
+      if (typeof detail === 'string') {
+        errMsg = detail;
+      } else if (Array.isArray(detail) && detail.length > 0) {
+        errMsg = detail[0].msg;
+      }
+      setPasswordError(errMsg);
     } finally {
       setProcessing(false);
     }
@@ -462,7 +476,7 @@ export function AdminUsersPage() {
               type="password"
               value={createForm.password}
               onChange={(v) => setCreateForm({ ...createForm, password: v })}
-              placeholder="Tối thiểu 8 ký tự"
+              placeholder="Ít nhất 8 ký tự: hoa, thường, số, đặc biệt"
             />
           </div>
 

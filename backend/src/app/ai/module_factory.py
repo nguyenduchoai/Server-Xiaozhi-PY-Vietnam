@@ -129,10 +129,6 @@ def _apply_tts_voice_override(
     if not voice:
         return False
 
-    if normalized_type in ("valtec_tts", "valtec"):
-        provider_config["speaker"] = voice
-        return True
-
     if normalized_type == "edge":
         # Edge voices look like vi-VN-HoaiMyNeural. Values such as NF/SF are
         # Valtec speakers and make Edge TTS return no audio.

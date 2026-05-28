@@ -42,7 +42,6 @@ from .memory import router as memory_router
 from .marketplace import router as marketplace_router
 from .news import router as news_router
 from .docs_guide import router as docs_guide_router
-from .voices import router as voices_router
 
 # Enhancement Features
 from .analytics import router as analytics_router
@@ -181,7 +180,6 @@ if _device_camera_imported:
 router.include_router(memory_router)
 router.include_router(marketplace_router)
 router.include_router(news_router)
-router.include_router(voices_router)
 
 # Themes
 router.include_router(themes_router)

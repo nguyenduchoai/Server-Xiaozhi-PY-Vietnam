@@ -493,7 +493,6 @@ async def get_provider_voices(
     - deepgram: Deepgram Aura TTS voices
     - google: Google Cloud Vietnamese TTS voices
     - gwen: Gwen local TTS
-    - valtec/valtec_tts: Valtec Vietnamese TTS (local, all VN)
     - piper_local: Piper local models
     - vieneu: VieNeu Vietnamese TTS presets
     - minimax: MiniMax TTS voices
@@ -721,7 +720,7 @@ async def get_provider_voices(
             error = (
                 f"Unsupported TTS provider: {provider_type}. Supported: "
                 "edge, openai, openai_stream, elevenlab, deepgram, google, "
-                "gwen, valtec, piper_local, vieneu, index_stream, custom, minimax"
+                "gwen, piper_local, vieneu, index_stream, custom, minimax"
             )
                 
     except httpx.HTTPStatusError as e:

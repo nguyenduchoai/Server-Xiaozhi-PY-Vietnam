@@ -77,6 +77,9 @@ async def get_or_create_settings(db: AsyncSession) -> SiteSettings:
                 {"label": "Đánh giá", "href": "#testimonials", "external": False},
                 {"label": "Liên hệ", "href": "#contact", "external": False},
             ],
+            solutions_list=[],
+            faq_list=[],
+            hero_stats=[],
         )
         db.add(settings)
         await db.commit()

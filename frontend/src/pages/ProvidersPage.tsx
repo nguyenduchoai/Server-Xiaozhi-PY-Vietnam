@@ -550,7 +550,7 @@ const ProvidersPageComponent = () => {
                 <li><strong>Lưu</strong> nếu test thành công!</li>
               </ol>
               <Text type="tertiary" size="small" className="mt-2 block">
-                Nhà cung cấp chưa có adapter riêng chỉ dùng được khi họ hỗ trợ OpenAI-compatible API. TTS hiện chỉ giữ Edge TTS và Valtec để tránh cấu hình không chạy được.
+                Nhà cung cấp chưa có adapter riêng chỉ dùng được khi họ hỗ trợ OpenAI-compatible API. TTS hiện hỗ trợ Edge TTS.
               </Text>
             </div>
           </div>

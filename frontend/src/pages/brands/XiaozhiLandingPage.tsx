@@ -28,7 +28,6 @@ const platformFeatures = [
         color: "from-violet-500 to-purple-600",
         features: [
             { icon: Mic, name: "Voice AI 24/7", desc: "Trợ lý giọng nói tiếng Việt mượt mà" },
-            { icon: Fingerprint, name: "Voice Cloning", desc: "Sao chép giọng nói chỉ trong 5 giây" },
             { icon: Bot, name: "Multi-LLM", desc: "Hỗ trợ 10+ nhà cung cấp AI hàng đầu" },
             { icon: MessageSquare, name: "Smart Chat", desc: "Luồng hội thoại tự nhiên, đa phương thức" },
         ]
@@ -71,11 +70,11 @@ const platformFeatures = [
 const coreHighlights = [
     {
         icon: Mic,
-        title: "11 Giọng Trí Tuệ Nhân Tạo",
-        subtitle: "Động cơ Valtec",
-        description: "Bao gồm 5 giọng đọc tiêu chuẩn và 6 slot clone khả dụng. Chất lượng Studio Grade lên đến 24kHz.",
+        title: "Giọng Trí Tuệ Nhân Tạo",
+        subtitle: "Đa dạng tùy chọn",
+        description: "Tích hợp nhiều Engine TTS chất lượng cao. Giọng đọc tự nhiên, phản hồi nhanh chóng.",
         gradient: "from-violet-500 to-fuchsia-600",
-        stats: "24kHz Audio"
+        stats: "Natural Voice"
     },
     {
         icon: Download,
@@ -159,7 +158,6 @@ const techStack = [
     { name: "OpenAI GPT-4o", logo: "🤖" },
     { name: "Google Gemini", logo: "✨" },
     { name: "Anthropic Claude", logo: "🧠" },
-    { name: "Valtec Engine", logo: "🗣️" },
     { name: "ESP32 Ecosystem", logo: "📡" },
     { name: "Vite + React", logo: "⚡" },
 ];
@@ -171,7 +169,6 @@ const testimonialsData = [
 ];
 
 const faqData = [
-    { question: "Tính năng Clone Giọng (Voice Cloning) hoạt động như thế nào?", answer: "Bạn chỉ cần cung cấp một đoạn âm thanh mẫu dài từ 5-10 giây có lời nói rõ ràng. Động cơ Valtec TTS AI sẽ phân tích và tạo mô hình giọng nói. Thiết bị IoT sau đó có thể phát ra mọi câu trả lời bằng chính giọng gốc đó." },
     { question: "OTA Firmware Firmware hỗ trợ các thiết bị nào?", answer: "Hiện tại nền tảng tập trung mạnh vào dòng chip ESP32 (đặc biệt là ESP32-S3), hỗ trợ update từ xa không cần cáp, kèm theo giao diện theo dõi tiến trình và tính năng hạ cấp (rollback)." },
     { question: "Tôi có được tự cung cấp API Key AI (BYOK) không và nó có an toàn không?", answer: "Hoàn toàn được. Nền tảng được thiết kế mở (Bring Your Own Key). API Key của OpenAI, Google Gemini, Anthropic... của bạn sẽ được mã hóa an toàn bằng thuật toán AES-256 HKDF độc lập cho từng người dùng (Zero-Knowledge Architecture), giúp bạn hoàn toàn an tâm khi tích hợp kết nối." },
     { question: "MCP Tools là gì?", answer: "MCP (Model Context Protocol) là một chuẩn do Anthropic giới thiệu. Nền tảng của chúng tôi kết nối thiết bị IoT của bạn tới hàng loạt công cụ ngoài như: Lấy tin thời tiết, Tra cứu lịch Google, Điều khiển đèn thông minh..." },
@@ -201,8 +198,6 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
                     </div>
                     <nav className="hidden md:flex items-center gap-8">
                         <a href="#features" className="text-sm font-semibold text-slate-600 hover:text-violet-600 transition-colors">Tính năng</a>
-                        <a href="#voice" className="text-sm font-semibold text-slate-600 hover:text-violet-600 transition-colors">Voice AI</a>
-                        <a href="#usecases" className="text-sm font-semibold text-slate-600 hover:text-violet-600 transition-colors">Giải pháp</a>
                         <a href="#deploy" className="text-sm font-semibold text-slate-600 hover:text-violet-600 transition-colors">Triển khai</a>
                         <a href="#faq" className="text-sm font-semibold text-slate-600 hover:text-violet-600 transition-colors">Hỏi đáp</a>
                         <span className="w-px h-5 bg-slate-200"></span>
@@ -293,9 +288,9 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
              {/* =========================================================== */}
              {/* SPONSOR SECTION */}
              {/* =========================================================== */}
-             <section className="py-10 bg-slate-900 border-y border-slate-800/50">
+             <section className="py-10 bg-slate-50 border-y border-slate-200">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Được Cung Cấp Hệ Thống Đám Mây Bởi</p>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Được Cung Cấp Hệ Thống Đám Mây Bởi</p>
                     <div className="flex justify-center items-center opacity-80 hover:opacity-100 transition-opacity">
                         <img src="https://eztech.vn/wp-content/uploads/2024/09/logo-eztech.png" alt="EzTech" className="h-12 transition-all duration-500" />
                     </div>
@@ -387,227 +382,6 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
             </section>
 
             {/* =========================================================== */}
-            {/* VOICE COMPONENT SECTION */}
-            {/* =========================================================== */}
-            <section id="voice" className="py-24 bg-slate-50 text-slate-900 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-violet-200/50 to-transparent pointer-events-none"></div>
-                <div className="container mx-auto px-4 relative z-10">
-                    <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
-                        <div className="flex-1 space-y-8">
-                            <Badge className="bg-violet-100 text-violet-700 border-violet-200 px-3 py-1 text-sm">Hệ Thống Âm Thanh Cao Cấp</Badge>
-                            <h2 className="text-4xl lg:text-5xl font-extrabold leading-tight">
-                                Giao tiếp không vật cản qua <span className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">Voice Engine</span>
-                            </h2>
-                            <p className="text-slate-600 text-lg">
-                                Độ nét đáng kinh ngạc, chất giọng có hồn và công nghệ sao chép giọng nói đỉnh cao – thiết lập tiêu chuẩn mới về Trợ lý Cá nhân AI tại Việt Nam.
-                            </p>
-                            <div className="flex gap-4">
-                                <Button className="rounded-full bg-slate-900 text-white hover:bg-slate-800">Nghe thử Demo</Button>
-                            </div>
-                        </div>
-
-                        <div className="flex-1 w-full space-y-6">
-                            {ttsFeatures.map((tts, idx) => (
-                                <div key={idx} className="bg-white border border-slate-200 shadow-sm rounded-3xl p-8 backdrop-blur-md">
-                                    <div className="flex items-center justify-between mb-6">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-sm">
-                                                <tts.icon className="w-6 h-6 text-white" />
-                                            </div>
-                                            <div>
-                                                <h3 className="text-xl font-bold text-slate-900">{tts.name}</h3>
-                                                <p className="text-sm text-slate-500">{tts.description}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-wrap gap-2 mb-6">
-                                        {tts.voices.map((voice, vIdx) => (
-                                            <span key={vIdx} className="px-3 py-1.5 rounded-md text-sm font-medium bg-slate-100 text-slate-700 border border-slate-200/60">
-                                                {voice}
-                                            </span>
-                                        ))}
-                                    </div>
-                                    <div className="flex gap-6 text-sm text-slate-500 font-medium">
-                                        <div className="flex items-center gap-2"><Volume2 className="w-4 h-4 text-violet-600" /> {tts.quality} Định dạng</div>
-                                        <div className="flex items-center gap-2"><Zap className="w-4 h-4 text-amber-500" /> {tts.speed} Delay</div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* =========================================================== */}
-            {/* USE CASES & TABS */}
-            {/* =========================================================== */}
-            <section id="usecases" className="py-24 bg-slate-50">
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-16 max-w-2xl mx-auto">
-                        <h2 className="text-4xl font-extrabold text-slate-900 mb-6">Giải Pháp Phù Hợp Thực Tiễn</h2>
-                        <p className="text-lg text-slate-600">Được ứng dụng mạnh mẽ cho các tác vụ Thương mại hóa sản phẩm IoT B2B và Giải pháp tự động dân dụng thông minh.</p>
-                    </div>
-
-                    <div className="flex flex-wrap justify-center gap-4 mb-16">
-                        {useCases.map((uc, idx) => (
-                            <button
-                                key={uc.id}
-                                onClick={() => setSelectedUseCase(idx)}
-                                className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all border ${selectedUseCase === idx
-                                    ? `bg-slate-900 text-white border-slate-900 shadow-lg scale-105`
-                                    : 'bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 border-slate-200'
-                                    }`}
-                            >
-                                <uc.icon className={`w-5 h-5 ${selectedUseCase === idx ? 'text-violet-400' : 'text-slate-400'}`} />
-                                {uc.title}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="max-w-5xl mx-auto bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-sm">
-                        <div className="grid lg:grid-cols-2">
-                            <div className="p-12 space-y-8 flex flex-col justify-center">
-                                <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-bold text-sm w-fit`}>
-                                    <span className="w-2 h-2 rounded-full bg-violet-600"></span>
-                                    {useCases[selectedUseCase].subtitle}
-                                </div>
-                                <div>
-                                    <h3 className="text-3xl font-extrabold text-slate-900 mb-4">{useCases[selectedUseCase].title}</h3>
-                                    <p className="text-lg text-slate-600 leading-relaxed">{useCases[selectedUseCase].description}</p>
-                                </div>
-
-                                <ul className="space-y-4">
-                                    {useCases[selectedUseCase].features.map((feature, idx) => (
-                                        <li key={idx} className="flex items-center gap-4 text-slate-700 font-medium bg-slate-50 px-4 py-3 rounded-xl border border-slate-100">
-                                            <div className="bg-white p-1 rounded-full shadow-sm">
-                                                <Check className="w-4 h-4 text-violet-600 shrink-0" />
-                                            </div>
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                <div className="pt-4 mt-auto">
-                                    <Button className="rounded-full px-8 bg-slate-900 hover:bg-slate-800 text-white shadow-md">
-                                        Tìm hiểu chi tiết
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <div className={`bg-gradient-to-br ${useCases[selectedUseCase].gradient} p-12 text-white flex items-center justify-center min-h-[400px]`}>
-                                <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-10 text-center shadow-2xl relative w-full max-w-sm">
-                                    <div className="absolute inset-0 bg-white/5 rounded-3xl animate-pulse delay-75"></div>
-                                    {(() => { const Icon = useCases[selectedUseCase].icon; return <Icon className="w-20 h-20 mx-auto text-white drop-shadow-md relative z-10" />; })()}
-                                    <h4 className="text-2xl font-bold text-center mt-6 relative z-10">{useCases[selectedUseCase].title}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-             {/* =========================================================== */}
-            {/* TESTIMONIALS */}
-            {/* =========================================================== */}
-            <section className="py-24 bg-white border-t border-slate-100">
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-extrabold text-slate-900 mb-6">Đồng hành trong thực tiễn</h2>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                        {testimonialsData.map((testimonial, idx) => (
-                            <div key={idx} className="bg-slate-50 border border-slate-200 rounded-[2rem] p-8 relative isolate">
-                                <Quote className="w-12 h-12 text-slate-200 absolute top-6 right-8 -z-10" />
-                                <div className="flex gap-1 mb-6">
-                                    {[...Array(testimonial.rating)].map((_, i) => (
-                                        <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
-                                    ))}
-                                </div>
-                                <p className="text-slate-700 italic mb-8 min-h-[5rem]">"{testimonial.content}"</p>
-                                <div className="flex items-center gap-4 mt-auto">
-                                    <div className="w-12 h-12 bg-white border border-slate-200 shadow-sm rounded-full flex items-center justify-center text-xl">
-                                        {testimonial.avatar}
-                                    </div>
-                                    <div>
-                                        <div className="font-bold text-slate-900">{testimonial.name}</div>
-                                        <div className="text-sm font-medium text-slate-500">{testimonial.role}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* =========================================================== */}
-            {/* DEPLOYMENT GUIDE */}
-            {/* =========================================================== */}
-            <section id="deploy" className="py-24 bg-white border-t border-slate-200/50">
-                <div className="container mx-auto px-4 max-w-4xl">
-                    <div className="text-center mb-16">
-                        <Badge className="bg-violet-100 text-violet-700 border-none px-3 py-1 mb-4 text-sm font-semibold">Tự Lưu Trữ (Self-Hosted)</Badge>
-                        <h2 className="text-4xl font-extrabold text-slate-900 mb-4">Hướng Dẫn Cài Đặt Server</h2>
-                        <p className="text-slate-500">Mã nguồn mở miễn phí. Chỉ với 3 bước đơn giản để sở hữu hệ thống của riêng bạn.</p>
-                    </div>
-
-                    <div className="bg-slate-900 rounded-[2rem] p-8 md:p-12 text-slate-300 shadow-xl overflow-hidden relative">
-                        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-                            <Database className="w-64 h-64 text-white" />
-                        </div>
-                        
-                        <div className="space-y-12 relative z-10">
-                            {/* Step 1 */}
-                            <div>
-                                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
-                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-violet-600 text-sm">1</span> 
-                                    Tải Mã Nguồn & Cấu Hình
-                                </h3>
-                                <div className="bg-black/50 p-4 rounded-xl font-mono text-sm border border-slate-700/50 mb-4 overflow-x-auto">
-                                    <div className="text-slate-400"># Clone repository từ GitHub</div>
-                                    <div className="text-emerald-400">git clone https://github.com/nguyenduchoai/Server-Xiaozhi-PY-Vietnam.git</div>
-                                    <div className="text-emerald-400">cd Server-Xiaozhi-PY-Vietnam</div>
-                                    <br/>
-                                    <div className="text-slate-400"># Thiết lập các biến môi trường cấu hình</div>
-                                    <div className="text-emerald-400">cp .env.example .env</div>
-                                    <div className="text-emerald-400">nano .env</div>
-                                </div>
-                                <p className="text-sm">Hãy điền các thông tin bảo mật, email admin, và API key trong file `.env`.</p>
-                            </div>
-
-                            {/* Step 2 */}
-                            <div>
-                                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
-                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-violet-600 text-sm">2</span> 
-                                    Khởi Chạy Dịch Vụ
-                                </h3>
-                                <div className="bg-black/50 p-4 rounded-xl font-mono text-sm border border-slate-700/50 mb-4">
-                                    <div className="text-slate-400"># Yêu cầu cài đặt sẵn Docker và Docker Compose</div>
-                                    <div className="text-emerald-400">docker compose up -d</div>
-                                </div>
-                                <p className="text-sm">Hệ thống sẽ tự động pull và khởi chạy toàn bộ 5 module (Frontend, Backend, Postgres, Redis, EMQX).</p>
-                            </div>
-
-                            {/* Step 3 */}
-                            <div>
-                                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
-                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-violet-600 text-sm">3</span> 
-                                    Reverse Proxy & Tận Hưởng
-                                </h3>
-                                <p className="text-sm mb-4">Cấu hình Nginx hoặc Apache để trỏ domain của bạn tới hệ thống (ví dụ: port <code className="bg-slate-800 text-violet-300 px-1.5 py-0.5 rounded">3000</code> cho giao diện người dùng và <code className="bg-slate-800 text-violet-300 px-1.5 py-0.5 rounded">8000</code> cho backend API).</p>
-                                <div className="flex flex-col sm:flex-row gap-4 mt-6">
-                                    <a href="/login" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded-full transition-all">
-                                        <MonitorSmartphone className="w-4 h-4" /> Bảng Điều Khiển
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* =========================================================== */}
             {/* CÀI ĐẶT SERVER */}
             {/* =========================================================== */}
             <section id="installation" className="py-24 bg-white border-t border-slate-200/50">
@@ -617,9 +391,9 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
                         <p className="text-slate-500">Tự triển khai máy chủ Xiaozhi CE của riêng bạn chỉ với vài thao tác cơ bản.</p>
                     </div>
 
-                    <div className="bg-slate-900 rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden relative">
-                        <div className="absolute top-0 right-0 p-8 opacity-10">
-                            <Database className="w-48 h-48 text-white" />
+                    <div className="bg-white border border-slate-200 rounded-3xl p-8 md:p-12 shadow-xl overflow-hidden relative">
+                        <div className="absolute top-0 right-0 p-8 opacity-[0.03]">
+                            <Database className="w-48 h-48 text-violet-600" />
                         </div>
                         
                         <div className="relative z-10 space-y-8">
@@ -627,9 +401,9 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
                             <div>
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white font-bold">1</div>
-                                    <h3 className="text-xl font-bold text-white">Yêu Cầu Hệ Thống</h3>
+                                    <h3 className="text-xl font-bold text-slate-900">Yêu Cầu Hệ Thống</h3>
                                 </div>
-                                <ul className="list-disc list-inside text-slate-300 ml-11 space-y-2">
+                                <ul className="list-disc list-inside text-slate-600 ml-11 space-y-2">
                                     <li>Máy chủ Linux (Ubuntu/Debian) có kết nối Internet.</li>
                                     <li>Cài đặt sẵn Docker và Docker Compose.</li>
                                     <li>Có ít nhất một API Key của các nhà cung cấp AI (OpenAI, Gemini, DeepSeek).</li>
@@ -640,9 +414,9 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
                             <div>
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white font-bold">2</div>
-                                    <h3 className="text-xl font-bold text-white">Clone Mã Nguồn</h3>
+                                    <h3 className="text-xl font-bold text-slate-900">Clone Mã Nguồn</h3>
                                 </div>
-                                <div className="ml-11 bg-slate-950 rounded-xl p-4 font-mono text-sm text-green-400 overflow-x-auto border border-slate-800">
+                                <div className="ml-11 bg-slate-100 rounded-xl p-4 font-mono text-sm text-slate-800 overflow-x-auto border border-slate-200">
                                     git clone https://github.com/nguyenduchoai/Server-Xiaozhi-PY-Vietnam.git<br/>
                                     cd Server-Xiaozhi-PY-Vietnam
                                 </div>
@@ -652,10 +426,10 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
                             <div>
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white font-bold">3</div>
-                                    <h3 className="text-xl font-bold text-white">Cấu Hình Môi Trường</h3>
+                                    <h3 className="text-xl font-bold text-slate-900">Cấu Hình Môi Trường</h3>
                                 </div>
-                                <p className="text-slate-300 ml-11 mb-2">Tạo file cấu hình từ file mẫu và điền các thông tin bảo mật của bạn (Mật khẩu Admin, API Keys):</p>
-                                <div className="ml-11 bg-slate-950 rounded-xl p-4 font-mono text-sm text-green-400 overflow-x-auto border border-slate-800">
+                                <p className="text-slate-600 ml-11 mb-2">Tạo file cấu hình từ file mẫu và điền các thông tin bảo mật của bạn (Mật khẩu Admin, API Keys):</p>
+                                <div className="ml-11 bg-slate-100 rounded-xl p-4 font-mono text-sm text-slate-800 overflow-x-auto border border-slate-200">
                                     cp .env.example .env<br/>
                                     nano .env
                                 </div>
@@ -665,19 +439,19 @@ export function ModernLandingPage({ brand }: ModernLandingPageProps) {
                             <div>
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white font-bold">4</div>
-                                    <h3 className="text-xl font-bold text-white">Khởi Chạy Dịch Vụ</h3>
+                                    <h3 className="text-xl font-bold text-slate-900">Khởi Chạy Dịch Vụ</h3>
                                 </div>
-                                <p className="text-slate-300 ml-11 mb-2">Khởi động tất cả các container nền tảng bằng Docker Compose:</p>
-                                <div className="ml-11 bg-slate-950 rounded-xl p-4 font-mono text-sm text-green-400 overflow-x-auto border border-slate-800">
+                                <p className="text-slate-600 ml-11 mb-2">Khởi động tất cả các container nền tảng bằng Docker Compose:</p>
+                                <div className="ml-11 bg-slate-100 rounded-xl p-4 font-mono text-sm text-slate-800 overflow-x-auto border border-slate-200">
                                     docker compose up -d
                                 </div>
                             </div>
                             
                             {/* Note */}
-                            <div className="ml-11 mt-6 bg-violet-900/40 border border-violet-500/30 rounded-xl p-6">
-                                <h4 className="text-violet-300 font-bold flex items-center gap-2 mb-2"><Sparkles className="w-5 h-5"/> Kết Nối Thiết Bị</h4>
-                                <p className="text-slate-300 text-sm">
-                                    Nếu bạn dùng firmware chuẩn Xiaozhi, chỉ cần đổi địa chỉ <strong className="text-white">OTA URL</strong> về máy chủ này, thiết bị sẽ tự động tải bản cập nhật và kết nối tới MQTT của bạn. Tất cả dữ liệu và API Key được mã hóa một chiều hoàn toàn an toàn (BYOK - Zero Knowledge).
+                            <div className="ml-11 mt-6 bg-violet-50 border border-violet-200 rounded-xl p-6">
+                                <h4 className="text-violet-700 font-bold flex items-center gap-2 mb-2"><Sparkles className="w-5 h-5"/> Kết Nối Thiết Bị</h4>
+                                <p className="text-slate-600 text-sm">
+                                    Nếu bạn dùng firmware chuẩn Xiaozhi, chỉ cần đổi địa chỉ <strong className="text-slate-900">OTA URL</strong> về máy chủ này, thiết bị sẽ tự động tải bản cập nhật và kết nối tới MQTT của bạn. Tất cả dữ liệu và API Key được mã hóa một chiều hoàn toàn an toàn (BYOK - Zero Knowledge).
                                 </p>
                             </div>
                         </div>

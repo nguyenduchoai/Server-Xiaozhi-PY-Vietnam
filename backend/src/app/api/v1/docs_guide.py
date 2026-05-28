@@ -34,7 +34,7 @@ BYO là chính sách yêu cầu users tự cung cấp API keys cho các dịch v
 | **ASR (miễn phí)** | ✅ Có sẵn |
 
 ### Free Services Available
-- **TTS**: Edge TTS, Sherpa ONNX Vietnamese, Valtec
+- **TTS**: Edge TTS, Sherpa ONNX Vietnamese
 - **ASR**: Qwen3 ASR (0.6B), Sherpa ONNX, Chunkformer
         """
     },
@@ -52,12 +52,6 @@ BYO là chính sách yêu cầu users tự cung cấp API keys cho các dịch v
 - Latency: Thấp
 - Voice: `vi-VN-HoaiMyNeural`
 
-#### 2. Valtec TTS v2.0 (Local GPU/CPU)
-- Type: `valtec`
-- Port: 8101
-- Quality: 22-24kHz
-- Features: Multi-Speaker 5 voices (NF/SF/NM1/SM/NM2), Zero-Shot Voice Cloning (6 reference voices)
-- Params: 74.8M, 3-4x realtime on CPU
 
         """
     },
@@ -157,7 +151,6 @@ async def get_services_status():
     # httpx imported at top-level
     
     services = [
-        {"name": "Valtec TTS", "url": "http://valtec-tts:8101/health", "type": "GPU"},
         {"name": "Edge TTS", "url": None, "type": "Cloud"},
     ]
     

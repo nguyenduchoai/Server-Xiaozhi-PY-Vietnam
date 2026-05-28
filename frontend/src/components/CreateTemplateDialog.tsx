@@ -239,7 +239,6 @@ export function CreateTemplateDialog({
     const refName = selectedTTS.replace("config:", "").replace("db:", "").toLowerCase();
     // NghiTTS detection (legacy)
     if (refName.includes("nghitts") || refName.includes("nghi")) return "nghitts";
-    if (refName.includes("valtec")) return "valtec";
 
     if (refName.includes("edge")) return "edge";
 
