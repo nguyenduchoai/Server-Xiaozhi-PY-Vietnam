@@ -5,7 +5,7 @@ import { VoiceShortcutsHelp } from "@/components/settings/VoiceShortcutsHelp";
 import { BrandingSettingsCard } from "@/components/settings/BrandingSettingsCard";
 import { FAQSettingsCard } from "@/components/settings/FAQSettingsCard";
 import { SolutionsSettingsCard } from "@/components/settings/SolutionsSettingsCard";
-import { Pay2sSettingsCard } from "@/components/settings/Pay2sSettingsCard";
+
 import { PageHead } from "@/components/PageHead";
 import {
   Tabs,
@@ -780,12 +780,7 @@ export const SettingsPage = ({ section }: SettingsPageProps) => {
             )}
           </TabPane>
 
-          {/* Pay2s Gateway Tab */}
-          <TabPane tab={<span><CreditCard className="h-4 w-4 inline mr-2" />Pay2s Gateway</span>} itemKey="pay2s">
-            <div style={{ marginTop: 16 }}>
-              <Pay2sSettingsCard onSaveSuccess={() => toast.success("Đã lưu cấu hình Pay2s")} />
-            </div>
-          </TabPane>
+
 
           {/* Home Config Tab */}
           <TabPane tab={<span><IconHome style={{ marginRight: 8 }} />Trang chủ</span>} itemKey="home">

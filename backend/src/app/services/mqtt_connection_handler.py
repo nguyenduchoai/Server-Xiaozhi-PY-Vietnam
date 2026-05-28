@@ -696,12 +696,7 @@ class MqttConnectionHandler:
                 "enable_memory",
                 "enable_knowledge_base",
                 "knowledge_base_ids",
-                "enable_sales",
-                "sales_program_ids",
-                "enable_education",
-                "course_ids",
-                "enable_meeting",
-                "meeting_room_ids",
+
             ]:
                 val = self.agent.get(key)
                 if val is not None:
@@ -755,8 +750,7 @@ class MqttConnectionHandler:
             # Load prompt
             prompt = agent_config.get("prompt") or self.config.get("prompt", "")
 
-            # Inject product catalog if sales is enabled (now using agent_config directly)
-            prompt = await self._inject_sales_context(prompt, agent_config)
+
 
             self.prompt = prompt or self.config.get("prompt", "")
 
@@ -771,120 +765,7 @@ class MqttConnectionHandler:
             self.prompt = self.config.get("prompt", "")
 
     async def _inject_sales_context(self, prompt: str, agent_config: Dict[str, Any]) -> str:
-        """Inject product catalog into system prompt if agent has sales enabled."""
-        if not prompt:
-            return prompt
-
-        try:
-            enable_sales = agent_config.get("enable_sales", False)
-            sales_program_ids = agent_config.get("sales_program_ids") or []
-
-            self.logger.bind(tag=TAG).debug(
-                f"Sales check in MQTT: enable_sales={enable_sales}, sales_program_ids={sales_program_ids}"
-            )
-
-            if not enable_sales or not sales_program_ids:
-                return prompt
-
-            # Store on self so tools can access via conn
-            self.sales_program_ids = sales_program_ids
-
-            # Load product catalog from database
-            from sqlalchemy import and_, select
-
-            from app.core.db.database import local_session
-            from app.models.product import Product
-            from app.models.sales_program import SalesProgram
-
-            async with local_session() as db:
-                catalog_parts = []
-                product_preview_limit = 12
-
-                for prog_id in sales_program_ids:
-                    # Get program info
-                    prog_result = await db.execute(select(SalesProgram).where(SalesProgram.id == prog_id))
-                    program = prog_result.scalar_one_or_none()
-                    if not program or not program.is_active:
-                        continue
-
-                    # Get active products
-                    result = await db.execute(
-                        select(Product)
-                        .where(
-                            and_(
-                                Product.sales_program_id == prog_id,
-                                Product.is_active.is_(True),
-                            )
-                        )
-                        .order_by(Product.sort_order, Product.name)
-                        .limit(product_preview_limit)
-                    )
-                    products = result.scalars().all()
-
-                    if not products:
-                        continue
-
-                    lines = [f"[DANH MỤC SẢN PHẨM - {program.business_name or program.name}]"]
-                    if program.business_address:
-                        lines.append(f"Địa chỉ: {program.business_address}")
-                    if program.business_phone:
-                        lines.append(f"Điện thoại: {program.business_phone}")
-                    if program.welcome_message:
-                        lines.append(f"Lời chào: {program.welcome_message}")
-                    lines.append("")
-
-                    if not hasattr(self, "agent_active_products"):
-                        self.agent_active_products = []
-                    for i, p in enumerate(products[:product_preview_limit], 1):
-                        self.agent_active_products.append(
-                            {
-                                "name": p.name,
-                                "price": p.price,
-                                "image_url": getattr(p, "image_url", None),
-                                "images": getattr(p, "images", None) or [],
-                                "video_url": (getattr(p, "extra_info", None) or {}).get("video_url", "")
-                                if isinstance(getattr(p, "extra_info", None), dict)
-                                else "",
-                                "description": getattr(p, "description", None),
-                                "category": getattr(p, "category", None),
-                            }
-                        )
-                        price_str = f"{p.price:,}đ".replace(",", ".")
-                        line = f"{i}. {p.name} — {price_str}"
-                        if p.original_price and p.original_price > p.price:
-                            orig_str = f"{p.original_price:,}đ".replace(",", ".")
-                            discount = round((1 - p.price / p.original_price) * 100)
-                            line += f" (giảm {discount}% từ {orig_str})"
-                        if p.description:
-                            line += f"\n   {p.description}"
-                        if p.category:
-                            line += f" [{p.category}]"
-                        if p.image_url:
-                            line += "\n   Có ảnh sản phẩm"
-                        extra_info = getattr(p, "extra_info", None) or {}
-                        if isinstance(extra_info, dict) and extra_info.get("video_url"):
-                            line += "\n   Có video sản phẩm"
-                        lines.append(line)
-
-                    lines.append(
-                        "Khi khách hỏi sản phẩm cụ thể, hãy dùng tool search_product hoặc show_product để lấy đúng ảnh/video/giá hiện tại; không tự bịa link media. Sau khi tư vấn xong, nếu khách muốn mua/giữ hàng/tư vấn tiếp, hãy gọi start_sales_closing để xin tên/số điện thoại; khi khách cung cấp thông tin thì gọi tool capture_sales_lead để lưu vào Khách hàng quan tâm."
-                    )
-                    lines.append(
-                        "Flow bắt buộc: hiểu nhu cầu → nếu thiếu thì hỏi thêm 1-2 câu và gọi capture_customer_needs → tìm sản phẩm bằng tool → so sánh 2-3 lựa chọn → show đúng sản phẩm → nếu khách từ chối thì gọi handle_sales_objection → start_sales_closing → capture_sales_lead."
-                    )
-
-                    catalog_parts.append("\n".join(lines))
-
-                if catalog_parts:
-                    catalog_text = "\n\n".join(catalog_parts)
-                    prompt += f"\n\n<product_catalog>\n{catalog_text}\n\nKhi khách hỏi về sản phẩm, hãy tư vấn dựa trên danh mục sản phẩm trên, nhưng dùng tool Sales để trả ảnh hoặc video thật của sản phẩm. Giới thiệu sản phẩm có giá, mô tả chi tiết. Nếu có khuyến mãi, nhấn mạnh giá ưu đãi. Flow tư vấn: hiểu nhu cầu → hỏi thêm nếu thiếu → tìm bằng tool → so sánh 2-3 lựa chọn → hiển thị đúng sản phẩm → xử lý từ chối bằng handle_sales_objection → gọi start_sales_closing để xin thông tin → gọi capture_sales_lead khi có tên/số/email. Khi khách để lại tên/số điện thoại/email hoặc muốn được liên hệ, gọi tool capture_sales_lead để lưu vào Khách hàng quan tâm.\n</product_catalog>"
-                    self.logger.bind(tag=TAG).info(
-                        f"Injected sales catalog: {sum(len(p.split(chr(10))) for p in catalog_parts)} lines"
-                    )
-
-        except Exception as e:
-            self.logger.bind(tag=TAG).warning(f"Failed to inject sales context: {e}")
-
+        """CE: Sales feature not available."""
         return prompt
 
     async def _mark_device_connected(self) -> None:

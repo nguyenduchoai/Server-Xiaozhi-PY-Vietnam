@@ -161,15 +161,18 @@ async def update_notification_channels(
     # Update daily report scheduler if config changed
     daily_config = config_dict.get("daily_report", {})
     if daily_config.get("enabled"):
-        from app.services.daily_report_service import get_daily_report_scheduler
-        scheduler = get_daily_report_scheduler()
-        time_str = daily_config.get("time", "21:00")
-        tz = daily_config.get("timezone", "Asia/Ho_Chi_Minh")
         try:
-            hour, minute = map(int, time_str.split(":"))
-        except (ValueError, AttributeError):
-            hour, minute = 21, 0
-        scheduler.schedule_report(agent_id, hour, minute, tz)
+            from app.services.daily_report_service import get_daily_report_scheduler
+            scheduler = get_daily_report_scheduler()
+            time_str = daily_config.get("time", "21:00")
+            tz = daily_config.get("timezone", "Asia/Ho_Chi_Minh")
+            try:
+                hour, minute = map(int, time_str.split(":"))
+            except (ValueError, AttributeError):
+                hour, minute = 21, 0
+            scheduler.schedule_report(agent_id, hour, minute, tz)
+        except ImportError:
+            pass
     
     logger.info(f"Updated notification channels for agent {agent_id}")
     
@@ -239,8 +242,11 @@ async def disable_channel(
         
         # Cancel daily report if it was the daily_report channel
         if channel == "daily_report":
-            from app.services.daily_report_service import get_daily_report_scheduler
-            get_daily_report_scheduler().cancel_report(agent_id)
+            try:
+                from app.services.daily_report_service import get_daily_report_scheduler
+                get_daily_report_scheduler().cancel_report(agent_id)
+            except ImportError:
+                pass
     
     return SuccessResponse(
         success=True,

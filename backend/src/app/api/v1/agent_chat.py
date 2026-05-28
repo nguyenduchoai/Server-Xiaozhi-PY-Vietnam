@@ -2,7 +2,7 @@
 Agent Chat API — Browser-based text chat for testing agents
 
 Provides a REST endpoint to chat with any agent directly from the browser.
-Loads the agent's LLM provider, system prompt, and product catalog (if sales enabled).
+Loads the agent's LLM provider and system prompt.
 Maintains conversation history within a session.
 """
 
@@ -20,8 +20,7 @@ from app.core.db.database import async_get_db
 from app.api.dependencies import get_current_user
 from app.models.agent import Agent
 from app.core.logger import get_logger
-from app.models.product import Product
-from app.models.sales_program import SalesProgram
+
 
 logger = get_logger(__name__)
 router = APIRouter(prefix="/agents", tags=["Agent Chat"])
@@ -74,17 +73,7 @@ async def agent_chat(
     now = datetime.now()
     system_prompt = system_prompt.replace("{{current_time}}", now.strftime("%H:%M"))
     
-    # 3. Inject product catalog if sales enabled
-    if agent.enable_sales and agent.sales_program_ids:
-        catalog_text = await _build_product_catalog(db, agent.sales_program_ids)
-        if catalog_text:
-            system_prompt += f"\n\n<product_catalog>\n{catalog_text}\nKhi khách hỏi về sản phẩm, hãy tư vấn dựa trên danh mục trên. Giới thiệu sản phẩm có giá, mô tả chi tiết, và đường link ảnh (markdown format). Nếu có khuyến mãi, nhấn mạnh giá ưu đãi.\n</product_catalog>"
-    
-    # 4. Inject education context if enabled
-    if getattr(agent, 'enable_education', False):
-        edu_text = await _build_education_context(db, agent)
-        if edu_text:
-            system_prompt += f"\n\n<education_context>\n{edu_text}\nBạn là gia sư AI. Khi học viên hỏi về học tập, giới thiệu các khóa học và bài học có sẵn. Hướng dẫn học viên qua từng bài, giải thích từ vựng, và khuyến khích luyện tập.\n</education_context>"
+
     
     # 4. Get or create session
     session_id = data.session_id or str(uuid.uuid4())
@@ -221,60 +210,9 @@ async def _get_llm_provider(db: AsyncSession, agent: Agent):
         return None
 
 
-async def _build_product_catalog(db: AsyncSession, sales_program_ids: list) -> str:
-    """Build product catalog text for LLM context injection."""
-    
-    catalog_parts = []
-    
-    for prog_id in sales_program_ids:
-        prog_result = await db.execute(
-            select(SalesProgram).where(SalesProgram.id == prog_id)
-        )
-        program = prog_result.scalar_one_or_none()
-        if not program or not program.is_active:
-            continue
-        
-        result = await db.execute(
-            select(Product).where(
-                and_(
-                    Product.sales_program_id == prog_id,
-                    Product.is_active == True,
-                )
-            ).order_by(Product.sort_order, Product.name)
-        )
-        products = result.scalars().all()
-        
-        if not products:
-            continue
-        
-        lines = [f"[DANH MỤC SẢN PHẨM - {program.business_name or program.name}]"]
-        if program.business_address:
-            lines.append(f"Địa chỉ: {program.business_address}")
-        if program.business_phone:
-            lines.append(f"Điện thoại: {program.business_phone}")
-        lines.append("")
-        
-        for i, p in enumerate(products, 1):
-            price_str = f"{p.price:,}đ".replace(",", ".")
-            line = f"{i}. {p.name} — {price_str}"
-            if p.original_price and p.original_price > p.price:
-                orig_str = f"{p.original_price:,}đ".replace(",", ".")
-                discount = round((1 - p.price / p.original_price) * 100)
-                line += f" (giảm {discount}% từ {orig_str})"
-            if p.description:
-                line += f"\n   {p.description}"
-            if p.category:
-                line += f" [{p.category}]"
-            if p.image_url:
-                line += f"\n   Ảnh chính: {p.image_url}"
-            if p.images:
-                for img_idx, img_url in enumerate(p.images, 1):
-                    line += f"\n   Ảnh {img_idx}: {img_url}"
-            lines.append(line)
-        
-        catalog_parts.append("\n".join(lines))
-    
-    return "\n\n".join(catalog_parts)
+
+
+
 
 
 def _extract_images(text: str) -> list[str]:
@@ -289,88 +227,3 @@ def _extract_images(text: str) -> list[str]:
         images.extend(re.findall(pattern, text, re.IGNORECASE))
     return images
 
-
-async def _build_education_context(db: AsyncSession, agent: Agent) -> str:
-    """Build education context for LLM prompt injection."""
-    try:
-        from sqlalchemy import text as sql_text
-
-        courses: list[dict] = []
-
-        # 1) Preferred source: courses assigned via template
-        template_id = getattr(agent, "active_template_id", None) or getattr(agent, "source_template_id", None)
-        if template_id:
-            result = await db.execute(
-                sql_text(
-                    """
-                    SELECT c.id, c.name, c.description, c.difficulty
-                    FROM template_course tc
-                    JOIN edu_course c ON tc.course_id = c.id
-                    WHERE tc.template_id = :template_id AND c.is_published = true
-                    ORDER BY tc.course_order
-                    """
-                ),
-                {"template_id": template_id},
-            )
-            courses = [dict(row) for row in result.mappings().all()]
-
-        # 2) Fallback source: courses assigned directly on Agent.course_ids
-        if not courses and getattr(agent, "course_ids", None):
-            requested_ids = [str(course_id) for course_id in (agent.course_ids or []) if course_id]
-            if requested_ids:
-                result = await db.execute(
-                    sql_text(
-                        """
-                        SELECT id, name, description, difficulty
-                        FROM edu_course
-                        WHERE user_id = :user_id
-                          AND is_published = true
-                        """
-                    ),
-                    {"user_id": str(agent.user_id)},
-                )
-                available = {str(row["id"]): dict(row) for row in result.mappings().all()}
-                for course_id in requested_ids:
-                    course = available.get(course_id)
-                    if course:
-                        courses.append(course)
-
-        if not courses:
-            return ""
-
-        parts = ["[CHƯƠNG TRÌNH HỌC TẬP]"]
-
-        for course in courses:
-            parts.append(f"\n📚 Khóa học: {course['name']}")
-            if course.get("description"):
-                parts.append(f"   Mô tả: {course['description']}")
-            if course.get("difficulty"):
-                parts.append(f"   Trình độ: {course['difficulty']}")
-
-            # Get lessons for this course
-            lesson_result = await db.execute(
-                sql_text(
-                    """
-                    SELECT title, lesson_type, lesson_order, description
-                    FROM edu_lesson
-                    WHERE course_id = :course_id AND is_published = true
-                    ORDER BY lesson_order
-                    """
-                ),
-                {"course_id": course["id"]},
-            )
-            lessons = lesson_result.mappings().all()
-
-            if lessons:
-                parts.append(f"   Bài học ({len(lessons)} bài):")
-                for lesson in lessons:
-                    type_emoji = {"conversation": "💬", "story": "📖", "vocabulary": "📝"}.get(lesson["lesson_type"], "📗")
-                    parts.append(f"     {type_emoji} {lesson['title']}")
-                    if lesson.get("description"):
-                        parts.append(f"        {lesson['description']}")
-
-        return "\n".join(parts)
-
-    except Exception as e:
-        logger.error(f"Failed to build education context: {e}")
-        return ""

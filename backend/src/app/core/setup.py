@@ -88,17 +88,12 @@ def lifespan_factory(
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncGenerator:
-        import asyncio
         from asyncio import Event
 
         initialization_complete = Event()
         app.state.initialization_complete = initialization_complete
 
         await set_threadpool_tokens()
-
-        # Background meeting janitor — fixes stuck RECORDING/PROCESSING.
-        meeting_janitor_stop = Event()
-        meeting_janitor_task: asyncio.Task | None = None
 
         try:
             if isinstance(settings, RedisCacheSettings):
@@ -110,33 +105,11 @@ def lifespan_factory(
             if create_tables_on_start:
                 await create_tables()
 
-            # Start meeting janitor loop.
-            try:
-                from app.services.meeting_janitor import run_loop as _mj_run
-                meeting_janitor_task = asyncio.create_task(
-                    _mj_run(meeting_janitor_stop)
-                )
-            except Exception:
-                # Don't block startup if janitor fails to import.
-                pass
-
             initialization_complete.set()
 
             yield
 
         finally:
-            # Signal janitor to stop & wait briefly so it doesn't write
-            # mid-shutdown. Don't block shutdown indefinitely.
-            try:
-                meeting_janitor_stop.set()
-                if meeting_janitor_task is not None:
-                    try:
-                        await asyncio.wait_for(meeting_janitor_task, timeout=5)
-                    except (asyncio.TimeoutError, asyncio.CancelledError):
-                        meeting_janitor_task.cancel()
-            except Exception:
-                pass
-
             if isinstance(settings, RedisCacheSettings):
                 await close_redis_cache_pool()
 

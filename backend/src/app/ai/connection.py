@@ -998,8 +998,7 @@ class ConnectionHandler:
                 user_profile=self.agent.get("user_profile"),
             )
 
-            # Inject product catalog if sales is enabled
-            enhanced_prompt = await self._inject_sales_context(enhanced_prompt)
+            # CE: No sales context injection
 
             if enhanced_prompt:
                 self.change_system_prompt(enhanced_prompt)
@@ -1011,122 +1010,7 @@ class ConnectionHandler:
             self.logger.bind(tag=TAG).error(f"Lỗi khi xây dựng enhanced prompt: {e}")
 
     async def _inject_sales_context(self, prompt: str) -> str:
-        """Inject product catalog into system prompt if agent has sales enabled."""
-        if not prompt:
-            return prompt
-
-        try:
-            # Agent fields are flat (from Agent model), not nested
-            enable_sales = self.agent.get("enable_sales", False)
-            sales_program_ids = self.agent.get("sales_program_ids") or []
-            self.sales_program_ids = sales_program_ids  # Store for plugin access
-
-            self.logger.bind(tag=TAG).debug(
-                f"Sales check: enable_sales={enable_sales}, "
-                f"sales_program_ids={sales_program_ids}, "
-                f"agent_keys={[k for k in self.agent.keys() if 'sale' in k.lower() or 'enable' in k.lower()]}"
-            )
-
-            if not enable_sales or not sales_program_ids:
-                self.logger.bind(tag=TAG).debug(
-                    f"Sales injection skipped: enable_sales={enable_sales}, programs={len(sales_program_ids)}"
-                )
-                return prompt
-
-            # Load product catalog from database
-            from sqlalchemy import and_, select
-
-            from app.core.db.database import local_session
-            from app.models.product import Product
-            from app.models.sales_program import SalesProgram
-
-            async with local_session() as db:
-                catalog_parts = []
-                product_preview_limit = 12
-
-                for prog_id in sales_program_ids:
-                    # Get program info
-                    prog_result = await db.execute(select(SalesProgram).where(SalesProgram.id == prog_id))
-                    program = prog_result.scalar_one_or_none()
-                    if not program or not program.is_active:
-                        continue
-
-                    # Get active products
-                    result = await db.execute(
-                        select(Product)
-                        .where(
-                            and_(
-                                Product.sales_program_id == prog_id,
-                                Product.is_active.is_(True),
-                            )
-                        )
-                        .order_by(Product.sort_order, Product.name)
-                        .limit(product_preview_limit)
-                    )
-                    products = result.scalars().all()
-
-                    if not products:
-                        continue
-
-                    lines = [f"[DANH MỤC SẢN PHẨM - {program.business_name or program.name}]"]
-                    if program.system_prompt:
-                        lines.append("=== KỊCH BẢN BÁN HÀNG TÙY CHỈNH (CUSTOM SALES PROMPT) ===")
-                        lines.append(program.system_prompt)
-                        lines.append("=====================================================")
-                    else:
-                        from app.services.sales_assistant import get_sales_assistant
-
-                        fallback_prompt = get_sales_assistant().get_system_prompt(program.mode)
-                        lines.append("=== QUY TRÌNH BÁN HÀNG TIÊU CHUẨN ===")
-                        lines.append(fallback_prompt)
-                        lines.append("=====================================")
-
-                    if program.business_address:
-                        lines.append(f"Địa chỉ: {program.business_address}")
-                    if program.business_phone:
-                        lines.append(f"Điện thoại: {program.business_phone}")
-                    if program.welcome_message:
-                        lines.append(f"Lời chào: {program.welcome_message}")
-                    lines.append("")
-
-                    for i, p in enumerate(products[:product_preview_limit], 1):
-                        price_str = f"{p.price:,}đ".replace(",", ".")
-                        line = f"{i}. {p.name} — {price_str}"
-                        if p.original_price and p.original_price > p.price:
-                            orig_str = f"{p.original_price:,}đ".replace(",", ".")
-                            discount = round((1 - p.price / p.original_price) * 100)
-                            line += f" (giảm {discount}% từ {orig_str})"
-                        if p.description:
-                            line += f"\n   {p.description}"
-                        if p.category:
-                            line += f" [{p.category}]"
-                        if p.image_url:
-                            line += "\n   Có ảnh sản phẩm"
-                        extra_info = getattr(p, "extra_info", None) or {}
-                        if isinstance(extra_info, dict) and extra_info.get("video_url"):
-                            line += "\n   Có video sản phẩm"
-                        lines.append(line)
-
-                    lines.append(
-                        "Khi khách hỏi sản phẩm cụ thể, hãy dùng tool search_product hoặc show_product để lấy đúng ảnh/video/giá hiện tại; không tự bịa link media. Sau khi tư vấn xong, nếu khách muốn mua/giữ hàng/tư vấn tiếp, hãy gọi start_sales_closing để xin tên/số điện thoại; khi khách cung cấp thông tin thì gọi tool capture_sales_lead để lưu vào Khách hàng quan tâm."
-                    )
-                    lines.append(
-                        "Flow bắt buộc: hiểu nhu cầu → nếu thiếu thì hỏi thêm 1-2 câu và gọi capture_customer_needs → tìm sản phẩm bằng tool → so sánh 2-3 lựa chọn → show đúng sản phẩm → nếu khách từ chối thì gọi handle_sales_objection → start_sales_closing → capture_sales_lead."
-                    )
-
-                    catalog_parts.append("\n".join(lines))
-
-                if catalog_parts:
-                    catalog_text = "\n\n".join(catalog_parts)
-
-                    prompt += f"\n\n<product_catalog>\n{catalog_text}\n\nKhi khách hỏi về sản phẩm, hãy tuân theo KỊCH BẢN BÁN HÀNG, tư vấn chân thực, nhắc lại giá/lợi ích, và dùng tool Sales để trả ảnh hoặc video thật của sản phẩm. Flow tư vấn: hiểu nhu cầu → hỏi thêm nếu thiếu → tìm bằng tool → so sánh 2-3 lựa chọn → hiển thị đúng sản phẩm → xử lý từ chối bằng handle_sales_objection → gọi start_sales_closing để xin thông tin → gọi capture_sales_lead khi có tên/số/email. Khi khách để lại tên/số điện thoại/email hoặc muốn được liên hệ, gọi tool capture_sales_lead để lưu vào Khách hàng quan tâm.\n</product_catalog>"
-                    self.logger.bind(tag=TAG).info(
-                        f"Injected sales catalog: {sum(len(p.split(chr(10))) for p in catalog_parts)} lines"
-                    )
-
-        except Exception as e:
-            self.logger.bind(tag=TAG).warning(f"Failed to inject sales context: {e}")
-
+        """CE: Sales feature not available."""
         return prompt
 
     def _init_report_threads(self):
@@ -1575,20 +1459,7 @@ class ConnectionHandler:
             # Không query với tool result để tránh delay từ embeddings API
             # Check enable_memory toggle
             mem_start = _time.time()
-            if self.meeting_context_id and depth == 0:
-                # Bật chế độ Meeting QA: Bỏ qua memory thông thường, lấy meeting context
-                from app.services.meeting_qa_service import get_meeting_qa_context
-                future = asyncio.run_coroutine_threadsafe(get_meeting_qa_context(self.meeting_context_id), self.loop)
-                try:
-                    meeting_prompt = future.result(timeout=5.0)
-                    if meeting_prompt:
-                        # Ghi đè system prompt hoàn toàn bằng Meeting QA Prompt
-                        self.dialogue.update_system_message(meeting_prompt)
-                        # Đảm bảo <memory> tag không chèn vào nữa
-                        memory_str = None
-                except Exception as e:
-                    self.logger.bind(tag=TAG).error(f"Lỗi lấy Meeting QA context: {e}")
-            elif self.memory is not None and depth == 0 and getattr(self, "enable_memory", True):
+            if self.memory is not None and depth == 0 and getattr(self, "enable_memory", True):
                 # ⚡ PARALLEL: Chạy cả 2 memory queries đồng thời để giảm latency
                 future = asyncio.run_coroutine_threadsafe(self.memory.query_memory(query), self.loop)
                 p_mem_future = asyncio.run_coroutine_threadsafe(self._get_personalized_memory(query), self.loop)
