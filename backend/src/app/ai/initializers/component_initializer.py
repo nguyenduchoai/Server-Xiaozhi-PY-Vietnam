@@ -197,18 +197,22 @@ def initialize_voiceprint_component(
             log.bind(tag=TAG).debug("Voiceprint chưa được bật")
             return False
 
-        from app.ai.providers.voiceprints.voiceprint_provider import VoiceprintProvider
+        try:
+            from app.ai.providers.voiceprints.voiceprint_provider import VoiceprintProvider
 
-        # Khởi tạo voiceprint provider
-        voiceprint_provider = VoiceprintProvider(voiceprint_config)
+            # Khởi tạo voiceprint provider
+            voiceprint_provider = VoiceprintProvider(voiceprint_config)
 
-        # Kiểm tra xem provider có khả dụng không
-        if voiceprint_provider is not None and voiceprint_provider.enabled:
-            conn.voiceprint_provider = voiceprint_provider
-            log.bind(tag=TAG).info("Voiceprint được kích hoạt động theo kết nối")
-            return True
-        else:
-            log.bind(tag=TAG).warning("Voiceprint được bật nhưng cấu hình chưa đầy đủ")
+            # Kiểm tra xem provider có khả dụng không
+            if voiceprint_provider is not None and voiceprint_provider.enabled:
+                conn.voiceprint_provider = voiceprint_provider
+                log.bind(tag=TAG).info("Voiceprint được kích hoạt động theo kết nối")
+                return True
+            else:
+                log.bind(tag=TAG).warning("Voiceprint được bật nhưng cấu hình chưa đầy đủ")
+                return False
+        except ImportError:
+            log.bind(tag=TAG).debug("Voiceprint provider không khả dụng trong phiên bản hiện tại")
             return False
 
     except Exception as e:

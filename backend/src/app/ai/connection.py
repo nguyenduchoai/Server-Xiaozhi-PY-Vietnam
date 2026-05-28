@@ -44,7 +44,10 @@ from app.ai.providers.tools.unified_tool_handler import UnifiedToolHandler
 from app.ai.providers.tts.base import TTSProviderBase
 from app.ai.providers.tts.dto.dto import ContentType, SentenceType, TTSMessageDTO
 from app.ai.providers.vad.base import VADProviderBase
-from app.ai.providers.voiceprints.voiceprint_provider import VoiceprintProvider
+try:
+    from app.ai.providers.voiceprints.voiceprint_provider import VoiceprintProvider
+except ImportError:
+    VoiceprintProvider = Any  # Fallback type for type hinting
 from app.ai.utils import textUtils
 from app.ai.utils.agent_module_loader import (
     apply_agent_config_fields,
@@ -189,7 +192,7 @@ class ConnectionHandler:
         self.intent: IntentProviderBase = _intent
 
         # Quản lý nhận diện giọng nói (voiceprint) riêng cho từng kết nối
-        self.voiceprint_provider: VoiceprintProvider = None
+        self.voiceprint_provider = None
 
         # Biến liên quan tới VAD
         self.client_audio_buffer = bytearray()
