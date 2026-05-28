@@ -227,6 +227,46 @@ LLM_GEMINI_SCHEMA = ProviderTypeSchema(
 )
 
 
+
+LLM_GEMINI_LIVE_SCHEMA = ProviderTypeSchema(
+    label="Gemini Live (Voice-to-Voice)",
+    description="Sử dụng Gemini Multimodal Live API (BidiGenerateContent). Hỗ trợ nhận diện giọng nói và trả về giọng nói theo thời gian thực với độ trễ cực thấp.",
+    fields=[
+        ProviderFieldSchema(
+            name="api_key",
+            label="API Key",
+            type=FieldType.SECRET,
+            required=True,
+            description="Lấy API Key MIỄN PHÍ tại: https://aistudio.google.com/app/apikey",
+        ),
+        ProviderFieldSchema(
+            name="model_name",
+            label="Model",
+            type=FieldType.STRING,
+            required=True,
+            default="gemini-2.0-flash-exp",
+            placeholder="gemini-2.0-flash-exp hoặc gemini-2.5-flash",
+            description="Model hỗ trợ BidiGenerateContent",
+        ),
+        ProviderFieldSchema(
+            name="voice_name",
+            label="Voice",
+            type=FieldType.SELECT,
+            required=False,
+            default="Aoede",
+            options=[
+                SelectOption(value="Puck", label="Puck (Nam)"),
+                SelectOption(value="Charon", label="Charon (Nam)"),
+                SelectOption(value="Kore", label="Kore (Nữ)"),
+                SelectOption(value="Fenrir", label="Fenrir (Nam)"),
+                SelectOption(value="Aoede", label="Aoede (Nữ)"),
+            ],
+            description="Giọng nói của Gemini",
+        ),
+    ],
+)
+
+
 LLM_VLLM_SCHEMA = ProviderTypeSchema(
     label="vLLM (Self-hosted)",
     description="Kết nối tới vLLM server tự host (OpenAI Compatible API)",
@@ -1411,6 +1451,7 @@ PROVIDER_SCHEMAS: dict[str, dict[str, ProviderTypeSchema]] = {
     "LLM": {
         "openai": LLM_OPENAI_SCHEMA,
         "gemini": LLM_GEMINI_SCHEMA,
+        "gemini_live": LLM_GEMINI_LIVE_SCHEMA,
         "vllm": LLM_VLLM_SCHEMA,
     },
     "VLLM": {

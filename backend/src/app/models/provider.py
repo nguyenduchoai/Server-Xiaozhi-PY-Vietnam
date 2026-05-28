@@ -33,7 +33,7 @@ class Provider(Base):
         String(50), index=True
     )  # LLM, TTS, ASR, VAD, Memory, Intent
 
-    type: Mapped[str] = mapped_column(String(50))  # openai, gemini, edge, google, ...
+    type: Mapped[str] = mapped_column(String(50))  # openai, gemini, gemini_live, edge, google, ...
 
     config: Mapped[dict] = mapped_column(JSON)  # Validated provider config
 

@@ -412,7 +412,7 @@ async def get_provider_models(
                         model_id = model.get("id", "")
                         # Filter for chat/completion models
                         if any(x in model_id for x in [
-                            "gpt", "gemini", "claude", "deepseek",
+                            "gpt", "gemini", "gemini_live", "claude", "deepseek",
                             "llama", "mistral", "qwen",
                         ]):
                             models.append({

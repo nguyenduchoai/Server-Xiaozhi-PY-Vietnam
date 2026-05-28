@@ -24,7 +24,7 @@ class SubscriptionPlanBase(BaseModel):
     enable_custom_branding: bool = False
     enable_priority_support: bool = False
     # Provider access control
-    allowed_provider_types: list[str] | None = None  # ["openai", "gemini", "edge"]
+    allowed_provider_types: list[str] | None = None  # ["openai", "gemini", "gemini_live", "edge"]
     allow_custom_providers: bool = True  # User can add own API keys
     allowed_provider_categories: list[str] | None = None  # ["LLM", "TTS", "ASR"]
     allowed_device_features: dict | None = None  # {"music": true, "reminder": false, ...}

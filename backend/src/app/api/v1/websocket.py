@@ -11,6 +11,10 @@ from typing import Optional
 from fastapi import APIRouter, WebSocket, status
 
 from app.ai.connection import ConnectionHandler
+try:
+    from app.ai.connection_live import GeminiLiveConnectionHandler
+except ImportError:
+    GeminiLiveConnectionHandler = None
 from app.ai.utils import AuthToken
 from app.api.dependencies import (
     get_websocket_settings,
@@ -347,18 +351,34 @@ async def websocket_endpoint(websocket: WebSocket):
         )
 
         # Step 4: Create handler and handle connection
-        handler = ConnectionHandler(
-            config=config_dict,
-            _vad=modules.get("vad"),
-            _asr=modules.get("asr"),
-            _llm=modules.get("llm"),
-            _memory=modules.get("memory"),
-            _intent=modules.get("intent"),
-            thread_pool=thread_pool,
-            server=websocket.app.state,
-            agent=agent,
-            agent_service=agent_service,
-        )
+        llm_provider = config_dict.get("llm", {}).get("provider") if config_dict else None
+        
+        if llm_provider == "gemini_live" and GeminiLiveConnectionHandler is not None:
+            handler = GeminiLiveConnectionHandler(
+                config=config_dict,
+                _vad=modules.get("vad"),
+                _asr=modules.get("asr"),
+                _llm=modules.get("llm"),
+                _memory=modules.get("memory"),
+                _intent=modules.get("intent"),
+                thread_pool=thread_pool,
+                server=websocket.app.state,
+                agent=agent,
+                agent_service=agent_service,
+            )
+        else:
+            handler = ConnectionHandler(
+                config=config_dict,
+                _vad=modules.get("vad"),
+                _asr=modules.get("asr"),
+                _llm=modules.get("llm"),
+                _memory=modules.get("memory"),
+                _intent=modules.get("intent"),
+                thread_pool=thread_pool,
+                server=websocket.app.state,
+                agent=agent,
+                agent_service=agent_service,
+            )
 
         # Register handler if tracking active connections
         if hasattr(websocket.app.state, "active_connections"):
