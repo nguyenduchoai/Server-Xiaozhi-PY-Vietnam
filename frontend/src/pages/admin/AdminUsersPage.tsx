@@ -126,8 +126,8 @@ export function AdminUsersPage() {
     }
 
     const pwd = createForm.password;
-    if (pwd.length < 8 || !/[a-z]/.test(pwd) || !/[A-Z]/.test(pwd) || !/[0-9]/.test(pwd) || !/[^a-zA-Z0-9]/.test(pwd)) {
-      toast.error("Mật khẩu không đủ mạnh. Vui lòng kiểm tra lại yêu cầu.");
+    if (pwd.length < 6) {
+      toast.error("Mật khẩu phải có ít nhất 6 ký tự.");
       return;
     }
 
@@ -228,8 +228,8 @@ export function AdminUsersPage() {
     setPasswordError("");
     setPasswordSuccess("");
 
-    if (!newPassword || newPassword.length < 8) {
-      setPasswordError("Mật khẩu phải có ít nhất 8 ký tự");
+    if (!newPassword || newPassword.length < 6) {
+      setPasswordError("Mật khẩu phải có ít nhất 6 ký tự");
       return;
     }
 
@@ -474,10 +474,10 @@ export function AdminUsersPage() {
               type="password"
               value={createForm.password}
               onChange={(v) => setCreateForm({ ...createForm, password: v })}
-              placeholder="Ít nhất 8 ký tự: hoa, thường, số, đặc biệt"
+              placeholder="Tối thiểu 6 ký tự"
             />
             <Text type="secondary" size="small" style={{ display: 'block', marginTop: 4 }}>
-              Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, chữ số và ký tự đặc biệt.
+              Mật khẩu phải có ít nhất 6 ký tự.
             </Text>
           </div>
 
@@ -686,11 +686,11 @@ export function AdminUsersPage() {
                   type="password"
                   value={newPassword}
                   onChange={(v) => setNewPassword(v)}
-                  placeholder="Tối thiểu 8 ký tự"
+                  placeholder="Tối thiểu 6 ký tự"
                   size="large"
                 />
                 <Text type="secondary" size="small" style={{ display: 'block', marginTop: 4 }}>
-                  Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, chữ số và ký tự đặc biệt.
+                  Mật khẩu phải có ít nhất 6 ký tự.
                 </Text>
               </div>
 

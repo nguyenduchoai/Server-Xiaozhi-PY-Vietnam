@@ -168,7 +168,7 @@ LLM_GEMINI_SCHEMA = ProviderTypeSchema(
             label="API Key",
             type=FieldType.SECRET,
             required=True,
-            description="Gemini API key từ Google AI Studio",
+            description="Lấy API Key MIỄN PHÍ tại: https://aistudio.google.com/app/apikey",
         ),
         ProviderFieldSchema(
             name="model_name",

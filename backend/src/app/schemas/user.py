@@ -8,16 +8,8 @@ from ..models.user import UserRole
 
 
 def _validate_password_strength(value: str) -> str:
-    if len(value) < 8:
-        raise ValueError("Password must be at least 8 characters long")
-    if not any(char.islower() for char in value):
-        raise ValueError("Password must include a lowercase letter")
-    if not any(char.isupper() for char in value):
-        raise ValueError("Password must include an uppercase letter")
-    if not any(char.isdigit() for char in value):
-        raise ValueError("Password must include a number")
-    if not any(not char.isalnum() for char in value):
-        raise ValueError("Password must include a special character")
+    if len(value) < 6:
+        raise ValueError("Password must be at least 6 characters long")
     return value
 
 
@@ -64,9 +56,9 @@ class UserCreate(UserBase):
     password: Annotated[
         str,
         Field(
-            min_length=8,
-            examples=["Str1ngst!"],
-            description="Must include uppercase, lowercase, number, and special character",
+            min_length=6,
+            examples=["123456"],
+            description="Must be at least 6 characters long",
         ),
     ]
     invitation_token: str | None = Field(None, description="Friend invitation token if registering via invite link")
@@ -152,9 +144,9 @@ class PasswordChange(BaseModel):
     new_password: Annotated[
         str,
         Field(
-            min_length=8,
-            examples=["NewPassword123!"],
-            description="Must be at least 8 characters with uppercase, lowercase, number, and special character",
+            min_length=6,
+            examples=["123456"],
+            description="Must be at least 6 characters long",
         ),
     ]
 
